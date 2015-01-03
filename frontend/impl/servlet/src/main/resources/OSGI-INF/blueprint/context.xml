@@ -1,0 +1,72 @@
+<!--
+  ~ context.xml which is part of the " wishbox ( servlet )" project
+  ~ Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
+  ~
+  ~ This program is free software; you can redistribute it and/or
+  ~ modify it under the terms of the GNU General Public License
+  ~ as published by the Free Software Foundation; either version 2
+  ~ of the License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program; if not, write to the Free Software
+  ~ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  -->
+
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+           xmlns:cxf="http://cxf.apache.org/blueprint/core"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+           http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+           http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+    <!-- 1 -->
+    <cxf:bus id="cxfBus1">
+        <cxf:features>
+            <cxf:logging/>
+        </cxf:features>
+    </cxf:bus>
+
+    <!-- 2 -->
+    <jaxrs:server address="/test" id="someRestService">
+        <jaxrs:serviceBeans>
+            <ref component-id="restServiceImpl"/>
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+
+    <!-- 3 -->
+    <!-- Implementation of the rest service -->
+    <bean id="restServiceImpl" class="hu.fnf.devel.wishbox.frontend.controller.HelloController">
+        <!--<property name="helloService" ref="helloServiceBean"/>  -->
+        <!--Points to the reference below -->
+    </bean>
+
+    <!-- 4 -->
+    <!-- This has to point to the service registered through serviceimpl.xml in the service.impl project -->
+
+    <!--<service ref="helloServiceBean" interface="hu.fnf.devel.wishbox.frontend.api.RestService">-->
+    <!--<bean class="hu.fnf.devel.wishbox.frontend.controller.HelloController"/>-->
+    <!--</service>-->
+
+
+    <!--<reference id="helloServiceBean"-->
+    <!--interface="hu.fnf.devel.wishbox.frontend.api.RestService">-->
+    <!--</reference>-->
+
+    <!--<bean id="activator" class="hu.fnf.devel.wishbox.frontend.controller.Activator" />-->
+
+    <!--<bean id="helloImpl" class="hu.fnf.devel.wishbox.frontend.controller.HelloController"/>-->
+
+    <!--<service id="hello" interface="hu.fnf.devel.wishbox.frontend.api.RestService" ref="helloImpl">-->
+    <!--<registration-listener ref="activator"-->
+    <!--registration-method="onRegisterService"-->
+    <!--unregistration-method="onUnregisterService"/>-->
+    <!--</service>-->
+
+</blueprint>
