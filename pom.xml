@@ -25,7 +25,7 @@
 
     <groupId>hu.fnf.devel.wishbox</groupId>
     <artifactId>wishbox</artifactId>
-
+    <description>${description}</description>
     <packaging>pom</packaging>
 
     <version>1.0.0</version>
@@ -43,7 +43,10 @@
 
     <properties>
         <karaf.deploy>/home/johnnym/Tools/apache-karaf-3.0.2/deploy</karaf.deploy>
+        <description>WishBox server application.</description>
         <main.version>1.0.0</main.version>
+        <cxf.version>3.0.3</cxf.version>
+        <http.version>3.0.2</http.version>
     </properties>
 
     <dependencyManagement>
@@ -56,7 +59,7 @@
             <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-                <version>3.0.3</version>
+                <version>${cxf.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.osgi</groupId>

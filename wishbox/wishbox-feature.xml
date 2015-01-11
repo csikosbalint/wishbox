@@ -19,8 +19,9 @@
 
 <features name="hu.fnf.devel.wishbox" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
     <feature name="wishbox" version="${main.version}" description="${description}">
-        <feature>cxf</feature>
-        <feature>http</feature>
+        <details>${description}</details>
+        <!--<feature version="${cxf.version}">cxf</feature>-->
+        <!--<feature version="${http.version}">http</feature>-->
         <bundle>mvn:hu.fnf.devel.wishbox/crawler-service/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/torrent-crawler/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/rest-service/${main.version}</bundle>
