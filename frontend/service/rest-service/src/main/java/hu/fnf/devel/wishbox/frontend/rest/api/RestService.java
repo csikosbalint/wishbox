@@ -1,5 +1,5 @@
 /*
- * RestService.java which is part of the " wishbox ( rest )" project
+ * RestService.java which is part of the " wishbox ( rest-service )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or

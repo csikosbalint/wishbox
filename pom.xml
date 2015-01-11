@@ -32,7 +32,7 @@
 
     <modules>
         <!--frontend-->
-        <module>frontend/service/rest</module>
+        <module>frontend/service/rest-service</module>
         <module>frontend/implementation/servlet</module>
         <!--backend-->
         <module>backend/service/crawler-service</module>
