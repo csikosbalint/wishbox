@@ -31,22 +31,29 @@
     <version>1.0.0</version>
 
     <modules>
+        <!--VIEW-->
+        <module>view/myArtifact</module>
+        <!--CONTROL-->
         <!--frontend-->
-        <module>frontend/service/rest-service</module>
-        <module>frontend/implementation/servlet</module>
+        <module>control/frontend/service/rest-service</module>
+        <module>control/frontend/implementation/servlet</module>
         <!--backend-->
-        <module>backend/service/crawler-service</module>
-        <module>backend/implementation/torrent-crawler</module>
+        <module>control/backend/service/crawler-service</module>
+        <module>control/backend/implementation/torrent-crawler</module>
         <!--assembler-->
-        <module>wishbox</module>
+        <module>control/wishbox</module>
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <karaf.deploy>/home/johnnym/Tools/apache-karaf-3.0.2/deploy</karaf.deploy>
         <description>WishBox server application.</description>
         <main.version>1.0.0</main.version>
         <cxf.version>3.0.3</cxf.version>
         <http.version>3.0.2</http.version>
+        <vaadin.version>7.3.1</vaadin.version>
+        <gwt.version>2.3.0</gwt.version>
+        <gwt.plugin.version>2.2.0</gwt.plugin.version>
     </properties>
 
     <dependencyManagement>
