@@ -25,15 +25,83 @@
 
     <groupId>hu.fnf.devel.wishbox</groupId>
     <artifactId>wishbox</artifactId>
+
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+
+    <version>1.0.0</version>
+
     <modules>
-        <module>frontend</module>
+        <!--frontend-->
+        <module>frontend/service/rest</module>
+        <module>frontend/implementation/servlet</module>
+        <!--backend-->
+        <module>backend/service/crawler-service</module>
+        <module>backend/implementation/torrent-crawler</module>
+        <!--assembler-->
+        <module>wishbox</module>
     </modules>
+
+    <properties>
+        <karaf.deploy>/home/johnnym/Tools/apache-karaf-3.0.2/deploy</karaf.deploy>
+        <main.version>1.0.0</main.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.karaf.features</groupId>
+                <artifactId>org.apache.karaf.features.core</artifactId>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>3.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.osgi</groupId>
+                <artifactId>org.osgi.core</artifactId>
+                <version>4.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.osgi.compendium</artifactId>
+                <version>1.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.1</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>2.4.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <manifestLocation>target</manifestLocation>
+                        <instructions>
+                            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                            <Export-Package/>
+                        </instructions>
+                    </configuration>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.karaf.tooling</groupId>
                     <artifactId>karaf-maven-plugin</artifactId>
@@ -45,7 +113,41 @@
                         </execution>
                     </executions>
                 </plugin>
-
+                <plugin>
+                    <groupId>org.apache.karaf.tooling</groupId>
+                    <artifactId>karaf-maven-plugin</artifactId>
+                    <extensions>true</extensions>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                    <executions>
+                        <execution>
+                            <id>copy-resources</id>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${project.basedir}</directory>
+                                        <filtering>true</filtering>
+                                        <includes>
+                                            <include>**/*-feature.xml</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
