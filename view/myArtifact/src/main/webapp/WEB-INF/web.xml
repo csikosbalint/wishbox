@@ -33,7 +33,7 @@
         <init-param>
             <description>Vaadin UI to display</description>
             <param-name>UI</param-name>
-            <param-value>myGroup.gwt.client.ui.AddressbookUI</param-value>
+            <param-value>myGroup.gwt.client.ui.MyUI</param-value>
         </init-param>
         <init-param>
             <param-name>pushmode</param-name>
@@ -44,4 +44,19 @@
         <servlet-name>Vaadin</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Vaadin</web-resource-name>
+            <url-pattern>/</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+
+
 </web-app>
