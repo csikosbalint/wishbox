@@ -19,25 +19,73 @@
 
 package myGroup.gwt.client.ui;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.vaadin.annotations.Push;
+import com.google.appengine.repackaged.com.google.gson.Gson;
+import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.communication.PushMode;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import org.apache.cxf.jaxrs.client.WebClient;
+import hu.fnf.devel.wishbox.frontend.rest.api.TestResp;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
+ * http://demo.vaadin.com/sampler/#databinding/declarative-validation
  */
-@Push(PushMode.DISABLED)
 public class MyUI extends UI {
+    //    Logger logger = LoggerFactory.getLogger(MyUI.class);
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        // Main window is the primary browser window
+        HorizontalSplitPanel sample = new HorizontalSplitPanel();
+        sample.setSizeFull();
+//        sample.setSplitPosition(150.0f, PIXELS);
+
+        sample.setSecondComponent(new Label("korte"));
+
+        setContent(sample);
+
+        Table grid = new Table();
+
+        grid.setSizeFull();
+        for (Object i : getItemContiner().getItemIds()) {
+            System.out.println(i.toString());
+        }
+        grid.setContainerDataSource(getItemContiner());
+        grid.setSelectable(true);
+        grid.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                final String valueString = String.valueOf(valueChangeEvent.getProperty()
+                        .getValue());
+                Notification.show("Value changed:", valueString,
+                        Notification.Type.TRAY_NOTIFICATION);
+            }
+        });
+        sample.setFirstComponent(grid);
+
+
+//            Main window is the primary browser window
         final Window main = new Window("Hello window");
         addWindow(main);
         // "Hello world" text is added to window as a Label component
@@ -49,11 +97,80 @@ public class MyUI extends UI {
         } else {
             // no user logged in
         }
-        main.setContent(new Label(user.getUserId()));
-        String resp = "none";
-        String rest_url = "http://89.134.203.99:8181/cxf/test/";
-        WebClient client = WebClient.create(rest_url);
-        resp = client.path("say/hello").accept("text/plain").get(String.class);
-        //main.setContent(new Label(resp));
+        assert user != null;
+        String resp = "";
+        URL url = null;
+        try {
+            url = new URL("http://195.228.45.136:8181/cxf/test/say/hello");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            InputStream connectionInputStream = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connectionInputStream));
+            while (reader.ready()) {
+                resp += reader.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //resp = client.path("say/hello").accept("text/plain").get(String.class);
+//        main.setContent( new Label(resp));
+        main.setContent(new Label(user.getUserId() + resp));
+    }
+
+    private Container getItemContiner() {
+        IndexedContainer container = new IndexedContainer();
+        container.addContainerProperty("First", String.class, "1st");
+        container.addContainerProperty("Second", String.class, "2nd");
+//        WebClient client = WebClient.create("http://195.228.45.136:8181/cxf/test");
+//        client = client.accept("application/json")
+//                .type("application/json")
+//                .path("/say/list");
+//        TestResp testResp = client.get(TestResp.class);
+        URL url = null;
+        URLConnection connection = null;
+        try {
+            url = new URL("http://195.228.45.136:8181/cxf/test/say/list");
+            connection = url.openConnection();
+            connection.addRequestProperty("Referer", "WishBox frontend");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String line;
+        StringBuilder builder = new StringBuilder();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Gson gson = new Gson();
+        ObjectMapper mapper = new ObjectMapper();
+        List<TestResp> testRespList = null;
+        try {
+            testRespList = mapper.readValue(builder.toString(), new TypeReference<List<TestResp>>() {
+            });
+        } catch (IOException e) {
+            System.out.println("input: " + builder.toString());
+            System.out.println("hiba: " + e.getMessage());
+            e.printStackTrace();
+        }
+        //TestResp[] testResps = gson.fromJson(builder.toString(), TestResp[].class);
+
+
+        for (TestResp testResp : testRespList) {
+            Item item = container.addItem(testResp.toString());
+            item.getItemProperty("First").setValue(testResp.getFirstName());
+            item.getItemProperty("Second").setValue(testResp.getLastName());
+        }
+        return container;
     }
 }

@@ -46,7 +46,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <karaf.deploy>/home/johnnym/Tools/apache-karaf-3.0.2/deploy</karaf.deploy>
+        <karaf.deploy>/home/johnnym/Downloads/mnt</karaf.deploy>
         <description>WishBox server application.</description>
         <main.version>1.0.0</main.version>
         <cxf.version>3.0.3</cxf.version>

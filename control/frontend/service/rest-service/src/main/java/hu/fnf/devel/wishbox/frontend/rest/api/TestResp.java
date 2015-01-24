@@ -1,5 +1,5 @@
 /*
- * RestService.java which is part of the " wishbox ( rest-service )" project
+ * TestResp.java which is part of the " wishbox ( rest-service )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -16,29 +16,38 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
 package hu.fnf.devel.wishbox.frontend.rest.api;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 24/01/15.
  */
-@Path("/say")
-public interface RestService {
 
-    public void initMethod();
+@XmlRootElement
+public class TestResp implements Serializable {
+    private String firstName;
+    private String lastName;
 
-    @GET
-    @Path("/hello")
-    @Produces("text/plain")
-    public String test();
+    //Getters and Setters Removed For Brevity
 
-    @GET
-    @Path("/list")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<TestResp> getList();
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 }
+
+

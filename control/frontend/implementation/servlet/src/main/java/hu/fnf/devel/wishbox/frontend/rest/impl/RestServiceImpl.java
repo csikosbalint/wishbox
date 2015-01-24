@@ -21,9 +21,12 @@ package hu.fnf.devel.wishbox.frontend.rest.impl;
 
 import hu.fnf.devel.wishbox.backend.crawler.api.CrawlerService;
 import hu.fnf.devel.wishbox.frontend.rest.api.RestService;
+import hu.fnf.devel.wishbox.frontend.rest.api.TestResp;
 import org.apache.log4j.Logger;
 
 import javax.jws.WebService;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
@@ -52,5 +55,19 @@ public class RestServiceImpl implements RestService {
     @Override
     public String test() {
         return "Hello world: " + fnfCrawlerService.sayHello();
+    }
+
+    @Override
+    public List<TestResp> getList() {
+        List<TestResp> l = new ArrayList<TestResp>();
+        TestResp a = new TestResp();
+        a.setFirstName("a");
+        a.setLastName("b");
+        l.add(a);
+        TestResp b = new TestResp();
+        b.setFirstName("c");
+        b.setLastName("d");
+        l.add(b);
+        return l;
     }
 }

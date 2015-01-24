@@ -20,8 +20,13 @@
 <features name="hu.fnf.devel.wishbox" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
     <feature name="wishbox" version="${main.version}" description="${description}">
         <details>${description}</details>
-        <!--<feature version="${cxf.version}">cxf</feature>-->
-        <!--<feature version="${http.version}">http</feature>-->
+        <feature>cxf</feature>
+        <feature>http</feature>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.4.0</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.4.0</bundle>
+        <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.4.0</bundle>
+        <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/2.4.0</bundle>
+        <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/2.4.0</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/crawler-service/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/torrent-crawler/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/rest-service/${main.version}</bundle>
