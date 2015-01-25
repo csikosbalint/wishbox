@@ -19,29 +19,25 @@
 
 package hu.fnf.devel.wishbox.api.entity;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
  */
-public class Tester implements BundleActivator {
-    private EntityManagerFactory entityManagerFactory;
+public class Tester {
+    private EntityManager em;
 
-    public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+    public EntityManager getEm() {
+        return em;
     }
 
-    @Override
-    public void start(BundleContext bundleContext) throws Exception {
-        EntityManager em = entityManagerFactory.createEntityManager();
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
 
-        em.getTransaction().begin();
+    public void start() throws Exception {
 
         User user = new User();
         user.setMailAddress("a@b.c");
@@ -55,14 +51,11 @@ public class Tester implements BundleActivator {
 
         em.persist(item);
         em.persist(user);
+        em.flush();
 
         User foundUser = em.find(User.class, user.getOpenId());
         System.out.println("find: " + foundUser.getSearchItems().size());
         System.out.println("      " + foundUser.getMailAddress());
     }
 
-    @Override
-    public void stop(BundleContext bundleContext) throws Exception {
-
-    }
 }

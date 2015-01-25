@@ -22,6 +22,7 @@
         <details>${description}</details>
         <feature>cxf</feature>
         <feature>http</feature>
+        <bundle>mvn:mysql/mysql-connector-java/5.1.18</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.4.0</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.4.0</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.4.0</bundle>
