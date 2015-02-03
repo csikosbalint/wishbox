@@ -20,10 +20,7 @@
 package hu.fnf.devel.wishbox.api.entity;
 
 import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
-import java.util.Collection;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
@@ -34,9 +31,9 @@ public class Item {
     private long id;
     @Basic
     private String name;
-    @ElementCollection
-    @CollectionTable(name = "patterns")
-    private Collection<Pattern> patterns;
+//    @ElementCollection
+//    @CollectionTable(name = "patterns")
+//    private Collection<Pattern> patterns;
 
     public Item() {
     }
@@ -53,11 +50,11 @@ public class Item {
         this.name = name;
     }
 
-    public Collection<Pattern> getPatterns() {
-        return patterns;
-    }
-
-    public void setPatterns(Collection<Pattern> patterns) {
-        this.patterns = patterns;
-    }
+//    public Collection<Pattern> getPatterns() {
+//        return patterns;
+//    }
+//
+//    public void setPatterns(Collection<Pattern> patterns) {
+//        this.patterns = patterns;
+//    }
 }

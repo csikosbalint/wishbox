@@ -20,13 +20,10 @@
 package hu.fnf.devel.wishbox.api.entity;
 
 import javax.persistence.Basic;
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Collection;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
@@ -38,9 +35,9 @@ public class User {
     private long openId;
     @Basic
     private String mailAddress;
-    @ElementCollection
-    @CollectionTable(name = "items")
-    private Collection<Item> searchItems;
+//    @ElementCollection
+//    @CollectionTable(name = "items")
+//    private Collection<Item> searchItems;
 
     public User() {
     }
@@ -56,12 +53,12 @@ public class User {
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
     }
-
-    public Collection<Item> getSearchItems() {
-        return searchItems;
-    }
-
-    public void setSearchItems(Collection<Item> searchItems) {
-        this.searchItems = searchItems;
-    }
+//
+//    public Collection<Item> getSearchItems() {
+//        return searchItems;
+//    }
+//
+//    public void setSearchItems(Collection<Item> searchItems) {
+//        this.searchItems = searchItems;
+//    }
 }
