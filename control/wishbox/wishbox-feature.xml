@@ -19,6 +19,7 @@
 
 <features name="hu.fnf.devel.wishbox" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
     <feature name="wishboxdb">
+        <feature>jndi</feature>
         <feature>transaction</feature>
         <feature>jpa</feature>
         <feature>jdbc</feature>

@@ -1,5 +1,5 @@
 /*
- * User.java which is part of the " wishbox ( api )" project
+ * Database.java which is part of the " wishbox ( servlet )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,43 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.api.entity;
+package hu.fnf.devel.wishbox.frontend.rest.impl;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import hu.fnf.devel.wishbox.api.entity.User;
+
+import javax.persistence.EntityManager;
+import java.util.logging.Logger;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
  */
-@Entity(name = "User")
-public class User {
-    @Id
-    private long openId;
-    private String mailAddress;
-//    @ElementCollection
-//    @CollectionTable(name = "items")
-//    private Collection<Item> searchItems;
+public class Database {
+    private EntityManager entityManager;
 
-    public User() {
+    private Logger logger = Logger.getLogger(Database.class.getName());
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public long getOpenId() {
-        return openId;
-    }
 
-    public String getMailAddress() {
-        return mailAddress;
+    public void commit(User user) {
+        entityManager.persist(user);
     }
-
-    public void setMailAddress(String mailAddress) {
-        this.mailAddress = mailAddress;
-    }
-//
-//    public Collection<Item> getSearchItems() {
-//        return searchItems;
-//    }
-//
-//    public void setSearchItems(Collection<Item> searchItems) {
-//        this.searchItems = searchItems;
-//    }
 }

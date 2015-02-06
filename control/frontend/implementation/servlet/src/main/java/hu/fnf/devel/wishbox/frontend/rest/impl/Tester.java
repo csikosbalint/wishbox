@@ -21,67 +21,23 @@ package hu.fnf.devel.wishbox.frontend.rest.impl;
 
 import hu.fnf.devel.wishbox.api.entity.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import java.util.logging.Logger;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 06/02/15.
  */
 public class Tester {
-    @PersistenceContext(unitName = "openjpa")
-    private EntityManagerFactory factory;
+    Database database;
 
-    private Logger logger = Logger.getLogger(Tester.class.getName());
-
-    public EntityManagerFactory getFactory() {
-        return factory;
-    }
-
-    public void setFactory(EntityManagerFactory factory) {
-        this.factory = factory;
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     public void start() throws Exception {
-        EntityManager entityManager = factory.createEntityManager();
-
-        EntityTransaction entityTransaction = entityManager.getTransaction();
 
         User user = new User();
         user.setMailAddress("a@b.c");
-
-        logger.info("User: " + user.toString());
-        try {
-
-            entityTransaction.begin();
-
-            entityManager.persist(user);
-            entityManager.flush();
-
-            entityTransaction.commit();
-
-            logger.info("User is persisted with " + entityManager.toString());
-
-        } catch (Exception e) {
-            logger.warning(e.getMessage());
-        }
-
-
-//        try {
-////            em.getTransaction().begin();
-//
-//            User foundUser = entityManager.find(User.class, user.getOpenId());
-//            logger.info("User found: " + foundUser.getMailAddress());
-//
-////            em.getTransaction().commit();
-//
-//        } catch (Exception e) {
-//            logger.warning(e.getMessage());
-//        }
-
-
+        database.commit(user);
+//        entityManager.flush();
     }
 
 }
