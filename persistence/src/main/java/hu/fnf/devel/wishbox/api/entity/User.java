@@ -1,5 +1,5 @@
 /*
- * Pattern.java which is part of the " wishbox ( api )" project
+ * User.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -19,43 +19,41 @@
 
 package hu.fnf.devel.wishbox.api.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
  */
-@Embeddable
-public class Pattern {
+@Entity(name = "User")
+public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Basic
-    private String match;
+    private long openId;
+    private String mailAddress;
+//    @ElementCollection
+//    @CollectionTable(name = "items")
+//    private Collection<Item> searchItems;
 
-    public Pattern() {
+    public User() {
     }
 
-    public Pattern(String match) {
-        this.match = match;
+    public long getOpenId() {
+        return openId;
     }
 
-    public long getId() {
-        return id;
+    public String getMailAddress() {
+        return mailAddress;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
     }
-
-    public String getMatch() {
-        return match;
-    }
-
-    public void setMatch(String match) {
-        this.match = match;
-    }
+//
+//    public Collection<Item> getSearchItems() {
+//        return searchItems;
+//    }
+//
+//    public void setSearchItems(Collection<Item> searchItems) {
+//        this.searchItems = searchItems;
+//    }
 }

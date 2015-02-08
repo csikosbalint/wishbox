@@ -1,5 +1,5 @@
 /*
- * Item.java which is part of the " wishbox ( api )" project
+ * Item.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or

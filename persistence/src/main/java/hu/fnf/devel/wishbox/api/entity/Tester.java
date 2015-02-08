@@ -1,5 +1,5 @@
 /*
- * Tester.java which is part of the " wishbox ( servlet )" project
+ * Tester.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,9 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.frontend.rest.impl;
-
-import hu.fnf.devel.wishbox.api.entity.User;
+package hu.fnf.devel.wishbox.api.entity;
 
 
 /**

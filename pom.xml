@@ -43,6 +43,7 @@
         <module>control/backend/implementation/torrent-crawler</module>
         <!--assembler-->
         <module>control/wishbox</module>
+        <module>persistence</module>
     </modules>
 
     <properties>

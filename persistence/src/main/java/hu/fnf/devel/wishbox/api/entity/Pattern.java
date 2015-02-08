@@ -1,5 +1,5 @@
 /*
- * Database.java which is part of the " wishbox ( servlet )" project
+ * Pattern.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,27 +17,45 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.frontend.rest.impl;
+package hu.fnf.devel.wishbox.api.entity;
 
-import hu.fnf.devel.wishbox.api.entity.User;
-
-import javax.persistence.EntityManager;
-import java.util.logging.Logger;
+import javax.persistence.Basic;
+import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
  */
-public class Database {
-    private EntityManager entityManager;
+@Embeddable
+public class Pattern {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Basic
+    private String match;
 
-    private Logger logger = Logger.getLogger(Database.class.getName());
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public Pattern() {
     }
 
+    public Pattern(String match) {
+        this.match = match;
+    }
 
-    public void commit(User user) {
-        entityManager.persist(user);
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getMatch() {
+        return match;
+    }
+
+    public void setMatch(String match) {
+        this.match = match;
     }
 }

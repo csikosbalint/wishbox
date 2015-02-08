@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ pom.xml which is part of the " wishbox ( api )" project
+  ~ pom.xml which is part of the " wishbox ( persistence )" project
   ~ Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -25,11 +25,10 @@
         <artifactId>wishbox</artifactId>
         <groupId>hu.fnf.devel.wishbox</groupId>
         <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>api</artifactId>
+    <artifactId>persistence</artifactId>
 
     <packaging>bundle</packaging>
 
@@ -52,13 +51,43 @@
             <version>2.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.osgi</groupId>
-            <artifactId>org.osgi.core</artifactId>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <tasks>
+                                <taskdef name="openjpac" classname="org.apache.openjpa.ant.PCEnhancerTask"
+                                         classpathref="maven.compile.classpath"/>
+                                <openjpac>
+                                    <classpath refid="maven.compile.classpath"/>
+                                </openjpac>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>1.2.17</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -67,8 +96,7 @@
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Export-Package>hu.fnf.devel.wishbox.api.entity</Export-Package>
                         <Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
-                        <Import-Package>*,com.mysql.jdbc,org.apache.commons.dbcp</Import-Package>
-                        <!--<Bundle-Activator>hu.fnf.devel.wishbox.api.entity.Tester</Bundle-Activator>-->
+                        <!--<Import-Package>*,com.mysql.jdbc,org.apache.commons.dbcp</Import-Package>-->
                     </instructions>
                 </configuration>
             </plugin>
