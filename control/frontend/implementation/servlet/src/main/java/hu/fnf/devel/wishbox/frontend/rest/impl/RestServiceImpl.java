@@ -30,6 +30,7 @@ import javax.jws.WebService;
 import javax.ws.rs.PathParam;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
@@ -67,7 +68,7 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
-    public Collection<Item> getList(@PathParam("openid") String openid) {
+    public List<Item> getList(@PathParam("openid") String openid) {
         User user = database.find(User.class, Long.valueOf(openid));
         if (user == null) {
             user = new User(user.getOpenId(), "a@b");
@@ -77,6 +78,8 @@ public class RestServiceImpl implements RestService {
             user.setItems(items);
             database.persist(user);
         }
-        return user.getItems();
+        ArrayList<Item> ret = new ArrayList<Item>();
+        ret.addAll(user.getItems());
+        return ret;
     }
 }

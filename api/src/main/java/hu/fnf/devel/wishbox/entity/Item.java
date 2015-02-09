@@ -22,12 +22,14 @@ package hu.fnf.devel.wishbox.entity;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
  */
 @Entity
+@XmlRootElement
 public class Item implements Serializable {
     @Id
     private long id;

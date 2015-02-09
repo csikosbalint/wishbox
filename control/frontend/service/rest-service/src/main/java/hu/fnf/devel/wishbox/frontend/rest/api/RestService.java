@@ -25,7 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
@@ -44,5 +44,5 @@ public interface RestService {
     @GET
     @Path("/user/{openid}/item")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Item> getList(@PathParam("openid") String openid);
+    public List<Item> getList(@PathParam("openid") String openid);
 }
