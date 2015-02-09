@@ -60,6 +60,35 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <configuration>
+                            <tasks>
+                                <taskdef name="openjpac" classname="org.apache.openjpa.ant.PCEnhancerTask"
+                                         classpathref="maven.compile.classpath"/>
+                                <openjpac>
+                                    <classpath refid="maven.compile.classpath"/>
+                                </openjpac>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>1.2.17</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
@@ -68,7 +97,6 @@
                         <Export-Package>hu.fnf.devel.wishbox.api.entity</Export-Package>
                         <Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
                         <Import-Package>*,com.mysql.jdbc,org.apache.commons.dbcp</Import-Package>
-                        <!--<Bundle-Activator>hu.fnf.devel.wishbox.api.entity.Tester</Bundle-Activator>-->
                     </instructions>
                 </configuration>
             </plugin>

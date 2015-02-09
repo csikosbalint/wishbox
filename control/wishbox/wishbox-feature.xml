@@ -41,6 +41,6 @@
         <bundle>mvn:hu.fnf.devel.wishbox/torrent-crawler/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/rest-service/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/servlet/${main.version}</bundle>
-        <bundle>mvn:hu.fnf.devel.wishbox/persistence/${main.version}</bundle>
+        <!--<bundle>mvn:hu.fnf.devel.wishbox/persistence/${main.version}</bundle>-->
     </feature>
 </features>
