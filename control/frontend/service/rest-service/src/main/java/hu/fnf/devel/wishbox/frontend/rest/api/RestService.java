@@ -40,6 +40,7 @@ public interface RestService {
     @Produces("text/plain")
     public String test();
 
+    //    @Path("users/{username: [a-zA-Z][a-zA-Z_0-9]*}")
     @GET
     @Path("/user/{openid}/item")
     @Produces(MediaType.APPLICATION_JSON)
