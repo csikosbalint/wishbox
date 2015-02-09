@@ -19,14 +19,17 @@
 
 package hu.fnf.devel.wishbox.frontend.rest.impl;
 
+import hu.fnf.devel.wishbox.Database;
 import hu.fnf.devel.wishbox.backend.crawler.api.CrawlerService;
+import hu.fnf.devel.wishbox.entity.Item;
+import hu.fnf.devel.wishbox.entity.User;
 import hu.fnf.devel.wishbox.frontend.rest.api.RestService;
-import hu.fnf.devel.wishbox.frontend.rest.api.TestResp;
 import org.apache.log4j.Logger;
 
 import javax.jws.WebService;
+import javax.ws.rs.PathParam;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
@@ -34,6 +37,8 @@ import java.util.List;
 
 @WebService
 public class RestServiceImpl implements RestService {
+
+    Database database;
 
     CrawlerService fnfCrawlerService;
     private Logger logger = Logger.getLogger(RestServiceImpl.class);
@@ -44,6 +49,10 @@ public class RestServiceImpl implements RestService {
 
     public void setFnfCrawlerService(CrawlerService fnfCrawlerService) {
         this.fnfCrawlerService = fnfCrawlerService;
+    }
+
+    public void setDatabase(Database database) {
+        this.database = database;
     }
 
     @Override
@@ -58,16 +67,16 @@ public class RestServiceImpl implements RestService {
     }
 
     @Override
-    public List<TestResp> getList() {
-        List<TestResp> l = new ArrayList<TestResp>();
-        TestResp a = new TestResp();
-        a.setFirstName("a");
-        a.setLastName("b");
-        l.add(a);
-        TestResp b = new TestResp();
-        b.setFirstName("c");
-        b.setLastName("d");
-        l.add(b);
-        return l;
+    public Collection<Item> getList(@PathParam("openid") String openid) {
+        User user = database.find(User.class, Long.valueOf(openid));
+        if (user == null) {
+            user = new User(user.getOpenId(), "a@b");
+            Collection<Item> items = new ArrayList<Item>();
+            items.add(new Item("item1", "pattern1"));
+            items.add(new Item("item2", "pattern2"));
+            user.setItems(items);
+            database.persist(user);
+        }
+        return user.getItems();
     }
 }

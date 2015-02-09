@@ -26,7 +26,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.repackaged.com.google.gson.Gson;
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
@@ -36,16 +35,14 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import hu.fnf.devel.wishbox.frontend.rest.api.TestResp;
+import hu.fnf.devel.wishbox.entity.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
+import java.util.Collection;
 
 
 /**
@@ -98,23 +95,8 @@ public class MyUI extends UI {
             // no user logged in
         }
         assert user != null;
-        String resp = "";
-        URL url = null;
-        try {
-            url = new URL("http://195.228.45.136:8181/cxf/test/say/hello");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            InputStream connectionInputStream = connection.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connectionInputStream));
-            while (reader.ready()) {
-                resp += reader.readLine();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //resp = client.path("say/hello").accept("text/plain").get(String.class);
-//        main.setContent( new Label(resp));
-        main.setContent(new Label(user.getUserId() + resp));
+
+        main.setContent(new Label(user.getUserId()));
     }
 
     private Container getItemContiner() {
@@ -128,8 +110,10 @@ public class MyUI extends UI {
 //        TestResp testResp = client.get(TestResp.class);
         URL url = null;
         URLConnection connection = null;
+        UserService userService = UserServiceFactory.getUserService();
+        User user = userService.getCurrentUser();
         try {
-            url = new URL("http://195.228.45.136:8181/cxf/test/say/list");
+            url = new URL("http://195.228.45.136:8181/cxf/test/user/" + user.getUserId() + "/item");
             connection = url.openConnection();
             connection.addRequestProperty("Referer", "WishBox frontend");
         } catch (Exception e) {
@@ -154,9 +138,9 @@ public class MyUI extends UI {
 
         Gson gson = new Gson();
         ObjectMapper mapper = new ObjectMapper();
-        List<TestResp> testRespList = null;
+        Collection<Item> testRespList = null;
         try {
-            testRespList = mapper.readValue(builder.toString(), new TypeReference<List<TestResp>>() {
+            testRespList = mapper.readValue(builder.toString(), new TypeReference<Collection<Item>>() {
             });
         } catch (IOException e) {
             System.out.println("input: " + builder.toString());
@@ -166,10 +150,10 @@ public class MyUI extends UI {
         //TestResp[] testResps = gson.fromJson(builder.toString(), TestResp[].class);
 
 
-        for (TestResp testResp : testRespList) {
-            Item item = container.addItem(testResp.toString());
-            item.getItemProperty("First").setValue(testResp.getFirstName());
-            item.getItemProperty("Second").setValue(testResp.getLastName());
+        for (Item testResp : testRespList) {
+            com.vaadin.data.Item item = container.addItem(testResp.toString());
+            item.getItemProperty("First").setValue(testResp.getName());
+            item.getItemProperty("Second").setValue(testResp.getPattern());
         }
         return container;
     }

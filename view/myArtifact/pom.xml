@@ -234,7 +234,7 @@
         </dependency>
         <dependency>
             <groupId>hu.fnf.devel.wishbox</groupId>
-            <artifactId>rest-service</artifactId>
+            <artifactId>api</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>

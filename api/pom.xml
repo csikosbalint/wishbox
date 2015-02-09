@@ -94,7 +94,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>hu.fnf.devel.wishbox.api.entity</Export-Package>
+                        <Export-Package>hu.fnf.devel.wishbox.*</Export-Package>
                         <Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
                         <Import-Package>*,com.mysql.jdbc,org.apache.commons.dbcp</Import-Package>
                     </instructions>

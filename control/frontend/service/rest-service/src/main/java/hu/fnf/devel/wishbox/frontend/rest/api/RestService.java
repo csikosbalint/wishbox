@@ -18,16 +18,19 @@
  */
 package hu.fnf.devel.wishbox.frontend.rest.api;
 
+import hu.fnf.devel.wishbox.entity.Item;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 11/01/15.
  */
-@Path("/say")
+@Path("/")
 public interface RestService {
 
     public void initMethod();
@@ -38,7 +41,7 @@ public interface RestService {
     public String test();
 
     @GET
-    @Path("/list")
+    @Path("/user/{openid}/item")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TestResp> getList();
+    public Collection<Item> getList(@PathParam("openid") String openid);
 }

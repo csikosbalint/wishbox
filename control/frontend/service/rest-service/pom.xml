@@ -35,6 +35,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>hu.fnf.devel.wishbox</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
         </dependency>
