@@ -31,19 +31,17 @@
     <version>1.0.0</version>
 
     <modules>
-        <module>api</module>
         <!--VIEW-->
-        <module>view/myArtifact</module>
+        <module>user-interface</module>
         <!--CONTROL-->
-        <!--frontend-->
-        <module>control/frontend/service/rest-service</module>
-        <module>control/frontend/implementation/servlet</module>
-        <!--backend-->
-        <module>control/backend/service/crawler-service</module>
-        <module>control/backend/implementation/torrent-crawler</module>
-        <!--assembler-->
+        <module>control/gateway</module>
+        <module>control/gateway-engine</module>
+        <module>control/crawler</module>
+        <module>control/crawler-engine</module>
         <module>control/wishbox</module>
+        <!--MODEL-->
         <module>persistence</module>
+
     </modules>
 
     <properties>
@@ -95,6 +93,11 @@
                 <artifactId>log4j-core</artifactId>
                 <version>2.1</version>
             </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.16</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -109,8 +112,7 @@
                     <configuration>
                         <manifestLocation>target</manifestLocation>
                         <instructions>
-                            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                            <Export-Package/>
+                            <Bundle-SymbolicName>${project.groupId}-${project.artifactId}</Bundle-SymbolicName>
                         </instructions>
                     </configuration>
                 </plugin>

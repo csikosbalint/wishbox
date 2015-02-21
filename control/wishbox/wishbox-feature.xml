@@ -18,29 +18,21 @@
   -->
 
 <features name="hu.fnf.devel.wishbox" xmlns="http://karaf.apache.org/xmlns/features/v1.0.0">
-    <feature name="wishboxdb">
-        <feature>jndi</feature>
-        <feature>transaction</feature>
-        <feature>jpa</feature>
-        <feature>jdbc</feature>
-        <feature>openjpa</feature>
-        <bundle>mvn:hu.fnf.devel.wishbox/api/${main.version}</bundle>
-    </feature>
-    <feature name="wishbox" version="${main.version}" description="${description}">
-        <details>${description}</details>
-        <feature>cxf</feature>
-        <feature>http</feature>
-        <feature>wishboxdb</feature>
-        <bundle>mvn:mysql/mysql-connector-java/5.1.34</bundle>
+    <feature name="jackson">
         <bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.4.0</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.4.0</bundle>
         <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.4.0</bundle>
         <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/2.4.0</bundle>
         <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/2.4.0</bundle>
-        <bundle>mvn:hu.fnf.devel.wishbox/crawler-service/${main.version}</bundle>
-        <bundle>mvn:hu.fnf.devel.wishbox/torrent-crawler/${main.version}</bundle>
-        <bundle>mvn:hu.fnf.devel.wishbox/rest-service/${main.version}</bundle>
-        <bundle>mvn:hu.fnf.devel.wishbox/servlet/${main.version}</bundle>
-        <!--<bundle>mvn:hu.fnf.devel.wishbox/persistence/${main.version}</bundle>-->
+    </feature>
+    <feature name="wishbox" version="${main.version}" description="${description}">
+        <details>${description}</details>
+        <feature>jackson</feature>
+        <feature>cxf</feature>
+        <feature>http</feature>
+        <bundle>mvn:hu.fnf.devel.wishbox/gateway/${main.version}</bundle>
+        <bundle>mvn:hu.fnf.devel.wishbox/gateway-engine/${main.version}</bundle>
+        <bundle>mvn:hu.fnf.devel.wishbox/crawler/${main.version}</bundle>
+        <bundle>mvn:hu.fnf.devel.wishbox/crawler-engine/${main.version}</bundle>
     </feature>
 </features>

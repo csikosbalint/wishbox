@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ pom.xml which is part of the " wishbox ( assembler )" project
+  ~ pom.xml which is part of the " wishbox ( gateway-engine )" project
   ~ Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
   ~
   ~ This program is free software; you can redistribute it and/or
@@ -21,37 +21,46 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>wishbox</artifactId>
         <groupId>hu.fnf.devel.wishbox</groupId>
         <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>api-gateway</artifactId>
+    <artifactId>gateway-engine</artifactId>
 
-    <packaging>kar</packaging>
+    <packaging>bundle</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>hu.fnf.devel.wishbox</groupId>
+            <artifactId>gateway</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>hu.fnf.devel.wishbox</groupId>
+            <artifactId>persistence</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.karaf.tooling</groupId>
-                <artifactId>karaf-maven-plugin</artifactId>
-                <version>3.0.2</version>
-                <extensions>true</extensions>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
-                    <featuresFile>
-                        ${project.basedir}/target/wishbox-feature.xml
-                    </featuresFile>
-                    <!--<outputDirectory>${karaf.deploy}</outputDirectory>-->
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Export-Package>hu.fnf.devel.wishbox.gateway.engine.*</Export-Package>
+                    </instructions>
                 </configuration>
             </plugin>
         </plugins>
