@@ -17,30 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.api.entity;
+package hu.fnf.devel.wishbox.persistence;
 
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 22/02/15.
  */
-@Embeddable
+@Entity
 public class Item {
-    @Basic
-    private long id;
-    @Basic
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    long id;
+
     private String name;
-//    @ElementCollection
-//    @CollectionTable(name = "patterns")
-//    private Collection<Pattern> patterns;
-
-    public Item() {
-    }
-
-    public long getId() {
-        return id;
-    }
+    private String pattern;
+//    private Url found;
 
     public String getName() {
         return name;
@@ -50,11 +45,19 @@ public class Item {
         this.name = name;
     }
 
-//    public Collection<Pattern> getPatterns() {
-//        return patterns;
+    public String getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+//    public Url getFound() {
+//        return found;
 //    }
 //
-//    public void setPatterns(Collection<Pattern> patterns) {
-//        this.patterns = patterns;
+//    public void setFound(Url found) {
+//        this.found = found;
 //    }
 }

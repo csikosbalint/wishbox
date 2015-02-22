@@ -1,5 +1,5 @@
 /*
- * Pattern.java which is part of the " wishbox ( persistence )" project
+ * Url.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,45 +17,47 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.api.entity;
+package hu.fnf.devel.wishbox.persistence;
 
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 22/02/15.
  */
-@Embeddable
-public class Pattern {
+@Entity
+public class Url {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Basic
-    private String match;
 
-    public Pattern() {
+    private String url;
+    private String user;
+    private String pass;
+
+    public String getUrl() {
+        return url;
     }
 
-    public Pattern(String match) {
-        this.match = match;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public long getId() {
-        return id;
+    public String getUser() {
+        return user;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getMatch() {
-        return match;
+    public String getPass() {
+        return pass;
     }
 
-    public void setMatch(String match) {
-        this.match = match;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }

@@ -19,13 +19,16 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
-public interface UserRepository extends CrudRepository<User, Long> {
-    List<User> findByLastName(String lastName);
+@RepositoryRestResource(collectionResourceRel = "user", path = "user")
+public interface UserRepository extends PagingAndSortingRepository<User, Long> {
+    List<User> findById(@Param("id") Long id);
 }

@@ -19,10 +19,12 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
@@ -30,24 +32,41 @@ import javax.persistence.Id;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String firstName;
     private String lastName;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<Item> items;
 
-    protected User() {
+    public long getId() {
+        return id;
     }
 
-    public User(String firstName, String lastName) {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    @Override
-    public String toString() {
-        return String.format(
-                "Customer[id=%d, firstName='%s', lastName='%s']",
-                id, firstName, lastName);
+    public List<Item> getItems() {
+        return items;
     }
 
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 }
