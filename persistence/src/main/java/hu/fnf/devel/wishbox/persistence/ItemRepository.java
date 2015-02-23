@@ -27,6 +27,6 @@ import org.springframework.data.repository.query.Param;
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
-public interface UserRepository extends PagingAndSortingRepository<User, Long> {
-    List<User> findById(@Param("id") Long id);
+public interface ItemRepository extends PagingAndSortingRepository<Item, Long> {
+    List<Item> findById( @Param( "id" ) Long id );
 }
