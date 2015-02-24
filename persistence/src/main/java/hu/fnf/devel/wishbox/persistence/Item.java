@@ -23,14 +23,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 22/02/15.
  */
 @Entity
-@XmlRootElement
 public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

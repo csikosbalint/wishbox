@@ -20,31 +20,29 @@
 package hu.fnf.devel.wishbox.persistence;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.util.List;
+
+import org.springframework.data.jpa.domain.AbstractPersistable;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
 @Entity
-@XmlRootElement
-public class User implements Serializable {
-    @Id
-    private long id;
+public class User extends AbstractPersistable<Long> {
+
     private String firstName;
     private String lastName;
-    @OneToMany //(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany (fetch = FetchType.EAGER)
     private List<Item> items;
 
-    public long getId() {
-        return id;
+    public User() {
+        this( null );
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public User( Long id ) {
+        this.setId( id );
     }
 
     public String getFirstName() {

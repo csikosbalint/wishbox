@@ -21,12 +21,14 @@ package hu.fnf.devel.wishbox.persistence;
 
 import java.util.List;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
-public interface UserRepository extends PagingAndSortingRepository<User, Long> {
+@Component
+public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findById(@Param("id") Long id);
 }
