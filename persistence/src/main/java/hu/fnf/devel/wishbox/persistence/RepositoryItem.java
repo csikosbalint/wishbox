@@ -1,5 +1,5 @@
 /*
- * UserRepository.java which is part of the " wishbox ( persistence )" project
+ * RepositoryItem.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,16 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.List;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
-public interface ItemRepository extends CrudRepository<Item, Long> {
+@RepositoryRestResource(collectionResourceRel = "item", path = "item")
+public interface RepositoryItem extends CrudRepository<Item, Long> {
     List<Item> findById( @Param( "id" ) Long id );
 }

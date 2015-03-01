@@ -17,44 +17,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.entity;
+package hu.fnf.devel.wishbox;
 
-import javax.persistence.Basic;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.Collection;
+import java.util.List;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 01/03/15.
  */
-@Entity
-public class User {
-    @Id
-    private long openId;
-    @Basic
-    private String mailAddress;
-    @ElementCollection
-    private Collection<Item> items;
+public interface User {
 
-    public User(long openId, String mailAddress) {
-        this.openId = openId;
-        this.mailAddress = mailAddress;
-    }
+    public String getFirstName();
 
-    public long getOpenId() {
-        return openId;
-    }
+    public void setFirstName(String firstName);
 
-    public String getMailAddress() {
-        return mailAddress;
-    }
+    public String getLastName();
 
-    public Collection<Item> getItems() {
-        return items;
-    }
+    public void setLastName(String lastName);
 
-    public void setItems(Collection<Item> items) {
-        this.items = items;
-    }
+    public List<Item> getItems();
+
+    public void setItems(List<Item> items);
 }

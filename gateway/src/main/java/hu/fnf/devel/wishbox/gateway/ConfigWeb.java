@@ -1,5 +1,5 @@
 /*
- * RestIMP.java which is part of the " wishbox ( persistence )" project
+ * ConfigWeb.java which is part of the " wishbox ( gateway )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.persistence;
+package hu.fnf.devel.wishbox.gateway;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.web.filter.RequestContextFilter;
 
 /**
- * Created by 212417040(hupfhmib@ge.com) on 24/02/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 01/03/15.
  */
-@Component
-public class RestIMP implements RestAPI {
-    @Autowired
-    private UserRepository userRepository;
+public class ConfigWeb extends ResourceConfig {
 
-    @Override
-    public User test() {
-        return userRepository.findOne( 1L );
+    public ConfigWeb() {
+        register(RequestContextFilter.class);
+        packages("com.geowarin.rest");
+        register(LoggingFilter.class);
     }
+
 }

@@ -19,10 +19,13 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 /**
@@ -36,7 +39,8 @@ public class Item implements Serializable {
 
     private String name;
     private String pattern;
-//    private Url found;
+    @OneToOne(fetch = FetchType.EAGER)
+    private Url found;
 
     public String getName() {
         return name;
@@ -54,11 +58,11 @@ public class Item implements Serializable {
         this.pattern = pattern;
     }
 
-//    public Url getFound() {
-//        return found;
-//    }
-//
-//    public void setFound(Url found) {
-//        this.found = found;
-//    }
+    public Url getFound() {
+        return found;
+    }
+
+    public void setFound(Url found) {
+        this.found = found;
+    }
 }

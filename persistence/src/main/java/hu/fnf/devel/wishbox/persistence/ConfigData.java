@@ -1,5 +1,5 @@
 /*
- * DataConfig.java which is part of the " wishbox ( persistence )" project
+ * ConfigData.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
@@ -38,9 +37,8 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan(basePackages = "hu.fnf.devel.wishbox.persistence")
-@EnableJpaRepositories(basePackageClasses = UserRepository.class)
 @EnableTransactionManagement
-public class DataConfig {
+public class ConfigData {
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
@@ -56,9 +54,10 @@ public class DataConfig {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.MYSQL);
         vendorAdapter.setGenerateDdl(true);
+
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan(getClass().getPackage().getName());
+        factory.setPackagesToScan("hu.fnf.devel.wishbox.persistence");
         factory.setDataSource(dataSource());
         return factory;
     }

@@ -31,15 +31,16 @@
     <version>1.0.0</version>
 
     <modules>
-        <!--VIEW-->
         <module>user-interface</module>
-        <!--CONTROL-->
-        <module>control/gateway</module>
+
+        <module>api</module>
+        <module>gateway</module>
+
         <module>control/gateway-engine</module>
         <module>control/crawler</module>
         <module>control/crawler-engine</module>
         <module>control/wishbox</module>
-        <!--MODEL-->
+
         <module>persistence</module>
 
     </modules>
@@ -58,6 +59,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-core</artifactId>
+                <version>0.4.7</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-rest-webmvc</artifactId>

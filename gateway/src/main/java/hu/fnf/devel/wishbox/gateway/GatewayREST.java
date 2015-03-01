@@ -1,5 +1,5 @@
 /*
- * Gateway.java which is part of the " wishbox ( gateway-engine )" project
+ * GatewayREST.java which is part of the " wishbox ( gateway )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,38 +17,28 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway.engine.rest;
+package hu.fnf.devel.wishbox.gateway;
 
-import hu.fnf.devel.wishbox.User;
-import hu.fnf.devel.wishbox.gateway.GatewayREST;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.jws.WebService;
-import javax.ws.rs.PathParam;
-import java.util.List;
-import java.util.logging.Logger;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
-@WebService
-public class Gateway implements GatewayREST {
+@Path("/")
+@Component
+@RestController
+public class GatewayREST {
 
-
-    private Logger logger = Logger.getLogger(Gateway.class.getCanonicalName());
-
-    @Override
-    public void initMethod() {
-        logger.info(this.getClass().getCanonicalName() + " has been initalized.");
-    }
-
-    @Override
-    public User test() {
-        String userJson =
-    }
-
-    @Override
-    public List<User> getList(@PathParam("openid") String openid) {
-        //TODO: implement gateway data retrieve mechanism
-        return null;
+    @GET
+    @RequestMapping("/hello")
+    @Produces("text/plain")
+    public String test() {
+        return "test";
     }
 }

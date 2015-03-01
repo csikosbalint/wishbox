@@ -1,5 +1,5 @@
 /*
- * Database.java which is part of the " wishbox ( api )" project
+ * RepositoryUrl.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -17,25 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox;
+package hu.fnf.devel.wishbox.persistence;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import java.util.Map;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 09/02/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 01/03/15.
  */
-public interface Database {
-    public void setEntityManager(EntityManager entityManager);
-
-    public <T> T find(Class<T> entityClass, Object primaryKey);
-
-    public <T> T find(Class<T> entityClass, Object primaryKey, Map<String, Object> properties);
-
-    public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode);
-
-    public <T> T find(Class<T> entityClass, Object primaryKey, LockModeType lockMode, Map<String, Object> properties);
-
-    public void persist(Object entity);
+@RepositoryRestResource(collectionResourceRel = "url", path = "url")
+public interface RepositoryUrl extends CrudRepository<Url, Long> {
 }

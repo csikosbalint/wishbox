@@ -30,8 +30,6 @@
         <feature>jackson</feature>
         <feature>cxf</feature>
         <feature>http</feature>
-        <bundle>mvn:hu.fnf.devel.wishbox/gateway/${main.version}</bundle>
-        <bundle>mvn:hu.fnf.devel.wishbox/gateway-engine/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/crawler/${main.version}</bundle>
         <bundle>mvn:hu.fnf.devel.wishbox/crawler-engine/${main.version}</bundle>
     </feature>

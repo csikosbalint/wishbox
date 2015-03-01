@@ -24,41 +24,46 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>wishbox</artifactId>
-        <groupId>hu.fnf.devel.wishbox</groupId>
-        <version>1.0.0</version>
-        <relativePath>../../pom.xml</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.1.RELEASE</version>
     </parent>
 
-    <packaging>bundle</packaging>
-
+    <groupId>hu.fnf.devel.wishbox</groupId>
     <artifactId>gateway</artifactId>
+    <version>1.0.0</version>
 
     <dependencies>
+        <!--INTERNAL-->
         <dependency>
             <groupId>hu.fnf.devel.wishbox</groupId>
-            <artifactId>persistence</artifactId>
+            <artifactId>api</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--EXTERNAL-->
         <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-                <configuration>
-                    <instructions>
-                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Export-Package>hu.fnf.devel.wishbox.gateway.*</Export-Package>
-                    </instructions>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+
 
 </project>

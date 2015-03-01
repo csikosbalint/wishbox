@@ -35,7 +35,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import hu.fnf.devel.wishbox.entity.Item;
+import hu.fnf.devel.wishbox.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;

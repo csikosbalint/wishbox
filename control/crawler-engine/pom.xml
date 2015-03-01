@@ -28,7 +28,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <packaging>bundle</packaging>
+
     <artifactId>crawler-engine</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

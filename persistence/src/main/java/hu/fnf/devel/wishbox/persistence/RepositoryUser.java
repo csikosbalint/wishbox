@@ -1,5 +1,5 @@
 /*
- * JerseyConfig.java which is part of the " wishbox ( persistence )" project
+ * RepositoryUser.java which is part of the " wishbox ( persistence )" project
  * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
  *
  * This program is free software; you can redistribute it and/or
@@ -19,21 +19,16 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
-import org.glassfish.jersey.filter.LoggingFilter;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.RequestContextFilter;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+import java.util.List;
 
 /**
- * Created by 212417040(hupfhmib@ge.com) on 24/02/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
-@Profile( "web" )
-@Component
-public class JerseyConfig extends ResourceConfig {
-    public JerseyConfig() {
-        register( RequestContextFilter.class );
-        packages( "hu.fnf.devel.wishbox.persistence" );
-        register( LoggingFilter.class );
-    }
+@RepositoryRestResource(collectionResourceRel = "user", path = "user")
+public interface RepositoryUser extends CrudRepository<User, Long> {
+    List<User> findById(@Param("id") Long id);
 }

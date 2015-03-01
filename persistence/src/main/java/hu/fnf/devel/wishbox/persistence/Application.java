@@ -19,10 +19,8 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
-
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -33,10 +31,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,54 +42,51 @@ import java.util.List;
 @Configuration
 @EnableJpaRepositories
 @Import(RepositoryRestMvcConfiguration.class)
-@RestController
 @EnableAutoConfiguration
 public class Application {
-    @Autowired
-    private UserRepository userRepository;
+//    @Autowired
+//    private RepositoryUser repositoryUser;
 
     public static void main( String[] args ) throws Exception {
         ConfigurableApplicationContext context = new SpringApplicationBuilder( Application.class ).run( args );
 
-        UserRepository userRepository = context.getBean( UserRepository.class );
-        ItemRepository itemRepository = context.getBean( ItemRepository.class );
-
-//
-//// save a couple of customers
+        //TODO: @Autowire?
+        RepositoryUser repositoryUser = context.getBean(RepositoryUser.class);
+        RepositoryItem repositoryItem = context.getBean(RepositoryItem.class);
+        RepositoryUrl repositoryUrl = context.getBean(RepositoryUrl.class);
+// save a couple of customers
         User user = new User( 1L );
         user.setFirstName( "fname" );
         user.setLastName( "lname" );
+        Url url = new Url();
+        url.setUrl("http://");
+        repositoryUrl.save(url);
 
         List<Item> items = new ArrayList<Item>();
         Item item = new Item();
         item.setName( "item1" );
-        item.setPattern( "pattern1" );
+        item.setPattern("pattern1");
+        item.setFound(url);
         Item item2 = new Item();
         item2.setName( "item2" );
         item2.setPattern( "pattern2" );
-        itemRepository.save( item );
-        itemRepository.save( item2 );
+        item2.setFound(url);
+
+        repositoryItem.save(item);
+        repositoryItem.save(item2);
+
         items.add( item );
         items.add( item2 );
 
         user.setItems( items );
-        userRepository.save( user );
-    }
+        repositoryUser.save(user);
 
-    @RequestMapping("/hello/{id}")
-    @ResponseBody
-    User home(@PathVariable("id") Long id) throws Exception {
-        User retUser = userRepository.findOne(id);
-        if (retUser == null) {
-            throw new Exception("No such user!");
-        }
-        return retUser;
     }
 
     @Bean
     public ServletRegistrationBean jerseyServlet() {
-        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/jax/*");
-        registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
+        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/rest/*");
+        registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, ConfigWeb.class.getName());
 //        registration.setName("Jax");
         return registration;
     }
@@ -103,8 +94,12 @@ public class Application {
     @Bean
     public ServletRegistrationBean restServlet() {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new ServletContainer(), "/*");
-        registrationBean.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, DataConfig.class.getName());
+        registrationBean.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, ConfigData.class.getName());
 //        registrationBean.setName("Rest");
         return registrationBean;
     }
+
+//    public RepositoryUser getRepositoryUser() {
+//        return repositoryUser;
+//    }
 }

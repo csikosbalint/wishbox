@@ -19,6 +19,7 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

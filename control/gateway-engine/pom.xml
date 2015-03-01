@@ -35,6 +35,7 @@
     <packaging>bundle</packaging>
 
     <dependencies>
+        <!--INTERNAL-->
         <dependency>
             <groupId>hu.fnf.devel.wishbox</groupId>
             <artifactId>gateway</artifactId>
@@ -42,9 +43,10 @@
         </dependency>
         <dependency>
             <groupId>hu.fnf.devel.wishbox</groupId>
-            <artifactId>persistence</artifactId>
+            <artifactId>api</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--EXTERNAL-->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>

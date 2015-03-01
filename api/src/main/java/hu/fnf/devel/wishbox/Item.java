@@ -17,47 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.entity;
-
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
+package hu.fnf.devel.wishbox;
 
 /**
- * Created by Balint Csikos (csikos.balint@fnf.hu) on 25/01/15.
+ * Created by Balint Csikos (csikos.balint@fnf.hu) on 01/03/15.
  */
-@Entity
-@XmlRootElement
-public class Item implements Serializable {
-    @Id
-    private long id;
-    @Basic
-    private String name;
-    @Basic
-    private String pattern;
-    @Basic
-    private boolean found;
+public interface Item {
+    public String getName();
 
-    public Item(String name, String pattern) {
-        this.name = name;
-        this.pattern = pattern;
-    }
+    public void setName(String name);
 
-    public String getName() {
-        return name;
-    }
+    public String getPattern();
 
-    public String getPattern() {
-        return pattern;
-    }
+    public void setPattern(String pattern);
 
-    public boolean isFound() {
-        return found;
-    }
+    public Url getFound();
 
-    public void setFound(boolean found) {
-        this.found = found;
-    }
+    public void setFound(Url found);
 }

@@ -51,7 +51,7 @@
                     <featuresFile>
                         ${project.basedir}/target/wishbox-feature.xml
                     </featuresFile>
-                    <!--<outputDirectory>${karaf.deploy}</outputDirectory>-->
+                    <outputDirectory>${karaf.deploy}</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
