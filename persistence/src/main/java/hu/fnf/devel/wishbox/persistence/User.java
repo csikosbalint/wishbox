@@ -19,10 +19,9 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
-import org.springframework.data.jpa.domain.AbstractPersistable;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -30,19 +29,30 @@ import java.util.List;
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
 @Entity
-public class User extends AbstractPersistable<Long> {
+public class User {
+
+    @Id
+    private long id;
 
     private String firstName;
     private String lastName;
+
     @OneToMany (fetch = FetchType.EAGER)
     private List<Item> items;
 
     public User() {
-        this( null );
     }
 
-    public User(Long id) {
-        this.setId( id );
+    public User(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

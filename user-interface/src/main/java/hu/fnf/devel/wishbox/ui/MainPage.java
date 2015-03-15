@@ -111,7 +111,7 @@ public class MainPage extends UI {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         try {
-            url = new URL("http://195.228.45.136:8181/cxf/test/user/" + user.getUserId() + "/item");
+            url = new URL("http://195.228.45.136:9090/user/" + user.getUserId());
             connection = url.openConnection();
             connection.addRequestProperty("Referer", "WishBox frontend");
         } catch (Exception e) {

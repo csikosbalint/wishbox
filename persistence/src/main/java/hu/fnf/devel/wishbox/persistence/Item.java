@@ -26,13 +26,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import java.io.Serializable;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 22/02/15.
  */
 @Entity
-public class Item implements Serializable {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;

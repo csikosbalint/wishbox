@@ -43,9 +43,9 @@ public class ConfigData {
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost/test");
-        dataSource.setUsername("dbtest");
-        dataSource.setPassword("dbpass");
+        dataSource.setUrl("jdbc:mysql://sql01x/wishbox");
+        dataSource.setUsername(System.getProperty("SQLUser"));
+        dataSource.setPassword(System.getProperty("SQLPass"));
         return dataSource;
     }
 

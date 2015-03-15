@@ -19,14 +19,10 @@
 
 package hu.fnf.devel.wishbox.persistence;
 
-import org.glassfish.jersey.servlet.ServletContainer;
-import org.glassfish.jersey.servlet.ServletProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -47,6 +43,7 @@ public class Application {
 //    @Autowired
 //    private RepositoryUser repositoryUser;
 
+
     public static void main( String[] args ) throws Exception {
         ConfigurableApplicationContext context = new SpringApplicationBuilder( Application.class ).run( args );
 
@@ -55,7 +52,7 @@ public class Application {
         RepositoryItem repositoryItem = context.getBean(RepositoryItem.class);
         RepositoryUrl repositoryUrl = context.getBean(RepositoryUrl.class);
 // save a couple of customers
-        User user = new User( 1L );
+        User user = new User(13L);
         user.setFirstName( "fname" );
         user.setLastName( "lname" );
         Url url = new Url();
@@ -82,24 +79,4 @@ public class Application {
         repositoryUser.save(user);
 
     }
-
-    @Bean
-    public ServletRegistrationBean jerseyServlet() {
-        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/rest/*");
-        registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, ConfigWeb.class.getName());
-//        registration.setName("Jax");
-        return registration;
-    }
-
-    @Bean
-    public ServletRegistrationBean restServlet() {
-        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new ServletContainer(), "/*");
-        registrationBean.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, ConfigData.class.getName());
-//        registrationBean.setName("Rest");
-        return registrationBean;
-    }
-
-//    public RepositoryUser getRepositoryUser() {
-//        return repositoryUser;
-//    }
 }
