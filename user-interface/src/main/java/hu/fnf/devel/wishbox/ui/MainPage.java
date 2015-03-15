@@ -19,12 +19,13 @@
 
 package hu.fnf.devel.wishbox.ui;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.repackaged.com.google.gson.Gson;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
@@ -43,6 +44,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
@@ -111,7 +114,7 @@ public class MainPage extends UI {
         UserService userService = UserServiceFactory.getUserService();
         User user = userService.getCurrentUser();
         try {
-            url = new URL("http://195.228.45.136:9090/user/" + user.getUserId());
+            url = new URL("http://jenna.fnf.hu/user/13");//" + user.getUserId());
             connection = url.openConnection();
             connection.addRequestProperty("Referer", "WishBox frontend");
         } catch (Exception e) {
@@ -119,7 +122,7 @@ public class MainPage extends UI {
         }
 
         String line;
-        StringBuilder builder = new StringBuilder();
+        StringBuilder response = new StringBuilder();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -128,20 +131,38 @@ public class MainPage extends UI {
         }
         try {
             while ((line = reader.readLine()) != null) {
-                builder.append(line);
+                response.append(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Gson gson = new Gson();
+
+        JsonFactory factory = new JsonFactory();
+
+        ObjectMapper m = new ObjectMapper(factory);
+        JsonNode rootNode = null;
+        try {
+            rootNode = m.readTree(response.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Iterator<Map.Entry<String, JsonNode>> fieldsIterator = rootNode.fields();
+        while (fieldsIterator.hasNext()) {
+
+            Map.Entry<String, JsonNode> field = fieldsIterator.next();
+            System.out.println("Key: " + field.getKey() + "\tValue:" + field.getValue());
+        }
+
+
         ObjectMapper mapper = new ObjectMapper();
         Collection<Item> testRespList = null;
         try {
-            testRespList = mapper.readValue(builder.toString(), new TypeReference<Collection<Item>>() {
+            testRespList = mapper.readValue(response.toString(), new TypeReference<Collection<Item>>() {
             });
         } catch (IOException e) {
-            System.out.println("input: " + builder.toString());
+            System.out.println("input: " + response.toString());
             System.out.println("hiba: " + e.getMessage());
             e.printStackTrace();
         }

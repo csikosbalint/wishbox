@@ -19,29 +19,15 @@
 
 package hu.fnf.devel.wishbox.gateway;
 
-import org.glassfish.jersey.servlet.ServletContainer;
-import org.glassfish.jersey.servlet.ServletProperties;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 01/03/15.
  */
-@EnableAutoConfiguration
+@SpringBootApplication
 public class Application {
     public static void main(String[] args) throws Exception {
-        new SpringApplicationBuilder(Application.class).run(args);
+        SpringApplication.run(Application.class, args);
     }
-
-    @Bean
-    public ServletRegistrationBean jerseyServlet() {
-        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/rest/*");
-        // our rest resources will be available in the path /rest/*
-        registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, ConfigWeb.class.getName());
-        return registration;
-    }
-
-
 }

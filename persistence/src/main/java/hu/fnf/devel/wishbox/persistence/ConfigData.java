@@ -57,7 +57,7 @@ public class ConfigData {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("hu.fnf.devel.wishbox.persistence");
+        factory.setPackagesToScan(this.getClass().getPackage().getName());
         factory.setDataSource(dataSource());
         return factory;
     }
