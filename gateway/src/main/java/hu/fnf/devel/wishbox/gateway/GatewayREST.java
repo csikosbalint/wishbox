@@ -20,6 +20,7 @@
 package hu.fnf.devel.wishbox.gateway;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ import java.security.cert.X509Certificate;
 @RequestMapping("/gateway")
 public class GatewayREST {
 
+    @Secured({"ROLE_USER"})
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -59,11 +61,13 @@ public class GatewayREST {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        req = "user";
         try {
-            req = request.getRequestURI().split("/gateway/persistence")[1];
+            req = request.getRequestURL().toString().split("/gateway/persistence")[1];
         } catch (ArrayIndexOutOfBoundsException e) {
             req = "/";
         }
+        System.out.println(request.getRequestURL());
 
         System.out.println("Proxy call: " + req);
         System.out.println("Conent: " + content);
@@ -76,10 +80,11 @@ public class GatewayREST {
         }
     }
 
-    @RequestMapping(value = "/persistence/user/{openid}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Secured({"ROLE_ADMIN"})
+    @RequestMapping(value = "/persistence/user/{userId}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
-    String createUser(@PathVariable("openid") long openid, HttpServletRequest request) {
+    String createUser(@PathVariable("userId") String userId, HttpServletRequest request) {
         StringBuilder content = new StringBuilder();
         StringBuilder stringBuilder = new StringBuilder();
         X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
@@ -93,6 +98,6 @@ public class GatewayREST {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return openid + ": " + content + ": " + stringBuilder;
+        return userId + ": " + content + ": " + stringBuilder;
     }
 }

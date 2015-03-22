@@ -52,7 +52,7 @@ public class Application {
         RepositoryItem repositoryItem = context.getBean(RepositoryItem.class);
         RepositoryUrl repositoryUrl = context.getBean(RepositoryUrl.class);
 // save a couple of customers
-        User user = new User(13L);
+        User user = new User(String.valueOf(13L));
         user.setFirstName( "fname" );
         user.setLastName( "lname" );
         Url url = new Url();

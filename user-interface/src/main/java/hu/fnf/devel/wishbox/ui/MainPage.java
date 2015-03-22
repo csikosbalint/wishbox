@@ -20,30 +20,33 @@
 package hu.fnf.devel.wishbox.ui;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.repackaged.org.apache.commons.codec.binary.Base64;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
-import hu.fnf.devel.wishbox.Item;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Collection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -53,13 +56,30 @@ import java.util.Map;
 public class MainPage extends UI {
     //    Logger logger = LoggerFactory.getLogger(MyUI.class);
 
+    private final MenuBar.Command menuCommand = new MenuBar.Command() {
+        @Override
+        public void menuSelected(final MenuBar.MenuItem selectedItem) {
+            Notification.show("Action " + selectedItem.getText(),
+                    Notification.Type.TRAY_NOTIFICATION);
+        }
+    };
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        MenuBar menuBar = new MenuBar();
+        menuBar.setWidth(100.0f, Unit.PERCENTAGE);
+        MenuBar.MenuItem child = null;
+        menuBar.addItem("command", menuCommand);
+        setContent(menuBar);
+
         HorizontalSplitPanel sample = new HorizontalSplitPanel();
         sample.setSizeFull();
-//        sample.setSplitPosition(150.0f, PIXELS);
 
-        sample.setSecondComponent(new Label("korte"));
+        VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
+        verticalSplitPanel.setFirstComponent(new Label("elso"));
+        verticalSplitPanel.setSecondComponent(new Label("masodik"));
+
+        sample.setSecondComponent(verticalSplitPanel);
 
         setContent(sample);
 
@@ -67,7 +87,7 @@ public class MainPage extends UI {
 
         grid.setSizeFull();
         for (Object i : getItemContiner().getItemIds()) {
-            System.out.println(i.toString());
+            System.out.println("item ids: " + i.toString());
         }
         grid.setContainerDataSource(getItemContiner());
         grid.setSelectable(true);
@@ -109,71 +129,59 @@ public class MainPage extends UI {
 //                .type("application/json")
 //                .path("/say/list");
 //        TestResp testResp = client.get(TestResp.class);
-        URL url = null;
-        URLConnection connection = null;
-        UserService userService = UserServiceFactory.getUserService();
-        User user = userService.getCurrentUser();
-        try {
-            url = new URL("http://jenna.fnf.hu/user/13");//" + user.getUserId());
-            connection = url.openConnection();
-            connection.addRequestProperty("Referer", "WishBox frontend");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        String line;
-        StringBuilder response = new StringBuilder();
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            while ((line = reader.readLine()) != null) {
-                response.append(line);
+        if (getSession().getAttribute("state") == null) {
+            UserService userService = UserServiceFactory.getUserService();
+            User user = userService.getCurrentUser();
+            getSession().setAttribute("user", user);
+
+            URI uri = null;
+            try {
+                uri = new URI(("http://jenna.fnf.hu/gateway/persistence/user/" + user.getUserId()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            String plainCreds = "API_KEY:API_PASS";
+
+            byte[] plainCredsBytes = plainCreds.getBytes();
+            byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
+            String base64Creds = new String(base64CredsBytes);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Authorization", "Basic " + base64Creds);
+            HttpEntity<String> request = new HttpEntity<String>(headers);
+
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.GET, request, String.class);
+
+            JsonFactory factory = new JsonFactory();
+
+            ObjectMapper m = new ObjectMapper(factory);
+            JsonNode rootNode = null;
+            try {
+                rootNode = m.readTree(response.getBody());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Iterator<Map.Entry<String, JsonNode>> fieldsIterator = rootNode.fields();
+            while (fieldsIterator.hasNext()) {
+
+                Map.Entry<String, JsonNode> field = fieldsIterator.next();
+                if (!field.getKey().startsWith("_")) {
+                    getSession().setAttribute(field.getKey(), field.getValue().asText());
+                } else {
+
+                }
+                System.out.println("Key: " + field.getKey() + ":\t" + field.getValue());
+            }
+            getSession().setAttribute("state", "loaded");
         }
+        com.vaadin.data.Item item = container.addItem(((User) getSession().getAttribute("user")).getNickname());
+        item.getItemProperty("First").setValue(getSession().getAttribute("firstName").toString());
+        item.getItemProperty("Second").setValue(getSession().getAttribute("lastName").toString());
 
 
-        JsonFactory factory = new JsonFactory();
-
-        ObjectMapper m = new ObjectMapper(factory);
-        JsonNode rootNode = null;
-        try {
-            rootNode = m.readTree(response.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Iterator<Map.Entry<String, JsonNode>> fieldsIterator = rootNode.fields();
-        while (fieldsIterator.hasNext()) {
-
-            Map.Entry<String, JsonNode> field = fieldsIterator.next();
-            System.out.println("Key: " + field.getKey() + "\tValue:" + field.getValue());
-        }
-
-
-        ObjectMapper mapper = new ObjectMapper();
-        Collection<Item> testRespList = null;
-        try {
-            testRespList = mapper.readValue(response.toString(), new TypeReference<Collection<Item>>() {
-            });
-        } catch (IOException e) {
-            System.out.println("input: " + response.toString());
-            System.out.println("hiba: " + e.getMessage());
-            e.printStackTrace();
-        }
-        //TestResp[] testResps = gson.fromJson(builder.toString(), TestResp[].class);
-
-
-        for (Item testResp : testRespList) {
-            com.vaadin.data.Item item = container.addItem(testResp.toString());
-            item.getItemProperty("First").setValue(testResp.getName());
-            item.getItemProperty("Second").setValue(testResp.getPattern());
-        }
         return container;
     }
 }

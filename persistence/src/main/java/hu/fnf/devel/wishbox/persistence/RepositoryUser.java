@@ -29,6 +29,6 @@ import java.util.List;
  * Created by Balint Csikos (csikos.balint@fnf.hu) on 21/02/15.
  */
 @RepositoryRestResource(collectionResourceRel = "user", path = "user")
-public interface RepositoryUser extends CrudRepository<User, Long> {
-    List<User> findById(@Param("id") Long id);
+public interface RepositoryUser extends CrudRepository<User, String> {
+    List<User> findById(@Param("id") String id);
 }
