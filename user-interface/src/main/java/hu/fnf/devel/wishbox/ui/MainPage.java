@@ -1,6 +1,6 @@
 /*
  * MainPage.java which is part of the " wishbox ( user-interface )" project
- * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
+ * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,8 +28,14 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.repackaged.org.apache.commons.codec.binary.Base64;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
@@ -66,22 +72,33 @@ public class MainPage extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        MenuBar menuBar = new MenuBar();
-        menuBar.setWidth(100.0f, Unit.PERCENTAGE);
-        MenuBar.MenuItem child = null;
-        menuBar.addItem("command", menuCommand);
-        setContent(menuBar);
+        PropertysetItem item = new PropertysetItem();
+        item.addItemProperty("name", new ObjectProperty<String>("Zaphod"));
+        item.addItemProperty("age", new ObjectProperty<Integer>(42));
+
+
+        // Have some layout
+        FormLayout form = new FormLayout();
+        HorizontalLayout footer = new HorizontalLayout();
+        footer.addComponent(new Button("cica"));
+        footer.addComponent(new Button("kutya"));
+
+// Now create a binder that can also create the fields
+// using the default field factory
+        FieldGroup binder = new FieldGroup(item);
+
+        form.addComponent(binder.buildAndBind("Name", "name"));
+        form.addComponent(binder.buildAndBind("Age", "age"));
+
 
         HorizontalSplitPanel sample = new HorizontalSplitPanel();
         sample.setSizeFull();
 
         VerticalSplitPanel verticalSplitPanel = new VerticalSplitPanel();
-        verticalSplitPanel.setFirstComponent(new Label("elso"));
+        verticalSplitPanel.setFirstComponent(form);
         verticalSplitPanel.setSecondComponent(new Label("masodik"));
 
         sample.setSecondComponent(verticalSplitPanel);
-
-        setContent(sample);
 
         Table grid = new Table();
 
@@ -101,6 +118,8 @@ public class MainPage extends UI {
             }
         });
         sample.setFirstComponent(grid);
+
+        setContent(sample);
 
 
 //            Main window is the primary browser window

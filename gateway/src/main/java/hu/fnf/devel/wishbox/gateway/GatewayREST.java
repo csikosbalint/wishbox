@@ -1,6 +1,6 @@
 /*
  * GatewayREST.java which is part of the " wishbox ( gateway )" project
- * Copyright (C)  2015  author:  Balint Csikos (csikos.balint@fnf.hu)
+ * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ public class GatewayREST {
     public
     @ResponseBody
     String test() {
-        return "test";
+        return "test: "; //+ request.getMethod() + "\n" ;
     }
 
     @RequestMapping(value = "/persistence/**", method = RequestMethod.GET)
@@ -99,5 +99,10 @@ public class GatewayREST {
             e.printStackTrace();
         }
         return userId + ": " + content + ": " + stringBuilder;
+    }
+
+    @RequestMapping(value = "cica")
+    public String cica() {
+        return "kutya";
     }
 }
