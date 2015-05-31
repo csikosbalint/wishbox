@@ -21,7 +21,6 @@ package hu.fnf.devel.wishbox.frontend;
 
 import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
@@ -29,31 +28,30 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 
 /**
  * Created by johnnym on 31/05/15.
  */
-public class Gateway extends HttpServlet {
-    private final Gson GSON = new Gson();
-    private final HttpTransport TRANSPORT = new NetHttpTransport();
+@Path("/")
+public class Gateway {
 
-    private final JacksonFactory JSON_FACTORY = new JacksonFactory();
-    private GoogleClientSecrets clientSecrets;
+    private static final Gson GSON = new Gson();
+    private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
-    {
+    private static final JacksonFactory JSON_FACTORY = new JacksonFactory();
 
-    }
+    private String CLIENT_ID = "574876928534-5kkgbrh1q5710bge07lvmbc9tcmd1eib.apps.googleusercontent.com";
+    private String CLIENT_SECRET = "ubmJ1z86p1ES55SEwRtKRKM2";
 
     static void getContent(InputStream inputStream, ByteArrayOutputStream outputStream)
             throws IOException {
@@ -73,23 +71,11 @@ public class Gateway extends HttpServlet {
      * This is the Client Secret that you generated in the API Console.
      */
 
-    @Override
+    @POST
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            ServletContext context = this.getServletContext();
-            InputStream inputStream = context.getResourceAsStream("/WEB-INF/client.secret");
-            Reader reader = new InputStreamReader(inputStream);
-            clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, reader);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new Error("No client_secrets.json found", e);
-        }
 
-        String CLIENT_ID = clientSecrets.getWeb().getClientId();
-        String CLIENT_SECRET = clientSecrets.getWeb().getClientSecret();
 
         response.setContentType("application/json");
-        log("doing post");
         // Only connect a user that is not already connected.
         String tokenData = (String) request.getSession().getAttribute("token");
         if (tokenData != null) {
@@ -137,11 +123,5 @@ public class Gateway extends HttpServlet {
             response.getWriter().print(GSON.toJson("Failed to read token data from Google. " +
                     e.getMessage()));
         }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log("doget");
-
     }
 }

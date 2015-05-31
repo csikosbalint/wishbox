@@ -29,21 +29,21 @@
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     </system-properties>
 
-    <static-files>
-        <include path="/index.html" expiration="2s"/>
-        <include path="/pages/**.html" expiration="1s"/>
-        <include path="/**.js"/>
-        <include path="/**.css"/>
-        <include path="/**.json"/>
-        <include path="/**.txt"/>
-        <include path="/**.ttf"/>
-        <include path="/**.woff"/>
-    </static-files>
+    <!--<static-files>-->
+    <!--<include path="/index.html" expiration="2s"/>-->
+    <!--<include path="/pages/**.html" expiration="1s"/>-->
+    <!--<include path="/**.js"/>-->
+    <!--<include path="/**.css"/>-->
+    <!--<include path="/**.json"/>-->
+    <!--<include path="/**.txt"/>-->
+    <!--<include path="/**.ttf"/>-->
+    <!--<include path="/**.woff"/>-->
+    <!--</static-files>-->
 
-    <resource-files>
-        <include path="/WEB-INF/client.secret"/>
-    </resource-files>
+    <!--<resource-files>-->
+    <!--<include path="/WEB-INF/client.secret"/>-->
+    <!--</resource-files>-->
 
-    <ssl-enabled>true</ssl-enabled>
+    <!--<ssl-enabled>true</ssl-enabled>-->
 
 </appengine-web-app>
