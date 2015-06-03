@@ -31,8 +31,11 @@ import com.google.gson.Gson;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,7 +45,9 @@ import java.io.InputStreamReader;
 /**
  * Created by johnnym on 31/05/15.
  */
-@Path("/")
+@Path("gateway")
+@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+@Produces(MediaType.APPLICATION_JSON)
 public class Gateway {
 
     private static final Gson GSON = new Gson();
@@ -72,7 +77,7 @@ public class Gateway {
      */
 
     @POST
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 
         response.setContentType("application/json");

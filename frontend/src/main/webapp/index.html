@@ -57,10 +57,11 @@
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <!--<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
-    <!--<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>-->
-    <!--<![endif]&ndash;&gt;-->
+
+    <!--[if lt IE 9]-->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <!--[endif]-->
 
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
@@ -92,7 +93,8 @@
     <!--Application-->
     <script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
     <script src="js/app.js"></script>
-    <!--<script src="js/googleplusAPI.js"></script>-->
+    <script src="js/googleplusAPI.js"></script>
+
 
 </head>
 
@@ -141,7 +143,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-tasks">
                     <li>
-                        <a href="#">
+                        <a href="#/">
                             <div>
                                 <p>
                                     <strong>Task 1</strong>
@@ -159,7 +161,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <p>
                                     <strong>Task 2</strong>
@@ -177,7 +179,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <p>
                                     <strong>Task 3</strong>
@@ -195,7 +197,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <p>
                                     <strong>Task 4</strong>
@@ -228,7 +230,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-alerts">
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <i class="fa fa-comment fa-fw"></i> New Comment
                                 <span class="pull-right text-muted small">4 minutes ago</span>
@@ -237,7 +239,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <i class="fa fa-twitter fa-fw"></i> 3 New Followers
                                 <span class="pull-right text-muted small">12 minutes ago</span>
@@ -246,7 +248,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <i class="fa fa-envelope fa-fw"></i> Message Sent
                                 <span class="pull-right text-muted small">4 minutes ago</span>
@@ -255,7 +257,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <i class="fa fa-tasks fa-fw"></i> New Task
                                 <span class="pull-right text-muted small">4 minutes ago</span>
@@ -264,7 +266,7 @@
                     </li>
                     <li class="divider"></li>
                     <li>
-                        <a href="#">
+                        <a href="/">
                             <div>
                                 <i class="fa fa-upload fa-fw"></i> Server Rebooted
                                 <span class="pull-right text-muted small">4 minutes ago</span>
@@ -287,9 +289,9 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                    <li><a href="/"><i class="fa fa-user fa-fw"></i> User Profile</a>
                     </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                    <li><a href="/"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
                     <li><a href="/" onclick="auth2.signOut()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -411,32 +413,29 @@
 
     </nav>
 
-    <div ng-view></div>
-
     <div id="gConnect" class="navbar-header">
         <div id="signinButton">
-  <span class="g-signin"
-        data-scope="https://www.googleapis.com/auth/plus.login"
-        data-clientid="574876928534-5kkgbrh1q5710bge07lvmbc9tcmd1eib.apps.googleusercontent.com"
-        data-redirecturi="postmessage"
-        data-accesstype="offline"
-        data-cookiepolicy="single_host_origin"
-        data-callback="signInCallback">
-  </span>
+            <span class="g-signin"
+                  data-scope="https://www.googleapis.com/auth/plus.login"
+                  data-clientid="574876928534-5kkgbrh1q5710bge07lvmbc9tcmd1eib.apps.googleusercontent.com"
+                  data-redirecturi="postmessage"
+                  data-accesstype="offline"
+                  data-cookiepolicy="single_host_origin"
+                  data-callback="signInCallback">
+            </span>
         </div>
-        <div id="result"></div>
-
     </div>
+
+    <div ng-view></div>
+
 </div>
 
 
 <script type="text/javascript">
     var siteTitle = "WishBox Admin v1.0";
-    //document.getElementsByClassName("navbar-brand")[0].textContent = siteTitle;
+    document.getElementsByClassName("navbar-brand")[0].textContent = siteTitle;
     document.title = siteTitle;
-
 </script>
-
 <script>
     function signInCallback(authResult) {
         console.log("cica");

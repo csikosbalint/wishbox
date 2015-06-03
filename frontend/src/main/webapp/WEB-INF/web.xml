@@ -38,8 +38,4 @@
     <listener-class>hu.fnf.devel.wishbox.frontend.MyGuiceServletContextListener</listener-class>
   </listener>
 
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
-
 </web-app>

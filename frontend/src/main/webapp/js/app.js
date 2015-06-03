@@ -2,21 +2,16 @@ var myApp = angular.module("myApp", ["ngRoute"]);
 
 //ROUTES
 myApp.config(function ($routeProvider)  {
-    $routeProvider
 
-    .when("", {
+    $routeProvider
+    .when("/", {
         templateUrl: "pages/wrapper.html",
         controller: "mainController"
-    })
-
-    .otherwise({
-                redirectTo: '/pages/login.html'
     });
 
 });
 
 //CONTROLLERS
-myApp.controller("mainController", ["$scope", function($scope) {
-    //$log.info($routeParams);
-    alert("cica");
+myApp.controller("mainController", ["$scope","$routeParams", function($scope,$routeParams) {
+    console.log("mainController");
 }]);

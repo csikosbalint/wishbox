@@ -45,6 +45,7 @@ public class MyGuiceServletContextListener extends GuiceServletContextListener {
             ResourceConfig rc = new PackagesResourceConfig("hu.fnf.devel.wishbox.frontend");
             for (Class<?> resource : rc.getClasses()) {
                 bind(resource);
+                System.out.println(resource.getCanonicalName() + " injected.");
             }
             serve("/*").with(GuiceContainer.class);
 
