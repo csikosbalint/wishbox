@@ -30,12 +30,14 @@ import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -45,9 +47,7 @@ import java.io.InputStreamReader;
 /**
  * Created by johnnym on 31/05/15.
  */
-@Path("gateway")
-@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-@Produces(MediaType.APPLICATION_JSON)
+@Path("/gateway")
 public class Gateway {
 
     private static final Gson GSON = new Gson();
@@ -55,8 +55,8 @@ public class Gateway {
 
     private static final JacksonFactory JSON_FACTORY = new JacksonFactory();
 
-    private String CLIENT_ID = "574876928534-5kkgbrh1q5710bge07lvmbc9tcmd1eib.apps.googleusercontent.com";
-    private String CLIENT_SECRET = "ubmJ1z86p1ES55SEwRtKRKM2";
+    private String CLIENT_ID = "574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com";
+    private String CLIENT_SECRET = "6e4aUOTiB7AGIgQFKtcxkvZM";
 
     static void getContent(InputStream inputStream, ByteArrayOutputStream outputStream)
             throws IOException {
@@ -69,24 +69,28 @@ public class Gateway {
         reader.close();
     }
 
-    /*
-     * This is the Client ID that you generated in the API Console.
-     */
-    /*
-     * This is the Client Secret that you generated in the API Console.
-     */
+    @GET
+    public String doGet(@Context HttpServletRequest request) {
+        if (request.getSession().getAttribute("token") != null) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "token: " + request.getSession().getAttribute("token");
+        }
+        return "none";
+    }
+
 
     @POST
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-        response.setContentType("application/json");
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doPost(@Context HttpServletRequest request) throws ServletException, IOException {
         // Only connect a user that is not already connected.
         String tokenData = (String) request.getSession().getAttribute("token");
         if (tokenData != null) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().print(GSON.toJson("Current user is already connected."));
-            return;
+            return Response.ok(GSON.toJson("Current user is already connected.")).build();
         }
         // Ensure that this is no request forgery going on, and that the user
         // sending us this connect request is the user that was supposed to.
@@ -118,15 +122,12 @@ public class Gateway {
 
             // Store the token in the session for later use.
             request.getSession().setAttribute("token", tokenResponse.toString());
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getWriter().print(GSON.toJson("Successfully connected user."));
+
         } catch (TokenResponseException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().print(GSON.toJson("Failed to upgrade the authorization code."));
+            return Response.serverError().entity("Failed to upgrade the authorization code.").build();
         } catch (IOException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().print(GSON.toJson("Failed to read token data from Google. " +
-                    e.getMessage()));
+            return Response.serverError().entity("Failed to read token data from Google.").build();
         }
+        return Response.ok(GSON.toJson("Successfully connected user.")).build();
     }
 }

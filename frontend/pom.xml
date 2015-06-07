@@ -28,7 +28,6 @@
         <version>1.0.0</version>
     </parent>
 
-    <groupId>hu.fnf.devel.wishbox</groupId>
     <artifactId>frontend</artifactId>
     <version>1.0.0</version>
 
@@ -37,7 +36,7 @@
     <properties>
         <app.version>1</app.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jersey.version>1.18.1</jersey.version>
+        <java.version>1.7</java.version>
     </properties>
 
     <dependencies>
@@ -45,7 +44,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.api-client</groupId>
@@ -69,18 +67,18 @@
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
-            <version>${jersey.version}</version>
+            <artifactId>jersey-core</artifactId>
+            <version>1.19</version>
         </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-json</artifactId>
-            <version>${jersey.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.sun.jersey</groupId>-->
+        <!--<artifactId>jersey-json</artifactId>-->
+        <!--<version>1.19</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-guice</artifactId>
-            <version>${jersey.version}</version>
+            <version>1.19</version>
         </dependency>
     </dependencies>
 
@@ -89,18 +87,18 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <version>3.1</version>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.6</version>
                 <configuration>
                     <archiveClasses>true</archiveClasses>
                     <webResources>
@@ -117,7 +115,7 @@
             <plugin>
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-maven-plugin</artifactId>
-                <version>1.9.19</version>
+                <version>1.9.21</version>
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
                     <disableUpdateCheck>true</disableUpdateCheck>
