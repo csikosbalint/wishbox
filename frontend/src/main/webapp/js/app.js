@@ -14,6 +14,9 @@ var myApp = angular.module("myApp",[]);
 //CONTROLLERS
 myApp.controller("mainController", ["$scope", function($scope) {
     console.log("mainController");
+    $scope.chiliSpicy = function() {
+
+
                 $.ajax({
                     type: 'GET',
                     url: 'gateway',
@@ -25,9 +28,11 @@ myApp.controller("mainController", ["$scope", function($scope) {
                         // to the console.
                         // console.log(result);
                         console.log(result);
+                        $scope.spice = result;
                     },
                     processData: false,
                 });
+    }
 }]);
 
 myApp.controller("dropDownMenuController", ["$scope", function($scope) {
