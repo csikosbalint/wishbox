@@ -77,7 +77,7 @@ public class Gateway {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return "token: " + request.getSession().getAttribute("token");
+            return "token: " + request.getSession().getAttribute("token") + "\nID: " + request.getSession().getAttribute("id");
         }
         return "none";
     }
@@ -119,6 +119,8 @@ public class Gateway {
             // This sample does not use the user ID.
             GoogleIdToken idToken = tokenResponse.parseIdToken();
             String gplusId = idToken.getPayload().getSubject();
+            System.out.println(gplusId);
+            request.getSession().setAttribute("id", gplusId);
 
             // Store the token in the session for later use.
             request.getSession().setAttribute("token", tokenResponse.toString());
