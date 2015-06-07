@@ -427,9 +427,7 @@
 
     <div id="page-wrapper" style="min-height: 464px;">
 
-        <div ng-controller="mainController" class="row">
-            <button ng-click="chiliSpicy()">Chili</button>
-            <p>The food is {{spice}} spicy!</p>
+        <div data-ng-app data-ng-controller="mainController" class="row">
 
             <div class="col-lg-8">
 
@@ -461,11 +459,12 @@
                     <div class="panel-body">
                         <ul class="timeline">
                             <li>
-                                <div class="timeline-badge"><i class="fa fa-check"></i>
+                                <div href="javascript:void(0)" ng-click="chiliSpicy()" class="timeline-badge"><i
+                                        class="fa fa-check"></i>
                                 </div>
                                 <div class="timeline-panel">
                                     <div class="timeline-heading">
-                                        <h4 class="timeline-title">Lorem ipsum dolor</h4>
+                                        <h4 class="timeline-title">{{spice}}</h4>
 
                                         <p>
                                             <small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via
