@@ -1,5 +1,5 @@
 /*
- * RequestInterceptor.java which is part of the " wishbox ( gateway )" project
+ * OnlyWithSessionAttribute.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway;
+package hu.fnf.devel.wishbox.filter;
 
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.NameBinding;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Created by johnnym on 13/04/15.
+ * Created by johnnym on 07/06/15.
  */
-public class RequestInterceptor extends HandlerInterceptorAdapter {
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("filter called: " + request.getUserPrincipal().getName());
-        return true;
-    }
 
-
+@NameBinding
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface OnlyWithSessionAttribute {
 }

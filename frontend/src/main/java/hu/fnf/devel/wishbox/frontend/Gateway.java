@@ -27,6 +27,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
+import hu.fnf.devel.wishbox.filter.OnlyWithSessionAttribute;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -70,6 +71,7 @@ public class Gateway {
     }
 
     @GET
+    @OnlyWithSessionAttribute
     public String doGet(@Context HttpServletRequest request) {
         if (request.getSession().getAttribute("token") != null) {
             try {

@@ -1,5 +1,5 @@
 /*
- * RequestInterceptor.java which is part of the " wishbox ( gateway )" project
+ * GoogleTokenSecurity.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,29 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway;
-
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+package hu.fnf.devel.wishbox.filter;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
+import java.io.IOException;
 
 /**
- * Created by johnnym on 13/04/15.
+ * Created by johnnym on 07/06/15.
  */
-public class RequestInterceptor extends HandlerInterceptorAdapter {
+@Provider
+@OnlyWithSessionAttribute
+public class GoogleTokenSecurity implements ContainerRequestFilter {
+    @Context
+    HttpServletRequest webRequest;
+
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("filter called: " + request.getUserPrincipal().getName());
-        return true;
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        if (webRequest.getSession().getAttribute("token") == null) {
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Not valid user request!").build());
+        }
     }
-
-
 }
