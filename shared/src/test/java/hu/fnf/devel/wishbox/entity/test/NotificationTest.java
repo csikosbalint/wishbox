@@ -1,5 +1,5 @@
 /*
- * OnlyWithSessionAttribute.java which is part of the " wishbox ( frontend )" project
+ * NotificationTest.java which is part of the " wishbox ( shared )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,20 +17,25 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.filter;
+package hu.fnf.devel.wishbox.entity.test;
 
-import javax.ws.rs.NameBinding;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import hu.fnf.devel.wishbox.entity.Notification;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
- * Created by johnnym on 07/06/15.
+ * Created by johnnym on 14/06/15.
  */
+public class NotificationTest {
+    @Test
+    public void testProperties() throws Exception {
+        Notification notification = new Notification();
+        Notification.State state = Notification.State.ALERT;
+        notification.setState(state);
+        String text = "text";
+        notification.setText(text);
 
-@NameBinding
-@Target({ElementType.TYPE, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface OnlyWithSessionAttribute {
+        Assert.assertEquals(notification.getText(), text);
+        Assert.assertEquals(notification.getState(), state);
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * GoogleTokenSecurity.java which is part of the " wishbox ( frontend )" project
+ * OnlyWithSession.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -19,27 +19,18 @@
 
 package hu.fnf.devel.wishbox.filter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
-import java.io.IOException;
+import javax.ws.rs.NameBinding;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Created by johnnym on 07/06/15.
  */
-@Provider
-@OnlyWithSession
-public class GoogleTokenSecurity implements ContainerRequestFilter {
-    @Context
-    HttpServletRequest webRequest;
 
-    @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        if (webRequest.getSession().getAttribute("token") == null) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Not valid user request!").build());
-        }
-    }
+@NameBinding
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface OnlyWithSession {
 }

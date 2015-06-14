@@ -16,7 +16,6 @@ myApp.controller("mainController", ["$scope", function($scope) {
     console.log("mainController");
     $scope.chiliSpicy = function() {
 
-
                 $.ajax({
                     type: 'GET',
                     url: 'gateway',
@@ -27,8 +26,10 @@ myApp.controller("mainController", ["$scope", function($scope) {
                         // Prints the list of people that the user has allowed the app to know
                         // to the console.
                         // console.log(result);
+                        $scope.$apply(function() {
+                            $scope.spice = result;
+                        });
                         console.log(result);
-                        $scope.spice = result;
                     },
                     processData: false,
                 });

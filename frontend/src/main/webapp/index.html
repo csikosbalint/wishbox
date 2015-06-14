@@ -425,6 +425,10 @@
         </div>
     </div>
 
+    <div ng-show='window.getElementById("gConnect").display === "none"'>
+        <p>cica</p>
+    </div>
+
     <div id="page-wrapper" style="min-height: 464px;">
 
         <div data-ng-app data-ng-controller="mainController" class="row">
@@ -457,7 +461,7 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <ul class="timeline">
+                        <ul class="timeline" ng-repeate="">
                             <li>
                                 <div href="javascript:void(0)" ng-click="chiliSpicy()" class="timeline-badge"><i
                                         class="fa fa-check"></i>

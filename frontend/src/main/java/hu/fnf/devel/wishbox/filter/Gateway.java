@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.frontend;
+package hu.fnf.devel.wishbox.filter;
 
 import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
@@ -27,7 +27,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
-import hu.fnf.devel.wishbox.filter.OnlyWithSessionAttribute;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +70,7 @@ public class Gateway {
     }
 
     @GET
-    @OnlyWithSessionAttribute
+    @OnlyWithSession
     public String doGet(@Context HttpServletRequest request) {
         if (request.getSession().getAttribute("token") != null) {
             try {
@@ -83,6 +82,7 @@ public class Gateway {
         }
         return "none";
     }
+
 
 
     @POST
@@ -97,9 +97,7 @@ public class Gateway {
         // Ensure that this is no request forgery going on, and that the user
         // sending us this connect request is the user that was supposed to.
 //        if (!request.getParameter("state").equals(request.getSession().getAttribute("state"))) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.getWriter().print(GSON.toJson("Invalid state parameter."));
-//            return;
+//            return Response.status(HttpServletResponse.SC_UNAUTHORIZED).entity("Invalid state parameter.").build();
 //        }
         // Normally the state would be a one-time use token, however in our
         // simple case, we want a user to be able to connect and disconnect
