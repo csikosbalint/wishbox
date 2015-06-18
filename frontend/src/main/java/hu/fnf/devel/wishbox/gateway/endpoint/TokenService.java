@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,15 +64,9 @@ public class TokenService {
         reader.close();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public
+    @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
-    void doPost(HttpServletRequest request) throws ServletException, IOException {
-        // Only connect a user that is not already connected.
-        String tokenData = (String) request.getSession().getAttribute("token");
-        if (tokenData != null) {
-            throw new ServletException("Current user is already connected.");
-        }
+    public void validateToken(String code, HttpSession session) throws ServletException, IOException {
         // Ensure that this is no request forgery going on, and that the user
         // sending us this connect request is the user that was supposed to.
 //        if (!request.getParameter("state").equals(request.getSession().getAttribute("state"))) {
@@ -83,10 +77,7 @@ public class TokenService {
         // without reloading the page.  Thus, for demonstration, we don't
         // implement this best practice.
         //request.getSession().removeAttribute("state");
-
-        ByteArrayOutputStream resultStream = new ByteArrayOutputStream();
-        getContent(request.getInputStream(), resultStream);
-        String code = new String(resultStream.toByteArray(), "UTF-8");
+        System.out.println(code);
 
         try {
             // Upgrade the authorization code into an access and refresh token.
@@ -99,16 +90,15 @@ public class TokenService {
             GoogleIdToken idToken = tokenResponse.parseIdToken();
             String gplusId = idToken.getPayload().getSubject();
             System.out.println(gplusId);
-            request.getSession().setAttribute("id", gplusId);
+            session.setAttribute("id", gplusId);
 
             // Store the token in the session for later use.
-            request.getSession().setAttribute("token", tokenResponse.toString());
+            session.setAttribute("token", tokenResponse.toString());
 
         } catch (TokenResponseException e) {
             throw new ServletException("Failed to upgrade the authorization code.");
         } catch (IOException e) {
             throw new ServletException("Failed to read token data from Google.");
         }
-        return;
     }
 }

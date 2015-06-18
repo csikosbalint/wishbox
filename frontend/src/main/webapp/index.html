@@ -293,7 +293,7 @@
                     <li><a href="/"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="/" onclick="gapi.auth.signOut();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a href="/" onclick="myApp.logout();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -649,22 +649,6 @@
     document.getElementsByClassName("navbar-brand")[0].textContent = siteTitle;
     document.title = siteTitle;
 
-function cica() {
-$.ajax({
-                    type: 'GET',
-                    url: 'gateway',
-                    success: function (result) {
-                        // 200 OK  - so connected
-                        // Handle or verify the server response if necessary.
-
-                        // Prints the list of people that the user has allowed the app to know
-                        // to the console.
-                        // console.log(result);
-                        console.log(result);
-                    },
-                    processData: false,
-                });
-}
     function signInCallback(authResult) {
         console.log(authResult)
         if (authResult['status']['signed_in']) {
@@ -687,7 +671,7 @@ $.ajax({
             // Send the code to the server
             $.ajax({
                 type: 'POST',
-                url: 'gateway?storeToken',
+                url: 'gateway/token',
                 contentType: 'application/octet-stream; charset=utf-8',
                 success: function (result) {
                     // 200 OK  - so connected

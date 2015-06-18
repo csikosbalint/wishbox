@@ -43,3 +43,23 @@ myApp.controller("dropDownMenuController", ["$scope", function($scope) {
 myApp.controller("googleConnectController", ["$scope", function($scope) {
     console.log("googleConnectController");
 }]);
+
+myApp.logout = function() {
+    $.ajax({
+        type: 'DELETE',
+        url: 'token',
+        success: function (result) {
+            // 200 OK  - so connected
+            // Handle or verify the server response if necessary.
+
+            // Prints the list of people that the user has allowed the app to know
+            // to the console.
+            // console.log(result);
+            $scope.$apply(function() {
+                $scope.spice = result;
+            });
+            console.log(result);
+        },
+        processData: false,
+    });
+};
