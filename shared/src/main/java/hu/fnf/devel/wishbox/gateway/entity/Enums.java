@@ -1,5 +1,5 @@
 /*
- * Wishbox.java which is part of the " wishbox ( frontend )" project
+ * Enums.java which is part of the " wishbox ( shared )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,21 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway;
+package hu.fnf.devel.wishbox.gateway.entity;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+public class Enums {
+    public enum Type {NEWS, FILE}
 
-@SpringBootApplication
-public class Wishbox extends SpringBootServletInitializer {
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(Wishbox.class, args);
-    }
+    public enum Priority {none, info, warning, danger}
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Wishbox.class);
-    }
+    public enum State {info, warn, alert, done}
 }

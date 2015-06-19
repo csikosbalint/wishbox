@@ -19,20 +19,18 @@
 
 package hu.fnf.devel.wishbox.gateway.entity.test;
 
+import hu.fnf.devel.wishbox.gateway.entity.Enums;
 import hu.fnf.devel.wishbox.gateway.entity.Event;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
 
-/**
- * Created by johnnym on 14/06/15.
- */
 public class EventTest {
     @Test
     public void testProperties() throws Exception {
         Event event = new Event();
-        Event.Type type = Event.Type.FILE;
+        Enums.Type type = Enums.Type.FILE;
         event.setType(type);
         String text = "text";
         event.setText(text);

@@ -21,13 +21,12 @@ package hu.fnf.devel.wishbox.gateway.entity;
 
 import java.util.Date;
 
-/**
- * Created by johnnym on 14/06/15.
- */
 public class Event {
     private Date time;
     private String text;
-    private Type type;
+    private Enums.Type type;
+    private Enums.Priority priority;
+    private String icon;
 
     public Date getTime() {
         return time;
@@ -45,13 +44,27 @@ public class Event {
         this.text = text;
     }
 
-    public Type getType() {
+    public Enums.Type getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(Enums.Type type) {
         this.type = type;
     }
 
-    public enum Type {NEWS, FILE}
+    public Enums.Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Enums.Priority priority) {
+        this.priority = priority;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 }

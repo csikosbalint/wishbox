@@ -27,7 +27,9 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
+import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,11 +42,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-/**
- * Created by johnnym on 14/06/15.
- */
 @Controller
-@RequestMapping("/gateway")
+@RequestMapping(WishboxGateway.ROOT)
 public class TokenService {
     private static final Gson GSON = new Gson();
     private static final JacksonFactory JSON_FACTORY = new JacksonFactory();
@@ -66,7 +65,7 @@ public class TokenService {
 
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
-    public void validateToken(String code, HttpSession session) throws ServletException, IOException {
+    public void validateToken(@RequestBody String code, HttpSession session) throws ServletException, IOException {
         // Ensure that this is no request forgery going on, and that the user
         // sending us this connect request is the user that was supposed to.
 //        if (!request.getParameter("state").equals(request.getSession().getAttribute("state"))) {
@@ -77,7 +76,6 @@ public class TokenService {
         // without reloading the page.  Thus, for demonstration, we don't
         // implement this best practice.
         //request.getSession().removeAttribute("state");
-        System.out.println(code);
 
         try {
             // Upgrade the authorization code into an access and refresh token.

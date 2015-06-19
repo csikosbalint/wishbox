@@ -19,18 +19,16 @@
 
 package hu.fnf.devel.wishbox.gateway.entity.test;
 
+import hu.fnf.devel.wishbox.gateway.entity.Enums;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Created by johnnym on 14/06/15.
- */
 public class NotificationTest {
     @Test
     public void testProperties() throws Exception {
         Notification notification = new Notification();
-        Notification.State state = Notification.State.ALERT;
+        Enums.State state = Enums.State.alert;
         notification.setState(state);
         String text = "text";
         notification.setText(text);

@@ -11,29 +11,16 @@ var myApp = angular.module("myApp",[]);
 //
 //});
 
+
 //CONTROLLERS
-myApp.controller("mainController", ["$scope", function($scope) {
+myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
     console.log("mainController");
-    $scope.chiliSpicy = function() {
-
-                $.ajax({
-                    type: 'GET',
-                    url: 'gateway',
-                    success: function (result) {
-                        // 200 OK  - so connected
-                        // Handle or verify the server response if necessary.
-
-                        // Prints the list of people that the user has allowed the app to know
-                        // to the console.
-                        // console.log(result);
-                        $scope.$apply(function() {
-                            $scope.spice = result;
-                        });
-                        console.log(result);
-                    },
-                    processData: false,
-                });
-    }
+    $http.get('/gateway/event').then(function(result){
+              $scope.events = result.data;
+    });
+    $http.get('/gateway/notification').then(function(result){
+                  $scope.notifications = result.data;
+        });
 }]);
 
 myApp.controller("dropDownMenuController", ["$scope", function($scope) {

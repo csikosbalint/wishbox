@@ -1,6 +1,6 @@
 /*
- * EventService.java which is part of the " wishbox ( frontend )" project
- * Copyright (C)  2015  author:  johnnym
+ * NotificationService.java which is part of the " wishbox ( frontend )" project
+ * Copyright (C)  2015  author:  johnnym 
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,32 +21,29 @@ package hu.fnf.devel.wishbox.gateway.endpoint;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Enums;
-import hu.fnf.devel.wishbox.gateway.entity.Event;
+import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping(WishboxGateway.ROOT)
-public class EventService {
-    @RequestMapping(value = "/event", method = RequestMethod.GET)
+public class NotificationService {
+    @RequestMapping(value = "/notification", method = RequestMethod.GET)
     @ResponseBody
-    public List<Event> getEventList() {
-        List<hu.fnf.devel.wishbox.gateway.entity.Event> eventList = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            hu.fnf.devel.wishbox.gateway.entity.Event event = new hu.fnf.devel.wishbox.gateway.entity.Event();
-            event.setTime(new Date());
-            event.setText("information about news#" + i);
-            event.setType(Enums.Type.NEWS);
-            event.setPriority(Enums.Priority.info);
-            event.setIcon("truck");
-            eventList.add(event);
+    public List<Notification> getNotificationList() {
+        List<Notification> NotificationList = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Notification Notification = new Notification();
+            Notification.setText("notification about news#" + i);
+            Notification.setPriority(Enums.Priority.info);
+            NotificationList.add(Notification);
         }
-        return eventList;
+
+        return NotificationList;
     }
 }

@@ -29,7 +29,7 @@
     </parent>
 
     <artifactId>frontend</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.SNAPSHOT</version>
 
     <packaging>war</packaging>
 
@@ -74,9 +74,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <jvmArguments>
-                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
-                    </jvmArguments>
+                    <!--<jvmArguments>-->
+                    <!---Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
+                    <!--</jvmArguments>-->
                 </configuration>
             </plugin>
         </plugins>

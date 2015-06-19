@@ -19,12 +19,10 @@
 
 package hu.fnf.devel.wishbox.gateway.entity;
 
-/**
- * Created by johnnym on 14/06/15.
- */
 public class Notification {
     private String text;
-    private Notification.State state;
+    private Enums.State state;
+    private Enums.Priority priority;
 
     public String getText() {
         return text;
@@ -34,13 +32,19 @@ public class Notification {
         this.text = text;
     }
 
-    public State getState() {
+    public Enums.State getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(Enums.State state) {
         this.state = state;
     }
 
-    public enum State {INFO, WARN, ALERT, DONE}
+    public Enums.Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Enums.Priority priority) {
+        this.priority = priority;
+    }
 }
