@@ -19,20 +19,19 @@
 
 package hu.fnf.devel.wishbox.gateway;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 @SpringBootApplication
 public class WishboxGateway extends SpringBootServletInitializer {
     public static final String ROOT = "/gateway";
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(WishboxGateway.class, args);
-    }
+    private static final Logger logger = LoggerFactory.getLogger(WishboxGateway.class);
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(WishboxGateway.class);
+    public static void main(String[] args) throws Exception {
+        logger.info("Starting...");
+        SpringApplication.run(WishboxGateway.class, args);
     }
 }

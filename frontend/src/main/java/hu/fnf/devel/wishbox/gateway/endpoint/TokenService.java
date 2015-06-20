@@ -28,6 +28,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
+import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,7 +92,7 @@ public class TokenService {
             session.setAttribute("id", gplusId);
 
             // Store the token in the session for later use.
-            session.setAttribute("token", tokenResponse.toString());
+            session.setAttribute(InterceptorConfig.key, tokenResponse.toString());
 
         } catch (TokenResponseException e) {
             throw new ServletException("Failed to upgrade the authorization code.");

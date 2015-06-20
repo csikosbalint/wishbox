@@ -31,13 +31,9 @@
     <artifactId>frontend</artifactId>
     <version>1.0.SNAPSHOT</version>
 
-    <packaging>war</packaging>
-
     <properties>
-        <app.version>1</app.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.7</java.version>
-        <gae.version>1.9.22</gae.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
@@ -52,6 +48,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
         </dependency>
 
         <!--3RDPARY-->
