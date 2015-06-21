@@ -1,5 +1,5 @@
 /*
- * Event.java which is part of the " wishbox ( shared )" project
+ * Event.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@ package hu.fnf.devel.wishbox.gateway.entity;
 
 import java.util.Date;
 
-public class Event {
+public class Event extends AbstractEntity {
     private Date time;
     private String text;
     private Enums.Type type;

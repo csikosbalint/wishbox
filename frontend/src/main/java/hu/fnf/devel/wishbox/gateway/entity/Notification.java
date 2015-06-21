@@ -1,5 +1,5 @@
 /*
- * WishboxGateway.java which is part of the " wishbox ( frontend )" project
+ * Notification.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway;
+package hu.fnf.devel.wishbox.gateway.entity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+public class Notification extends AbstractEntity {
+    private String text;
+    private Enums.State state;
+    private Enums.Priority priority;
 
-@SpringBootApplication
-public class WishboxGateway extends SpringBootServletInitializer {
-    public static final String ROOT = "/gateway";
-    private static final Logger logger = LoggerFactory.getLogger(WishboxGateway.class);
-
-    public static void main(String[] args) throws Exception {
-        logger.info("Starting...");
-        SpringApplication.run(WishboxGateway.class, args);
+    public String getText() {
+        return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Enums.State getState() {
+        return state;
+    }
+
+    public void setState(Enums.State state) {
+        this.state = state;
+    }
+
+    public Enums.Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Enums.Priority priority) {
+        this.priority = priority;
+    }
 }

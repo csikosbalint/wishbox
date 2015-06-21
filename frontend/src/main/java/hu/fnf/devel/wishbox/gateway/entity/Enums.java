@@ -1,5 +1,5 @@
 /*
- * Enums.java which is part of the " wishbox ( shared )" project
+ * Enums.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or

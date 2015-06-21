@@ -1,5 +1,5 @@
 /*
- * NotificationTest.java which is part of the " wishbox ( shared )" project
+ * WishRepository.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,23 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway.entity.test;
+package hu.fnf.devel.wishbox.gateway.entity.repository;
 
-import hu.fnf.devel.wishbox.gateway.entity.Enums;
-import hu.fnf.devel.wishbox.gateway.entity.Notification;
-import org.junit.Assert;
-import org.junit.Test;
+import hu.fnf.devel.wishbox.gateway.entity.Wish;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public class NotificationTest {
-    @Test
-    public void testProperties() throws Exception {
-        Notification notification = new Notification();
-        Enums.State state = Enums.State.alert;
-        notification.setState(state);
-        String text = "text";
-        notification.setText(text);
-
-        Assert.assertEquals(notification.getText(), text);
-        Assert.assertEquals(notification.getState(), state);
-    }
+public interface WishRepository extends MongoRepository<Wish, Long> {
 }

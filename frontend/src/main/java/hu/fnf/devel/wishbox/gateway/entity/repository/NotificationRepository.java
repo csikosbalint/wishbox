@@ -1,5 +1,5 @@
 /*
- * EventTest.java which is part of the " wishbox ( shared )" project
+ * NotificationRepository.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,28 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway.entity.test;
+package hu.fnf.devel.wishbox.gateway.entity.repository;
 
-import hu.fnf.devel.wishbox.gateway.entity.Enums;
-import hu.fnf.devel.wishbox.gateway.entity.Event;
-import org.junit.Assert;
-import org.junit.Test;
+import hu.fnf.devel.wishbox.gateway.entity.Notification;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.Date;
-
-public class EventTest {
-    @Test
-    public void testProperties() throws Exception {
-        Event event = new Event();
-        Enums.Type type = Enums.Type.FILE;
-        event.setType(type);
-        String text = "text";
-        event.setText(text);
-        Date date = new Date();
-        event.setTime(date);
-
-        Assert.assertEquals(event.getTime(), date);
-        Assert.assertEquals(event.getText(), text);
-        Assert.assertEquals(event.getType(), type);
-    }
+public interface NotificationRepository extends MongoRepository<Notification, Long> {
 }

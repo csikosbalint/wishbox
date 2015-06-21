@@ -26,11 +26,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter {
-    public static final String key = "token";
+    public static final String TOKEN = "token";
+    public static final String SUBJECT_ID = "id";
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SessionSecurityInterceptor(key))
+        registry.addInterceptor(new SessionSecurityInterceptor(TOKEN))
                 .addPathPatterns(WishboxGateway.ROOT + "/**")
                 .excludePathPatterns(WishboxGateway.ROOT + "/token");
     }

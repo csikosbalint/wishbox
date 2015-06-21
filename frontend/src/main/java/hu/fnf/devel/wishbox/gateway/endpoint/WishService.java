@@ -1,5 +1,5 @@
 /*
- * EventService.java which is part of the " wishbox ( frontend )" project
+ * WishService.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -21,33 +21,52 @@ package hu.fnf.devel.wishbox.gateway.endpoint;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Event;
+import hu.fnf.devel.wishbox.gateway.entity.User;
 import hu.fnf.devel.wishbox.gateway.entity.Wish;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(WishboxGateway.ROOT + "/event")
-public class EventService {
+@RequestMapping(WishboxGateway.ROOT + "/wish")
+public class WishService {
+
     @Autowired
     private UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<Event> getEventList(HttpSession session) {
+    public List<Wish> getWishList(HttpSession session) {
         String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
-        List<Event> events = new ArrayList<>();
+        return userRepository.findOne(uid).getWishes();
+    }
+
+    @RequestMapping(value = "/{id}/event", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Event> getEventList(@PathVariable("id") long id, HttpSession session) {
+        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        // TODO:optimalize!
         for (Wish w : userRepository.findOne(uid).getWishes()) {
-            events.addAll(w.getEvents());
+            if (w.getId() == id) {
+                return w.getEvents();
+            }
         }
-        return events;
+        return null;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public void addWish(@RequestBody Wish wish, HttpSession session) {
+        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        User user = userRepository.findOne(uid);
     }
 }

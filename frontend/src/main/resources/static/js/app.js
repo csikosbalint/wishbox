@@ -4,7 +4,6 @@ var myApp = angular.module("myApp",[]);
 
 //CONTROLLERS
 myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
-    console.log("mainController");
     $scope.signInCallback = function(authResult) {
         console.log(authResult)
         if (authResult['status']['signed_in']) {
@@ -24,8 +23,7 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
             // Hide the sign-in button now that the user is authorized, for example:
             $('#signinButton').attr('style', 'display: none');
 
-
-            var notifications = angular.element($("#notifications")).scope();
+//            var notifications = angular.element($("#notifications")).scope();
 
             // Send the code to the server
             $.ajax({
@@ -38,9 +36,20 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
                     $http.get('/gateway/event').then(function(result){
                         $scope.events = result.data;
                     });
+                    $scope.showEvent = true
                     $http.get('/gateway/notification').then(function(result){
                         $scope.notifications = result.data;
                     });
+                    $scope.showNotification = true
+                    $http.get('/gateway/wish').then(function(result){
+                        $scope.wishes = result.data;
+                    });
+                    $scope.showWish = true
+
+                    // this code reaches out of controller scope
+                    $('#nav-sidebar').attr('style', 'display: visible');
+                    $('#nav-menubar').attr('style', 'display: visible');
+
                     $scope.$apply();
                 }
             });
@@ -53,7 +62,10 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
         }
     }
 
-
+    $scope.addWish = function() {
+        console.log($scope.wish)
+        $http.post('/gateway/wish', $scope.wish);
+    }
 }]);
 
 myApp.controller("dropDownMenuController", ["$scope", function($scope) {
@@ -86,9 +98,10 @@ myApp.logout = function() {
 
 function outercallback(authResult) {
     var mainScope = angular.element(
-        document.getElementById('main')).scope();
+        document.getElementById('wrapper')).scope();
 
     mainScope.$apply( function() {
         mainScope.signInCallback(authResult);
     });
 }
+

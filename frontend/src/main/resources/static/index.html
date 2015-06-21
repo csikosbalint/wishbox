@@ -97,7 +97,7 @@
 
 <body>
 
-<div id="wrapper">
+<div id="wrapper" ng-controller="mainController">
 
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -110,9 +110,22 @@
             <a class="navbar-brand" href="#main" onclick="onclick()">SiteTitle</a>
         </div>
 
+        <div id="gConnect" style="display: visible" class="nav navbar-top-links navbar-right">
+            <div id="signinButton">
+            <span class="g-signin"
+                  data-scope="openid"
+                  data-clientid="574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com"
+                  data-redirecturi="postmessage"
+                  data-accesstype="offline"
+                  data-cookiepolicy="single_host_origin"
+                  data-callback="outercallback">
+            </span>
+            </div>
+        </div>
+
         <!-- /.navbar-header -->
 
-        <ul ng-controller="dropDownMenuController" class="nav navbar-top-links navbar-right">
+        <ul style="display: none" id="nav-menubar" class="nav navbar-top-links navbar-right">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -299,170 +312,57 @@
             <!-- /.dropdown -->
         </ul>
 
-        <div ng-show="$window.authenticated === true" role="navigation" class="navbar-default sidebar">
+        <div style="display: none" id="nav-sidebar" role="navigation" class="navbar-default sidebar">
             <div class="sidebar-nav navbar-collapse">
                 <ul id="side-menu" class="nav in">
                     <li class="sidebar-search">
                         <div class="input-group custom-search-form">
-                            <input type="text" placeholder="Create a wishcard..." class="form-control">
+                            <input type="text" placeholder="Create a wishcard..." class="form-control"
+                                   ng-model="wish.keyword" required>
                                 <span class="input-group-btn">
-                                <button type="button" class="btn btn-default">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </span>
+                                    <button type="button" class="btn btn-default" ng-click="addWish()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
                         </div>
                         <!-- /input-group -->
                     </li>
-                    <li>
-                        <a href="index.html" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa fa-angle-left"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="flot.html">Flot Charts</a>
-                            </li>
-                            <li>
-                                <a href="morris.html">Morris.js Charts</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa fa-angle-left"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="panels-wells.html">Panels and Wells</a>
-                            </li>
-                            <li>
-                                <a href="buttons.html">Buttons</a>
-                            </li>
-                            <li>
-                                <a href="notifications.html">Notifications</a>
-                            </li>
-                            <li>
-                                <a href="typography.html">Typography</a>
-                            </li>
-                            <li>
-                                <a href="icons.html"> Icons</a>
-                            </li>
-                            <li>
-                                <a href="grid.html">Grid</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li class="">
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span
-                                class="fa fa-angle-left"></span></a>
-                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level <span class="fa fa-angle-left"></span></a>
-                                <ul class="nav nav-third-level collapse">
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-third-level -->
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span
-                                class="fa fa-angle-left"></span></a>
-                        <ul class="nav nav-second-level collapse">
-                            <li>
-                                <a href="blank.html">Blank Page</a>
-                            </li>
-                            <li>
-                                <a href="login.html">Login Page</a>
-                            </li>
-                        </ul>
-                        <!-- /.nav-second-level -->
-                    </li>
                 </ul>
             </div>
-            <!-- /.sidebar-collapse -->
+            <div class="panel-body">
+                <div class="list-group">
+                    <div class="alert alert-success alert-dismissable">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a class="alert-link"
+                                                                                     href="#">Alert Link</a>.
+                    </div>
+                    <div id="wishes" ng-show="showWish === true" ng-repeat="wish in wishes track by $index"
+                         class="alert alert-info">
+                        {{wish.keyword}} <a class="alert-link" href="#">Download Link</a>.
+                    </div>
+
+                </div>
+                <!-- /.list-group -->
+                <a class="btn btn-default btn-block" href="#">View All Alerts</a>
+            </div>
         </div>
-
-
     </nav>
-    <div id="gConnect" class="navbar-header">
-        <div id="signinButton">
-            <span class="g-signin"
-                  data-scope="openid"
-                  data-clientid="574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com"
-                  data-redirecturi="postmessage"
-                  data-accesstype="offline"
-                  data-cookiepolicy="single_host_origin"
-                  data-callback="outercallback">
-            </span>
-        </div>
-    </div>
-
-
-    <div ng-show='window.getElementById("gConnect").display === "none"'>
-        <p>cica</p>
-    </div>
 
     <div id="page-wrapper" style="min-height: 464px;">
 
-        <div id="main" ng-controller="mainController" class="row">
+        <div class="row">
+            <h3 align="center"></h3>
 
-
-        <div class="col-lg-8">
-
+            <div class="col-lg-8" ng-show="showEvent === true">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"
-                                        type="button">
-                                    Actions
-                                    <span class="caret"></span>
-                                </button>
-                                <ul role="menu" class="dropdown-menu pull-right">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Events
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <ul class="timeline">
                             <li id="events" ng-repeat="event in events track by $index"
-                                ng-class="{'timeline-inverted' : $index % 2 == 0 }">
+                                ng-class="{'timeline-inverted' : $index % 2 == 1 }">
                                 <div href="javascript:void(0)" ng-click="chiliSpicy()"
                                      class="timeline-badge {{event.priority}}"><i
                                         class="fa fa-{{event.icon}}"></i>
@@ -489,33 +389,52 @@
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-8 -->
-            <div class="col-lg-4">
+            <div class="col-lg-4" ng-show="showNotification === true">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bell fa-fw"></i> Notifications Panel
+                        <i class="fa fa-bell fa-fw"></i> Notifications
+                        <div class="pull-right">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-default btn-xs dropdown-toggle"
+                                        type="button">
+                                    Actions
+                                    <span class="caret"></span>
+                                </button>
+                                <ul role="menu" class="dropdown-menu pull-right">
+                                    <li><a href="#">Action</a>
+                                    </li>
+                                    <li><a href="#">Another action</a>
+                                    </li>
+                                    <li><a href="#">Something else here</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <div class="list-group">
-                            <div class="alert alert-success alert-dismissable">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a class="alert-link"
-                                                                                             href="#">Alert Link</a>.
-                            </div>
-                            <div id="notifications" ng-repeat="notification in notifications track by $index"
-                                 class="alert alert-{{notification.priority}}">
-                                {{notification.text}} <a class="alert-link" href="#">Alert Link</a>.
-                            </div>
+
+                            <a id="notifications" ng-repeat="notification in notifications track by $index"
+                               class="list-group-item" href="#">
+                                <i class="fa fa-{{notification.priority}} fa-fw"></i>{{notification.text}}
+                            <span class="pull-right text-muted small"><em>{{notification.state}}</em>
+                            </span>
+                            </a>
+
                         </div>
                         <!-- /.list-group -->
-                        <a class="btn btn-default btn-block" href="#">View All Wishcard</a>
+                        <a class="btn btn-default btn-block" href="#">View All Notifications</a>
                     </div>
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-4 -->
-        </div>
+            </div>
 
     </div>
 

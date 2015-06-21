@@ -28,7 +28,13 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.Gson;
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
+import hu.fnf.devel.wishbox.gateway.entity.Enums;
+import hu.fnf.devel.wishbox.gateway.entity.Notification;
+import hu.fnf.devel.wishbox.gateway.entity.User;
+import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
+import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +59,11 @@ public class TokenService {
     private String CLIENT_ID = "574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com";
     private String CLIENT_SECRET = "6e4aUOTiB7AGIgQFKtcxkvZM";
 
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
+
     static void getContent(InputStream inputStream, ByteArrayOutputStream outputStream)
             throws IOException {
         // Read the response into a buffered stream
@@ -66,7 +77,7 @@ public class TokenService {
 
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
-    public void validateToken(@RequestBody String code, HttpSession session) throws ServletException, IOException {
+    public String validateToken(@RequestBody String code, HttpSession session) throws ServletException, IOException {
         // Ensure that this is no request forgery going on, and that the user
         // sending us this connect request is the user that was supposed to.
 //        if (!request.getParameter("state").equals(request.getSession().getAttribute("state"))) {
@@ -84,15 +95,26 @@ public class TokenService {
                     new GoogleAuthorizationCodeTokenRequest(TRANSPORT, JSON_FACTORY,
                             CLIENT_ID, CLIENT_SECRET, code, "postmessage").execute();
 
-            // You can read the Google user ID in the ID token.
-            // This sample does not use the user ID.
+            // You can read the Google user SUBJECT_ID in the SUBJECT_ID token.
+            // This sample does not use the user SUBJECT_ID.
             GoogleIdToken idToken = tokenResponse.parseIdToken();
-            String gplusId = idToken.getPayload().getSubject();
-            System.out.println(gplusId);
-            session.setAttribute("id", gplusId);
 
             // Store the token in the session for later use.
-            session.setAttribute(InterceptorConfig.key, tokenResponse.toString());
+            session.setAttribute(InterceptorConfig.TOKEN, tokenResponse.toString());
+            GoogleIdToken.Payload token = idToken.getPayload();
+            session.setAttribute(InterceptorConfig.SUBJECT_ID, token.getSubject());
+
+            if (!userRepository.exists(idToken.getPayload().getSubject())) {
+                User newUser = new User(token.getSubject(), token.getEmail(), "none");
+                Notification welcome = new Notification();
+                welcome.setText("Welcome to wishbox!");
+                welcome.setPriority(Enums.Priority.info);
+                welcome.setState(Enums.State.info);
+                notificationRepository.save(welcome);
+                newUser.addNotification(welcome);
+                userRepository.save(newUser);
+            }
+            return token.getSubject();
 
         } catch (TokenResponseException e) {
             throw new ServletException("Failed to upgrade the authorization code.");

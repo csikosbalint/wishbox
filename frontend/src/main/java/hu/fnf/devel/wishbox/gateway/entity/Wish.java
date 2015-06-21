@@ -1,5 +1,5 @@
 /*
- * Notification.java which is part of the " wishbox ( shared )" project
+ * Wish.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -19,32 +19,38 @@
 
 package hu.fnf.devel.wishbox.gateway.entity;
 
-public class Notification {
-    private String text;
-    private Enums.State state;
-    private Enums.Priority priority;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-    public String getText() {
-        return text;
+import java.util.ArrayList;
+import java.util.List;
+
+@Document(collection = "wishes")
+public class Wish extends AbstractEntity {
+    private String keyword;
+    @DBRef
+    private List<Event> events;
+    @DBRef
+    private List<Notification> notifications;
+
+    public Wish() {
+        this.events = new ArrayList<>();
+        this.notifications = new ArrayList<>();
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public Enums.State getState() {
-        return state;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
-    public void setState(Enums.State state) {
-        this.state = state;
+    public List<Event> getEvents() {
+        return events;
     }
 
-    public Enums.Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Enums.Priority priority) {
-        this.priority = priority;
+    public List<Notification> getNotifications() {
+        return notifications;
     }
 }

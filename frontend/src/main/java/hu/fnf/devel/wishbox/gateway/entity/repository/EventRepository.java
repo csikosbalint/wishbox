@@ -1,5 +1,5 @@
 /*
- * WishboxGateway.java which is part of the " wishbox ( frontend )" project
+ * EventRepository.java which is part of the " wishbox ( frontend )" project
  * Copyright (C)  2015  author:  johnnym
  *
  * This program is free software; you can redistribute it and/or
@@ -17,22 +17,10 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway;
+package hu.fnf.devel.wishbox.gateway.entity.repository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
+import hu.fnf.devel.wishbox.gateway.entity.Event;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-@SpringBootApplication
-public class WishboxGateway extends SpringBootServletInitializer {
-    public static final String ROOT = "/gateway";
-    private static final Logger logger = LoggerFactory.getLogger(WishboxGateway.class);
-
-    public static void main(String[] args) throws Exception {
-        logger.info("Starting...");
-        SpringApplication.run(WishboxGateway.class, args);
-    }
-
+public interface EventRepository extends MongoRepository<Event, Long> {
 }
