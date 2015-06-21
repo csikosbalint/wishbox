@@ -409,8 +409,7 @@
 
 
     </nav>
-
-    <div ng-controller="googleConnectController" id="gConnect" class="navbar-header">
+    <div id="gConnect" class="navbar-header">
         <div id="signinButton">
             <span class="g-signin"
                   data-scope="openid"
@@ -418,10 +417,11 @@
                   data-redirecturi="postmessage"
                   data-accesstype="offline"
                   data-cookiepolicy="single_host_origin"
-                  data-callback="signInCallback">
+                  data-callback="outercallback">
             </span>
         </div>
     </div>
+
 
     <div ng-show='window.getElementById("gConnect").display === "none"'>
         <p>cica</p>
@@ -429,9 +429,10 @@
 
     <div id="page-wrapper" style="min-height: 464px;">
 
-        <div data-ng-app data-ng-controller="mainController" class="row">
+        <div id="main" ng-controller="mainController" class="row">
 
-            <div class="col-lg-8">
+
+        <div class="col-lg-8">
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -525,6 +526,7 @@
     var siteTitle = "WishBox Admin v1.0";
     document.getElementsByClassName("navbar-brand")[0].textContent = siteTitle;
     document.title = siteTitle;
+
 </script>
 
 </body>

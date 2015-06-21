@@ -1,16 +1,11 @@
 var myApp = angular.module("myApp",[]);
 
-//ROUTES
-//myApp.config(function ($routeProvider)  {
-//
-//    $routeProvider
-//    .when("", {
-//        templateUrl: "pages/wrapper.html",
-//        controller: "mainController"
-//    });
-//
-//});
-function signInCallback(authResult) {
+
+
+//CONTROLLERS
+myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
+    console.log("mainController");
+    $scope.signInCallback = function(authResult) {
         console.log(authResult)
         if (authResult['status']['signed_in']) {
             // Your user is signed in. You can use the access token to perform
@@ -40,20 +35,13 @@ function signInCallback(authResult) {
                 processData: false,
                 data: authResult['code'],
                 success: function (result) {
-                        $.ajax({
-                            type:       'GET',
-                            url:        '/gateway/event',
-                            dataType:   'json',
-                            success:    function(result) {
-                                var events = angular.element($("#events")).scope();
-                                events.events = []
-                                $.each(result, function(key, value) {
-                                  events.events.push(value)
-                                });
-                                events.$apply()
-                            }
-                        });
-
+                    $http.get('/gateway/event').then(function(result){
+                        $scope.events = result.data;
+                    });
+                    $http.get('/gateway/notification').then(function(result){
+                        $scope.notifications = result.data;
+                    });
+                    $scope.$apply();
                 }
             });
         } else if (authResult['error']) {
@@ -64,12 +52,6 @@ function signInCallback(authResult) {
             console.log('There was an error: ' + authResult['error']);
         }
     }
-
-//CONTROLLERS
-myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
-    console.log("mainController");
-
-
 
 
 }]);
@@ -101,3 +83,12 @@ myApp.logout = function() {
         processData: false,
     });
 };
+
+function outercallback(authResult) {
+    var mainScope = angular.element(
+        document.getElementById('main')).scope();
+
+    mainScope.$apply( function() {
+        mainScope.signInCallback(authResult);
+    });
+}
