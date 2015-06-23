@@ -20,10 +20,14 @@
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
+import hu.fnf.devel.wishbox.gateway.entity.Enums;
 import hu.fnf.devel.wishbox.gateway.entity.Event;
+import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import hu.fnf.devel.wishbox.gateway.entity.User;
 import hu.fnf.devel.wishbox.gateway.entity.Wish;
+import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
+import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +46,10 @@ public class WishService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private WishRepository wishRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -52,11 +60,11 @@ public class WishService {
 
     @RequestMapping(value = "/{id}/event", method = RequestMethod.GET)
     @ResponseBody
-    public List<Event> getEventList(@PathVariable("id") long id, HttpSession session) {
+    public List<Event> getEventList(@PathVariable("id") String id, HttpSession session) {
         String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
-        // TODO:optimalize!
+        // TODO: optimalize!
         for (Wish w : userRepository.findOne(uid).getWishes()) {
-            if (w.getId() == id) {
+            if (w.getId().equals(id)) {
                 return w.getEvents();
             }
         }
@@ -66,7 +74,18 @@ public class WishService {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public void addWish(@RequestBody Wish wish, HttpSession session) {
+        Notification notification = new Notification();
+        notification.setText("WishCard has been created: " + "\"" + wish.getKeyword() + "\"");
+        notification.setPriority(Enums.Priority.info);
+        notification.setState(Enums.State.info);
+        notificationRepository.save(notification);
+
+        wish.addNotification(notification);
+        wishRepository.save(wish);
+
         String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
         User user = userRepository.findOne(uid);
+        user.addWish(wish);
+        userRepository.save(user);
     }
 }

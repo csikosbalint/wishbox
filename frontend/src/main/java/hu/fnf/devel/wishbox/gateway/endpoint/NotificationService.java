@@ -21,6 +21,8 @@ package hu.fnf.devel.wishbox.gateway.endpoint;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
+import hu.fnf.devel.wishbox.gateway.entity.User;
+import hu.fnf.devel.wishbox.gateway.entity.Wish;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -42,6 +45,12 @@ public class NotificationService {
     @ResponseBody
     public List<Notification> getNotificationList(HttpSession session) {
         String id = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
-        return userRepository.findOne(id).getNotifications();
+        User user = userRepository.findOne(id);
+        List<Notification> notifications = new ArrayList<>();
+        notifications.addAll(user.getNotifications());
+        for (Wish wish : user.getWishes()) {
+            notifications.addAll(wish.getNotifications());
+        }
+        return notifications;
     }
 }

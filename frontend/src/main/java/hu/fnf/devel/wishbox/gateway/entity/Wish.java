@@ -53,4 +53,8 @@ public class Wish extends AbstractEntity {
     public List<Notification> getNotifications() {
         return notifications;
     }
+
+    public void addNotification(Notification notification) {
+        notifications.add(notification);
+    }
 }

@@ -19,7 +19,6 @@
 
 package hu.fnf.devel.wishbox.gateway.entity;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,10 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "users")
-public class User {
+public class User extends AbstractEntity {
 
-    @Id
-    private String id;
     private String firstName;
     private String lastName;
     @DBRef
@@ -39,19 +36,11 @@ public class User {
     private List<Notification> notifications;
 
     public User(String id, String firstName, String lastName) {
-        this.setId(id);
+        super.setId(id);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.notifications = new ArrayList<>();
         this.wishes = new ArrayList<>();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -80,5 +69,9 @@ public class User {
 
     public void addNotification(Notification notification) {
         this.notifications.add(notification);
+    }
+
+    public void addWish(Wish wish) {
+        this.wishes.add(wish);
     }
 }

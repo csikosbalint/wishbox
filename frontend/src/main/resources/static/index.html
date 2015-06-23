@@ -317,7 +317,7 @@
                 <ul id="side-menu" class="nav in">
                     <li class="sidebar-search">
                         <div class="input-group custom-search-form">
-                            <input type="text" placeholder="Create a wishcard..." class="form-control"
+                            <input type="text" placeholder="Make a wish..." class="form-control"
                                    ng-model="wish.keyword" required>
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="addWish()">
@@ -338,7 +338,8 @@
                     </div>
                     <div id="wishes" ng-show="showWish === true" ng-repeat="wish in wishes track by $index"
                          class="alert alert-info">
-                        {{wish.keyword}} <a class="alert-link" href="#">Download Link</a>.
+                        <i class="glyphicon glyphicon-star" style="right: 5px"></i>
+                        {{wish.keyword}}
                     </div>
 
                 </div>
@@ -419,8 +420,8 @@
                         <div class="list-group">
 
                             <a id="notifications" ng-repeat="notification in notifications track by $index"
-                               class="list-group-item" href="#">
-                                <i class="fa fa-{{notification.priority}} fa-fw"></i>{{notification.text}}
+                               class="list-group-item">
+                                <i class="fa fa-{{notification.priority}} fa-fw" style="right: 10px"></i>{{notification.text}}
                             <span class="pull-right text-muted small"><em>{{notification.state}}</em>
                             </span>
                             </a>

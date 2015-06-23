@@ -64,7 +64,12 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
 
     $scope.addWish = function() {
         console.log($scope.wish)
-        $http.post('/gateway/wish', $scope.wish);
+        $http.post('/gateway/wish', $scope.wish)
+            .success(function(data, status, headers, config) {
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            });
     }
 }]);
 

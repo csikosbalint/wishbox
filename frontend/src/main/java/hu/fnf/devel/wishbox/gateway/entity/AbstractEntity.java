@@ -20,16 +20,18 @@
 package hu.fnf.devel.wishbox.gateway.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 public class AbstractEntity {
     @Id
-    private long id;
+    @Indexed(unique = true)
+    private String id;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 }
