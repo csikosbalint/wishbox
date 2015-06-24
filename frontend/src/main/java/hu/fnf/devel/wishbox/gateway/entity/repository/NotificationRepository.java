@@ -22,5 +22,5 @@ package hu.fnf.devel.wishbox.gateway.entity.repository;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface NotificationRepository extends MongoRepository<Notification, Long> {
+public interface NotificationRepository extends MongoRepository<Notification, String> {
 }

@@ -27,7 +27,8 @@ import java.util.List;
 
 @Document(collection = "wishes")
 public class Wish extends AbstractEntity {
-    private String keyword;
+    private String label;
+    private List<String> keywords;
     @DBRef
     private List<Event> events;
     @DBRef
@@ -36,14 +37,15 @@ public class Wish extends AbstractEntity {
     public Wish() {
         this.events = new ArrayList<>();
         this.notifications = new ArrayList<>();
+        this.keywords = new ArrayList<>();
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getLabel() {
+        return label;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public List<Event> getEvents() {
@@ -61,4 +63,21 @@ public class Wish extends AbstractEntity {
     public void addEvent(Event event) {
         events.add(event);
     }
+
+    public void addKeyword(String keyword) {
+        keywords.add(keyword);
+    }
+
+    public void removeEvent(Event event) {
+        for (Event e : events) {
+            if (e.getId().equals(event.getId())) {
+                System.out.println("events#: " + events.size());
+                events.remove(e);
+                System.out.println("removing: " + e.getId());
+                System.out.println("events#: " + events.size());
+                break;
+            }
+        }
+    }
+
 }

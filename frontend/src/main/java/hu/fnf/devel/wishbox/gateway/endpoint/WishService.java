@@ -79,18 +79,20 @@ public class WishService {
     @ResponseBody
     public void addWish(@RequestBody Wish wish, HttpSession session) {
         Notification notification = new Notification();
-        notification.setText("WishCard has been created: " + "\"" + wish.getKeyword() + "\"");
+        notification.setText("WishCard has been created: " + "\"" + wish.getLabel() + "\"");
         notification.setPriority(Enums.Priority.info);
         notification.setState(Enums.State.info);
         notificationRepository.save(notification);
 
         Event event = new Event();
+        event.setTitle(wish.getLabel());
         event.setText("Wish has been made.");
         event.setPriority(Enums.Priority.info);
         event.setIcon("magic");
         event.setTime(new Date());
         eventRepository.save(event);
 
+        wish.addKeyword(wish.getLabel());
         wish.addNotification(notification);
         wish.addEvent(event);
         wishRepository.save(wish);

@@ -19,12 +19,15 @@
 
 package hu.fnf.devel.wishbox.gateway.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
+@Document(collection = "events")
 public class Event extends AbstractEntity {
     private Date time;
     private String text;
-    private Enums.Type type;
+    private String title;
     private Enums.Priority priority;
     private String icon;
 
@@ -44,12 +47,12 @@ public class Event extends AbstractEntity {
         this.text = text;
     }
 
-    public Enums.Type getType() {
-        return type;
+    public String getTitle() {
+        return title;
     }
 
-    public void setType(Enums.Type type) {
-        this.type = type;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Enums.Priority getPriority() {

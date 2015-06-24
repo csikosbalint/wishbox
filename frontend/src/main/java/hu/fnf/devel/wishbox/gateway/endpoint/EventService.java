@@ -21,11 +21,15 @@ package hu.fnf.devel.wishbox.gateway.endpoint;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Event;
+import hu.fnf.devel.wishbox.gateway.entity.User;
 import hu.fnf.devel.wishbox.gateway.entity.Wish;
+import hu.fnf.devel.wishbox.gateway.entity.repository.EventRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
+import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,15 +43,35 @@ import java.util.List;
 public class EventService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private WishRepository wishRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<Event> getEventList(HttpSession session) {
         String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
         List<Event> events = new ArrayList<>();
-        for (Wish w : userRepository.findOne(uid).getWishes()) {
-            events.addAll(w.getEvents());
+        for (Wish wish : userRepository.findOne(uid).getWishes()) {
+            events.addAll(wish.getEvents());
         }
         return events;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteEvent(@PathVariable("id") String id, HttpSession session) {
+        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        User user = userRepository.findOne(uid);
+        for (Wish wish : user.getWishes()) {
+            for (Event event : wish.getEvents()) {
+                if (event.getId().equals(id)) {
+                    Wish w = wishRepository.findOne(wish.getId());
+                    w.removeEvent(event);
+                    eventRepository.delete(id);
+                }
+            }
+        }
     }
 }

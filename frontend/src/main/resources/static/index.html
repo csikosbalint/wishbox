@@ -318,7 +318,7 @@
                     <li class="sidebar-search">
                         <div class="input-group custom-search-form">
                             <input type="text" placeholder="Make a wish..." class="form-control"
-                                   ng-model="wish.keyword" required>
+                                   ng-model="wish.label" required>
                                 <span class="input-group-btn">
                                     <button type="button" class="btn btn-default" ng-click="addWish()">
                                         <i class="fa fa-plus"></i>
@@ -339,12 +339,12 @@
                     <div id="wishes" ng-show="showWish === true" ng-repeat="wish in wishes track by $index"
                          class="alert alert-info">
                         <i class="glyphicon glyphicon-star" style="right: 5px"></i>
-                        {{wish.keyword}}
+                        {{wish.label}}
                     </div>
 
                 </div>
                 <!-- /.list-group -->
-                <a class="btn btn-default btn-block" href="#">View All Alerts</a>
+                <a class="btn btn-default btn-block" href="#">View All WishCards</a>
             </div>
         </div>
     </nav>
@@ -362,19 +362,20 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <ul class="timeline">
-                            <li id="events" ng-repeat="event in events track by $index"
+                            <li id="events" ng-repeat="event in events track by event.time"
                                 ng-class="{'timeline-inverted' : $index % 2 == 1 }">
                                 <div href="javascript:void(0)"
                                      class="timeline-badge {{event.priority}}"><i
                                         class="fa fa-{{event.icon}}"></i>
                                 </div>
                                 <div class="timeline-panel">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"
+                                            ng-click="removeEvent(event)">×
+                                    </button>
                                     <div class="timeline-heading">
-                                        <h4 class="timeline-title">{{event.type}}</h4>
-
+                                        <h4 class="timeline-title">{{event.title}}</h4>
                                         <p>
-                                            <small class="text-muted"><i class="fa fa-clock-o"></i>
-                                                {{event.time}}
+                                            <small class="text-muted"><i class="fa fa-clock-o"></i> {{event.time}}
                                             </small>
                                         </p>
                                     </div>
@@ -425,10 +426,10 @@
                             <span class="pull-right text-muted small"><em>{{notification.state}}</em>
                             </span>
                             </a>
-
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         </div>
                         <!-- /.list-group -->
-                        <a class="btn btn-default btn-block" href="#">View All Notifications</a>
+
                     </div>
                     <!-- /.panel-body -->
                 </div>

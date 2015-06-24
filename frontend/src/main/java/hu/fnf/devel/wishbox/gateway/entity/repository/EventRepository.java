@@ -22,5 +22,5 @@ package hu.fnf.devel.wishbox.gateway.entity.repository;
 import hu.fnf.devel.wishbox.gateway.entity.Event;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface EventRepository extends MongoRepository<Event, Long> {
+public interface EventRepository extends MongoRepository<Event, String> {
 }

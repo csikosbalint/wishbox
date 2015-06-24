@@ -38,8 +38,14 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
     }
 
     $scope.addWish = function() {
-        console.log($scope.wish)
         $http.post('/gateway/wish', $scope.wish)
+            .success(function(data, status, headers, config) {
+                $scope.redraw()
+            });
+    }
+
+    $scope.removeEvent = function(event) {
+        $http.delete('/gateway/event/' + event.id)
             .success(function(data, status, headers, config) {
                 $scope.redraw()
             });

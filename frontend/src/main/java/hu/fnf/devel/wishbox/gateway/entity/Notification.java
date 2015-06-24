@@ -19,6 +19,9 @@
 
 package hu.fnf.devel.wishbox.gateway.entity;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "notifications")
 public class Notification extends AbstractEntity {
     private String text;
     private Enums.State state;

@@ -22,5 +22,5 @@ package hu.fnf.devel.wishbox.gateway.entity.repository;
 import hu.fnf.devel.wishbox.gateway.entity.Wish;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface WishRepository extends MongoRepository<Wish, Long> {
+public interface WishRepository extends MongoRepository<Wish, String> {
 }

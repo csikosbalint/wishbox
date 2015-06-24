@@ -20,8 +20,6 @@
 package hu.fnf.devel.wishbox.gateway.entity;
 
 public class Enums {
-    public enum Type {NEWS, FILE}
-
     public enum Priority {none, info, warning, danger}
 
     public enum State {info, warn, alert, done}
