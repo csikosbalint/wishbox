@@ -25,6 +25,7 @@ import hu.fnf.devel.wishbox.gateway.entity.Event;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import hu.fnf.devel.wishbox.gateway.entity.User;
 import hu.fnf.devel.wishbox.gateway.entity.Wish;
+import hu.fnf.devel.wishbox.gateway.entity.repository.EventRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -50,6 +52,8 @@ public class WishService {
     private WishRepository wishRepository;
     @Autowired
     private NotificationRepository notificationRepository;
+    @Autowired
+    private EventRepository eventRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -80,7 +84,15 @@ public class WishService {
         notification.setState(Enums.State.info);
         notificationRepository.save(notification);
 
+        Event event = new Event();
+        event.setText("Wish has been made.");
+        event.setPriority(Enums.Priority.info);
+        event.setIcon("magic");
+        event.setTime(new Date());
+        eventRepository.save(event);
+
         wish.addNotification(notification);
+        wish.addEvent(event);
         wishRepository.save(wish);
 
         String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);

@@ -1,9 +1,8 @@
 var myApp = angular.module("myApp",[]);
 
-
-
 //CONTROLLERS
 myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
+
     $scope.signInCallback = function(authResult) {
         console.log(authResult)
         if (authResult['status']['signed_in']) {
@@ -26,32 +25,8 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
 //            var notifications = angular.element($("#notifications")).scope();
 
             // Send the code to the server
-            $.ajax({
-                type: 'POST',
-                url: 'gateway/token',
-                contentType: 'application/octet-stream; charset=utf-8',
-                processData: false,
-                data: authResult['code'],
-                success: function (result) {
-                    $http.get('/gateway/event').then(function(result){
-                        $scope.events = result.data;
-                    });
-                    $scope.showEvent = true
-                    $http.get('/gateway/notification').then(function(result){
-                        $scope.notifications = result.data;
-                    });
-                    $scope.showNotification = true
-                    $http.get('/gateway/wish').then(function(result){
-                        $scope.wishes = result.data;
-                    });
-                    $scope.showWish = true
-
-                    // this code reaches out of controller scope
-                    $('#nav-sidebar').attr('style', 'display: visible');
-                    $('#nav-menubar').attr('style', 'display: visible');
-
-                    $scope.$apply();
-                }
+            $http.post('gateway/token', authResult['code']).success(function() {
+                $scope.redraw()
             });
         } else if (authResult['error']) {
             // There was an error.
@@ -66,10 +41,33 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
         console.log($scope.wish)
         $http.post('/gateway/wish', $scope.wish)
             .success(function(data, status, headers, config) {
-                if(!$scope.$$phase) {
-                    $scope.$apply();
-                }
+                $scope.redraw()
             });
+    }
+
+    $scope.redraw = function () {
+        $http.get('/gateway/event')
+            .success(function(data, status, headers, config) {
+                $scope.events = data;
+        });
+        $scope.showEvent = true
+
+        $http.get('/gateway/notification')
+            .success(function(data, status, headers, config) {
+                $scope.notifications = data;
+        });
+        $scope.showNotification = true
+
+        $http.get('/gateway/wish')
+            .success(function(data, status, headers, config) {
+                $scope.wishes = data;
+        });
+        $scope.showWish = true
+
+        // this code reaches out of controller scope
+        $('#nav-sidebar').attr('style', 'display: visible');
+        $('#nav-menubar').attr('style', 'display: visible');
+
     }
 }]);
 
@@ -92,9 +90,7 @@ myApp.logout = function() {
             // Prints the list of people that the user has allowed the app to know
             // to the console.
             // console.log(result);
-            $scope.$apply(function() {
-                $scope.spice = result;
-            });
+
             console.log(result);
         },
         processData: false,
