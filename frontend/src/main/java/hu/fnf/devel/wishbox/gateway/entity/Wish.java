@@ -69,12 +69,18 @@ public class Wish extends AbstractEntity {
     }
 
     public void removeEvent(Event event) {
-        for (Event e : events) {
+        for (Event e : this.events) {
             if (e.getId().equals(event.getId())) {
-                System.out.println("events#: " + events.size());
-                events.remove(e);
-                System.out.println("removing: " + e.getId());
-                System.out.println("events#: " + events.size());
+                this.events.remove(e);
+                break;
+            }
+        }
+    }
+
+    public void removeNotification(Notification notification) {
+        for (Notification n : this.notifications) {
+            if (n.getId().equals(notification.getId())) {
+                this.notifications.remove(n);
                 break;
             }
         }

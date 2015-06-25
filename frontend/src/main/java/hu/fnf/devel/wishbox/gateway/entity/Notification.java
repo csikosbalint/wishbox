@@ -21,11 +21,22 @@ package hu.fnf.devel.wishbox.gateway.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document(collection = "notifications")
 public class Notification extends AbstractEntity {
+    private Date time;
     private String text;
     private Enums.State state;
     private Enums.Priority priority;
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
 
     public String getText() {
         return text;

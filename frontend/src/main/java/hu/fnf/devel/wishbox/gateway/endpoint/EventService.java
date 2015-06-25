@@ -69,7 +69,9 @@ public class EventService {
                 if (event.getId().equals(id)) {
                     Wish w = wishRepository.findOne(wish.getId());
                     w.removeEvent(event);
+                    wishRepository.save(w);
                     eventRepository.delete(id);
+                    return;
                 }
             }
         }

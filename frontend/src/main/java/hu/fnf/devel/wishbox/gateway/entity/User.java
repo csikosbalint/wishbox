@@ -74,4 +74,13 @@ public class User extends AbstractEntity {
     public void addWish(Wish wish) {
         this.wishes.add(wish);
     }
+
+    public void removeWish(Wish wish) {
+        for (Wish w : this.wishes) {
+            if (w.getId().equals(wish.getId())) {
+                this.wishes.remove(w);
+                return;
+            }
+        }
+    }
 }

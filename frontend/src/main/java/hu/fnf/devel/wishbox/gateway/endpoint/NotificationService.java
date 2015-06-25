@@ -23,10 +23,13 @@ import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import hu.fnf.devel.wishbox.gateway.entity.User;
 import hu.fnf.devel.wishbox.gateway.entity.Wish;
+import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
+import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +43,10 @@ import java.util.List;
 public class NotificationService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private WishRepository wishRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -52,5 +59,24 @@ public class NotificationService {
             notifications.addAll(wish.getNotifications());
         }
         return notifications;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteEvent(@PathVariable("id") String id, HttpSession session) {
+        throw new UnsupportedOperationException();
+//        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+//        User user = userRepository.findOne(uid);
+//        for (Wish wish : user.getWishes()) {
+//            for (Notification notification : wish.getNotifications() ) {
+//                if (notification.getId().equals(id)) {
+//                    Wish w = wishRepository.findOne(wish.getId());
+//                    w.removeNotification(notification);
+//                    wishRepository.save(w);
+//                    notificationRepository.delete(id);
+//                    return;
+//                }
+//            }
+//        }
     }
 }

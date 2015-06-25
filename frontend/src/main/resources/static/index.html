@@ -37,9 +37,6 @@
     <!--<link href="bower_components/metisMenu/dist/metisMenu.css" rel="stylesheet">-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.2/metisMenu.css" rel="stylesheet">
 
-    <!-- Timeline CSS -->
-    <link href="dist/css/timeline.css" rel="stylesheet">
-
     <!-- Morris Charts CSS -->
     <!--<link href="../bower_components/morrisjs/morris.css" rel="stylesheet">-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" rel="stylesheet">
@@ -50,8 +47,12 @@
           type="text/css">
 
     <!-- Custom CSS -->
+    <link href="dist/css/timeline.css" rel="stylesheet">
     <link href="dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="dist/css/dialogs.css" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.3.12/css/ngDialog-theme-default.css"
+          rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- warning: Respond.js doesn't work if you view the page via file:// -->
 
@@ -86,7 +87,10 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-messages.js"></script>-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.js"></script>-->
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.js"></script>-->
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js" type="text/javascript"></script>
+    <!--<script src="http://m-e-conroy.github.io/angular-dialog-service/javascripts/dialogs.min.js" type="text/javascript"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.3.12/js/ngDialog.js"></script>
     <!--Application-->
     <script src="https://apis.google.com/js/client:platform.js" async defer></script>
     <script src="js/app.js"></script>
@@ -318,9 +322,9 @@
                     <li class="sidebar-search">
                         <div class="input-group custom-search-form">
                             <input type="text" placeholder="Make a wish..." class="form-control"
-                                   ng-model="wish.label" required>
+                                   ng-model="newWish.label" required>
                                 <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default" ng-click="addWish()">
+                                    <button type="button" class="btn btn-default" ng-click="makeWish(newWish)">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </span>
@@ -331,13 +335,11 @@
             </div>
             <div class="panel-body">
                 <div class="list-group">
-                    <div class="alert alert-success alert-dismissable">
-                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a class="alert-link"
-                                                                                     href="#">Alert Link</a>.
-                    </div>
                     <div id="wishes" ng-show="showWish === true" ng-repeat="wish in wishes track by $index"
                          class="alert alert-info">
+                        <button ng-click="removeWish(wish)" aria-hidden="true" data-dismiss="alert" class="close"
+                                type="button">×
+                        </button>
                         <i class="glyphicon glyphicon-star" style="right: 5px"></i>
                         {{wish.label}}
                     </div>
@@ -362,7 +364,7 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <ul class="timeline">
-                            <li id="events" ng-repeat="event in events track by event.time"
+                            <li id="events" ng-repeat="event in events | orderBy:'-time' | limitTo:10"
                                 ng-class="{'timeline-inverted' : $index % 2 == 1 }">
                                 <div href="javascript:void(0)"
                                      class="timeline-badge {{event.priority}}"><i
@@ -420,13 +422,13 @@
                     <div class="panel-body">
                         <div class="list-group">
 
-                            <a id="notifications" ng-repeat="notification in notifications track by $index"
+                            <a id="notifications"
+                               ng-repeat="notification in notifications | orderBy:'-time' | limitTo:15"
                                class="list-group-item">
                                 <i class="fa fa-{{notification.priority}} fa-fw" style="right: 10px"></i>{{notification.text}}
                             <span class="pull-right text-muted small"><em>{{notification.state}}</em>
                             </span>
                             </a>
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         </div>
                         <!-- /.list-group -->
 

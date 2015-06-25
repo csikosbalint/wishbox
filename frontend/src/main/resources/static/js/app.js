@@ -1,10 +1,11 @@
-var myApp = angular.module("myApp",[]);
+var myApp = angular.module("myApp",['ui.bootstrap', 'ngDialog']);
+// USEFULL http://codepen.io/m-e-conroy/pen/ALsdF
 
 //CONTROLLERS
-myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
+
+myApp.controller("mainController", ["$scope","$http","ngDialog", function($scope, $http, ngDialog) {
 
     $scope.signInCallback = function(authResult) {
-        console.log(authResult)
         if (authResult['status']['signed_in']) {
             // Your user is signed in. You can use the access token to perform
             // API calls or if you get a `code`, you could send that to your
@@ -37,15 +38,35 @@ myApp.controller("mainController", ["$scope","$http", function($scope, $http) {
         }
     }
 
-    $scope.addWish = function() {
-        $http.post('/gateway/wish', $scope.wish)
-            .success(function(data, status, headers, config) {
-                $scope.redraw()
-            });
+    $scope.makeWish = function(w) {
+        var dialog = ngDialog.openConfirm({
+            template: 'makeWish.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope,
+            closeByEscape: true,
+            closeByDocument: true,
+            controller: ['$scope', function($scope) {
+                console.log($scope.newWish)
+                }]
+        });
+    }
+    $scope.makeWish.post = function(w) {
+        $http.post('/gateway/wish', w)
+        .success(function(data, status, headers, config) {
+            $scope.newWish = null;
+            $scope.redraw()
+        });
     }
 
-    $scope.removeEvent = function(event) {
-        $http.delete('/gateway/event/' + event.id)
+    $scope.removeWish = function(w) {
+        $http.delete('/gateway/wish/' + w.id)
+        .success(function(data, status, headers, config) {
+            $scope.redraw()
+        });
+        }
+
+    $scope.removeEvent = function(e) {
+        $http.delete('/gateway/event/' + e.id)
             .success(function(data, status, headers, config) {
                 $scope.redraw()
             });

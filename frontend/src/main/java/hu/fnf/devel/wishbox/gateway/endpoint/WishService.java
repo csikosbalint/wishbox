@@ -81,7 +81,7 @@ public class WishService {
         Notification notification = new Notification();
         notification.setText("WishCard has been created: " + "\"" + wish.getLabel() + "\"");
         notification.setPriority(Enums.Priority.info);
-        notification.setState(Enums.State.info);
+        notification.setState(Enums.State.done);
         notificationRepository.save(notification);
 
         Event event = new Event();
@@ -93,13 +93,35 @@ public class WishService {
         eventRepository.save(event);
 
         wish.addKeyword(wish.getLabel());
-        wish.addNotification(notification);
         wish.addEvent(event);
         wishRepository.save(wish);
 
         String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
         User user = userRepository.findOne(uid);
+        user.addNotification(notification);
         user.addWish(wish);
         userRepository.save(user);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteWish(@PathVariable("id") String id, HttpSession session) {
+        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        User user = userRepository.findOne(uid);
+        for (Wish wish : user.getWishes()) {
+            if (wish.getId().equals(id)) {
+                user.removeWish(wish);
+                wishRepository.delete(id);
+                Notification notification = new Notification();
+                notification.setText("WishCard has been deleted: " + "\"" + wish.getLabel() + "\"");
+                notification.setPriority(Enums.Priority.warning);
+                notification.setState(Enums.State.warn);
+                notificationRepository.save(notification);
+
+                user.addNotification(notification);
+                userRepository.save(user);
+                return;
+            }
+        }
     }
 }
