@@ -1,14 +1,65 @@
-var myApp = angular.module("myApp",['ui.bootstrap', 'ngDialog']);
+var myApp = angular.module("myApp",['ui.bootstrap', 'ngDialog', 'ngWebsocket'])
+    .service("MessageService", function($q, $timeout) {
+
+        var service = {}, listener = $q.defer(), socket = {
+          client: null,
+          stomp: null
+        }, messageIds = [];
+
+        service.RECONNECT_TIMEOUT = 30000;
+        service.SOCKET_URL = "http://localhost:8080/websocket";
+        service.CHAT_TOPIC = "/user/topic/UIFeed";
+        service.CHAT_BROKER = "/queue/GWFeed";
+
+        service.receive = function() {
+          return listener.promise;
+        };
+
+        service.send = function(message) {
+          var id = Math.floor(Math.random() * 1000000);
+          socket.stomp.send(service.CHAT_BROKER, {
+            priority: 9
+          }, message);
+        };
+
+        var reconnect = function() {
+          $timeout(function() {
+            initialize();
+          }, this.RECONNECT_TIMEOUT);
+        };
+
+        var getMessage = function(data) {
+          return data;
+        };
+
+        var startListener = function() {
+          socket.stomp.subscribe(service.CHAT_TOPIC, function(data) {
+            listener.notify(getMessage(data.body));
+          });
+        };
+
+        service.initialize = function() {
+          socket.client = new SockJS(service.SOCKET_URL);
+          socket.stomp = Stomp.over(socket.client);
+          socket.stomp.connect({}, startListener);
+          socket.stomp.onclose = reconnect;
+        };
+
+        return service;
+      });
 // USEFULL http://codepen.io/m-e-conroy/pen/ALsdF
 
 //CONTROLLERS
 
-myApp.controller("mainController", ["$scope","$http","ngDialog","$filter","$interval",
-                            function($scope,  $http,  ngDialog,  $filter,  $interval) {
+myApp.controller("mainController", ["$scope","$http","ngDialog","$filter","$interval","MessageService",
+                            function($scope,  $http,  ngDialog,  $filter,  $interval,  MessageService ) {
+
     var apiEndpoint = "/gateway"
     var reload = $interval(function() {
         $scope.redraw()
-    }, 60000)
+    }, 60000 * 15)
+
+    var messageHandler = function(message) { console.log(message) }
 
     $scope.signInCallback = function(authResult) {
         if (authResult['status']['signed_in']) {
@@ -31,7 +82,9 @@ myApp.controller("mainController", ["$scope","$http","ngDialog","$filter","$inte
 //            var notifications = angular.element($("#notifications")).scope();
 
             // Send the code to the server
-            $http.post('gateway/token', authResult['code']).success(function() {
+            $http.post(apiEndpoint + '/token', authResult['code']).success(function() {
+                MessageService.initialize()
+                MessageService.receive().then(null, null, messageHandler);
                 $scope.redraw()
             });
         } else if (authResult['error']) {
@@ -56,6 +109,8 @@ myApp.controller("mainController", ["$scope","$http","ngDialog","$filter","$inte
         });
     }
     $scope.makeWish.post = function(w) {
+        MessageService.send("cica")
+
         $http.post(apiEndpoint + '/wish', w)
         .success(function(data, status, headers, config) {
             $scope.newWish = null;
@@ -178,6 +233,7 @@ myApp.controller("googleConnectController", ["$scope", function($scope) {
 }]);
 
 myApp.logout = function() {
+
     $.ajax({
         type: 'DELETE',
         url: 'token',

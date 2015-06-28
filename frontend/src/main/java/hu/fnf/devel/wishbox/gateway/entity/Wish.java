@@ -23,21 +23,36 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "wishes")
 public class Wish extends AbstractEntity {
     private String label;
     private List<String> keywords;
+    private Date time;
     @DBRef
     private List<Event> events;
     @DBRef
     private List<Notification> notifications;
 
     public Wish() {
+        this.time = new Date();
         this.events = new ArrayList<>();
         this.notifications = new ArrayList<>();
         this.keywords = new ArrayList<>();
+    }
+
+    public Wish(Wish w) {
+        this.time = new Date();
+        this.events = new ArrayList<>(w.getEvents());
+        this.notifications = new ArrayList<>(w.getNotifications());
+        this.keywords = new ArrayList<>();
+        this.keywords.add(w.getLabel());
+    }
+
+    public Date getTime() {
+        return time;
     }
 
     public String getLabel() {

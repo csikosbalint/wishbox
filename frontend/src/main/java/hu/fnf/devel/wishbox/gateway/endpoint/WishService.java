@@ -76,7 +76,8 @@ public class WishService {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public void addWish(@RequestBody Wish wish, HttpSession session) {
+    public void addWish(@RequestBody Wish w, HttpSession session) {
+        Wish wish = new Wish(w);
         Notification notification = new Notification();
         notification.setText("New Wish: " + "\"" + wish.getLabel() + "\"");
         notification.setPriority(Enums.Priority.info);
@@ -90,7 +91,6 @@ public class WishService {
         event.setIcon("magic");
         eventRepository.save(event);
 
-        wish.addKeyword(wish.getLabel());
         wish.addEvent(event);
         wishRepository.save(wish);
 
