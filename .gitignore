@@ -23,5 +23,6 @@ gen
 hs_err_pid*
 
 *.secret
+frontend/target
 
 

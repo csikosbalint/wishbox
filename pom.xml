@@ -32,7 +32,7 @@
 
 
     <modules>
-        <module>frontend</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
