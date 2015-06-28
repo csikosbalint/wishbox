@@ -27,7 +27,7 @@
     <artifactId>wishbox</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <description>${description}</description>
+    <description>WishBox server application.</description>
     <packaging>pom</packaging>
 
 
@@ -37,8 +37,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <karaf.deploy>/home/johnnym/Downloads/mnt</karaf.deploy>
-        <description>WishBox server application.</description>
         <main.version>1.0.0</main.version>
         <cxf.version>3.0.3</cxf.version>
         <http.version>3.0.2</http.version>
