@@ -25,23 +25,14 @@
 
     <groupId>hu.fnf.devel.wishbox</groupId>
     <artifactId>wishbox</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
     <description>${description}</description>
     <packaging>pom</packaging>
 
-    <version>1.0.0</version>
 
     <modules>
-
         <module>frontend</module>
-        <module>gateway</module>
-
-        <module>control/crawler</module>
-        <module>control/crawler-engine</module>
-        <module>control/wishbox</module>
-
-        <module>persistence</module>
-        <module>shared</module>
-
     </modules>
 
     <properties>
