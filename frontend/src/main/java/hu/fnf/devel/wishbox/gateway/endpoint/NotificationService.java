@@ -63,20 +63,28 @@ public class NotificationService {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public void deleteEvent(@PathVariable("id") String id, HttpSession session) {
-        throw new UnsupportedOperationException();
-//        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
-//        User user = userRepository.findOne(uid);
-//        for (Wish wish : user.getWishes()) {
-//            for (Notification notification : wish.getNotifications() ) {
-//                if (notification.getId().equals(id)) {
-//                    Wish w = wishRepository.findOne(wish.getId());
-//                    w.removeNotification(notification);
-//                    wishRepository.save(w);
-//                    notificationRepository.delete(id);
-//                    return;
-//                }
-//            }
-//        }
+    public void deleteNotification(@PathVariable("id") String id, HttpSession session) {
+        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        User user = userRepository.findOne(uid);
+        for (Notification notification : user.getNotifications()) {
+            if (notification.getId().equals(id)) {
+                User u = userRepository.findOne(user.getId());
+                u.removeNotification(notification);
+                userRepository.save(u);
+                notificationRepository.delete(id);
+                return;
+            }
+        }
+        for (Wish wish : user.getWishes()) {
+            for (Notification notification : wish.getNotifications()) {
+                if (notification.getId().equals(id)) {
+                    Wish w = wishRepository.findOne(wish.getId());
+                    w.removeNotification(notification);
+                    wishRepository.save(w);
+                    notificationRepository.delete(id);
+                    return;
+                }
+            }
+        }
     }
 }

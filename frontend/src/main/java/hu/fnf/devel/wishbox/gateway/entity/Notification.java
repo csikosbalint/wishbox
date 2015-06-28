@@ -27,15 +27,14 @@ import java.util.Date;
 public class Notification extends AbstractEntity {
     private Date time;
     private String text;
-    private Enums.State state;
     private Enums.Priority priority;
+
+    public Notification() {
+        this.time = new Date();
+    }
 
     public Date getTime() {
         return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 
     public String getText() {
@@ -44,14 +43,6 @@ public class Notification extends AbstractEntity {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Enums.State getState() {
-        return state;
-    }
-
-    public void setState(Enums.State state) {
-        this.state = state;
     }
 
     public Enums.Priority getPriority() {

@@ -3,7 +3,12 @@ var myApp = angular.module("myApp",['ui.bootstrap', 'ngDialog']);
 
 //CONTROLLERS
 
-myApp.controller("mainController", ["$scope","$http","ngDialog", function($scope, $http, ngDialog) {
+myApp.controller("mainController", ["$scope","$http","ngDialog","$filter","$interval",
+                            function($scope,  $http,  ngDialog,  $filter,  $interval) {
+    var apiEndpoint = "/gateway"
+    var reload = $interval(function() {
+        $scope.redraw()
+    }, 60000)
 
     $scope.signInCallback = function(authResult) {
         if (authResult['status']['signed_in']) {
@@ -51,7 +56,7 @@ myApp.controller("mainController", ["$scope","$http","ngDialog", function($scope
         });
     }
     $scope.makeWish.post = function(w) {
-        $http.post('/gateway/wish', w)
+        $http.post(apiEndpoint + '/wish', w)
         .success(function(data, status, headers, config) {
             $scope.newWish = null;
             $scope.redraw()
@@ -59,33 +64,41 @@ myApp.controller("mainController", ["$scope","$http","ngDialog", function($scope
     }
 
     $scope.removeWish = function(w) {
-        $http.delete('/gateway/wish/' + w.id)
+        $http.delete(apiEndpoint + '/wish/' + w.id)
         .success(function(data, status, headers, config) {
             $scope.redraw()
         });
         }
 
     $scope.removeEvent = function(e) {
-        $http.delete('/gateway/event/' + e.id)
+        $http.delete(apiEndpoint + '/event/' + e.id)
+            .success(function(data, status, headers, config) {
+                $scope.redraw()
+            });
+    }
+
+    $scope.removeNotification = function(n) {
+        $http.delete(apiEndpoint + '/notification/' + n.id)
             .success(function(data, status, headers, config) {
                 $scope.redraw()
             });
     }
 
     $scope.redraw = function () {
-        $http.get('/gateway/event')
+        $scope.currentdate = new Date();
+        $http.get(apiEndpoint + '/event')
             .success(function(data, status, headers, config) {
                 $scope.events = data;
         });
         $scope.showEvent = true
 
-        $http.get('/gateway/notification')
+        $http.get(apiEndpoint + '/notification')
             .success(function(data, status, headers, config) {
                 $scope.notifications = data;
         });
         $scope.showNotification = true
 
-        $http.get('/gateway/wish')
+        $http.get(apiEndpoint + '/wish')
             .success(function(data, status, headers, config) {
                 $scope.wishes = data;
         });
@@ -95,6 +108,64 @@ myApp.controller("mainController", ["$scope","$http","ngDialog", function($scope
         $('#nav-sidebar').attr('style', 'display: visible');
         $('#nav-menubar').attr('style', 'display: visible');
 
+    }
+
+    $scope.ago = function(d) {
+        var story = ""
+        var ago = $scope.currentdate - d
+        var formatter = null;
+        switch(true) {
+            case ( ago < 1000 ):
+                return "Now"
+                break;
+            case ( ago < 2000 ):
+                formatter = 's'
+                story = ' second ago'
+                break;
+            case ( ago < 10000 ):
+                formatter = 's'
+                story = ' seconds ago'
+                break;
+            case ( ago < 60000 ):
+                formatter = 'ss'
+                story = ' seconds ago'
+                break;
+            case ( ago < 120000 ):
+                formatter = 'm'
+                story = ' minute ago'
+                break;
+            case ( ago < 1200000 ):
+                formatter = 'm'
+                story = ' minutes ago'
+                break;
+            case ( ago < 3600000 ):
+                formatter = 'mm'
+                story = ' minutes ago'
+                break;
+            case ( ago < 7200000 ):
+                formatter = 'h'
+                story = ' hour ago'
+                break;
+            case ( ago < 72000000 ):
+                formatter = 'h'
+                story = ' hours ago'
+                break;
+            case ( ago < 86400000 ):
+                formatter = 'hh'
+                story = ' hours ago'
+                break;
+            case ( ago < 172800000 ):
+                return 'Yesterday'
+                break;
+            case ( ago < 345600000 ):
+                formatter = 'd'
+                story = ' days ago'
+                break;
+            case ( ago < 518400000 ):
+                formatter = 'yyyy-MM-dd'
+                break;
+        }
+        return $filter('date')(new Date(ago), formatter) + story;
     }
 }]);
 

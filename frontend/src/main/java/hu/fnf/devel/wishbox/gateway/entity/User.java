@@ -83,4 +83,13 @@ public class User extends AbstractEntity {
             }
         }
     }
+
+    public void removeNotification(Notification notification) {
+        for (Notification n : this.notifications) {
+            if (n.getId().equals(notification.getId())) {
+                this.notifications.remove(n);
+                return;
+            }
+        }
+    }
 }

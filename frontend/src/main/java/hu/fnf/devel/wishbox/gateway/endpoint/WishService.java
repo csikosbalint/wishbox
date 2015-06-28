@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -79,17 +78,16 @@ public class WishService {
     @ResponseBody
     public void addWish(@RequestBody Wish wish, HttpSession session) {
         Notification notification = new Notification();
-        notification.setText("WishCard has been created: " + "\"" + wish.getLabel() + "\"");
+        notification.setText("New Wish: " + "\"" + wish.getLabel() + "\"");
         notification.setPriority(Enums.Priority.info);
-        notification.setState(Enums.State.done);
         notificationRepository.save(notification);
 
         Event event = new Event();
         event.setTitle(wish.getLabel());
-        event.setText("Wish has been made.");
+        event.setText("New Wish has been made with label \"" + wish.getLabel() +
+                "\". The label automatically has been added as a search keyword. You can add relevant information to the Wish at any time.");
         event.setPriority(Enums.Priority.info);
         event.setIcon("magic");
-        event.setTime(new Date());
         eventRepository.save(event);
 
         wish.addKeyword(wish.getLabel());
@@ -113,9 +111,8 @@ public class WishService {
                 user.removeWish(wish);
                 wishRepository.delete(id);
                 Notification notification = new Notification();
-                notification.setText("WishCard has been deleted: " + "\"" + wish.getLabel() + "\"");
+                notification.setText("Deleted Wish: " + "\"" + wish.getLabel() + "\"");
                 notification.setPriority(Enums.Priority.warning);
-                notification.setState(Enums.State.warn);
                 notificationRepository.save(notification);
 
                 user.addNotification(notification);

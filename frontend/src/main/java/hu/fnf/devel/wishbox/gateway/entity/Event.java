@@ -31,12 +31,12 @@ public class Event extends AbstractEntity {
     private Enums.Priority priority;
     private String icon;
 
-    public Date getTime() {
-        return time;
+    public Event() {
+        this.time = new Date();
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public Date getTime() {
+        return time;
     }
 
     public String getText() {

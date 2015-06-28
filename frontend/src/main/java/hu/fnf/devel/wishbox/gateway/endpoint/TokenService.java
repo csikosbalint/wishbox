@@ -109,7 +109,6 @@ public class TokenService {
                 Notification welcome = new Notification();
                 welcome.setText("Welcome to wishbox!");
                 welcome.setPriority(Enums.Priority.info);
-                welcome.setState(Enums.State.info);
                 notificationRepository.save(welcome);
                 newUser.addNotification(welcome);
                 userRepository.save(newUser);
