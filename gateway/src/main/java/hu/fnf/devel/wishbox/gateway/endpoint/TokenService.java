@@ -102,9 +102,9 @@ public class TokenService {
             // Store the token in the session for later use.
             session.setAttribute(InterceptorConfig.TOKEN, tokenResponse.toString());
             GoogleIdToken.Payload token = idToken.getPayload();
-            session.setAttribute(InterceptorConfig.SUBJECT_ID, token.getSubject());
 
-            if (!userRepository.exists(idToken.getPayload().getSubject())) {
+            if (!userRepository.exists(idToken.getPayload().getSubject()) &&
+                    userRepository.findAll().size() < 5) {
                 User newUser = new User(token.getSubject(), token.getEmail(), "none");
                 Notification welcome = new Notification();
                 welcome.setText("Welcome to wishbox!");
@@ -112,8 +112,11 @@ public class TokenService {
                 notificationRepository.save(welcome);
                 newUser.addNotification(welcome);
                 userRepository.save(newUser);
+                session.setAttribute(InterceptorConfig.SUBJECT_ID, token.getSubject());
+                return token.getSubject();
             }
-            return token.getSubject();
+
+            throw new ServletException("Cannot create user in database!Database is full!");
 
         } catch (TokenResponseException e) {
             throw new ServletException("Failed to upgrade the authorization code.");
