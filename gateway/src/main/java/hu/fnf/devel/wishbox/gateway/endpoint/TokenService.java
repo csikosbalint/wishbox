@@ -35,6 +35,7 @@ import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
 import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,13 +57,18 @@ public class TokenService {
     private static final JacksonFactory JSON_FACTORY = new JacksonFactory();
     private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
-    private String CLIENT_ID = "574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com";
-    private String CLIENT_SECRET = "6e4aUOTiB7AGIgQFKtcxkvZM";
+    @Value("${google.client.id}")
+    private String CLIENT_ID;
+    @Value("${google.client.secret}")
+    private String CLIENT_SECRET;
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @Autowired
+
 
     static void getContent(InputStream inputStream, ByteArrayOutputStream outputStream)
             throws IOException {

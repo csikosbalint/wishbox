@@ -44,6 +44,7 @@ public class Wish extends AbstractEntity {
     }
 
     public Wish(Wish w) {
+        this.label = w.getLabel();
         this.time = new Date();
         this.events = new ArrayList<>(w.getEvents());
         this.notifications = new ArrayList<>(w.getNotifications());
