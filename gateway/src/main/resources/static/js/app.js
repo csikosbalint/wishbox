@@ -7,7 +7,7 @@ var myApp = angular.module("myApp",['ui.bootstrap', 'ngDialog', 'ngWebsocket'])
         }, messageIds = [];
 
         service.RECONNECT_TIMEOUT = 30000;
-        service.SOCKET_URL = "http://localhost:8080/websocket";
+        service.SOCKET_URL = "/websocket";
         service.CHAT_TOPIC = "/user/topic/UIFeed";
         service.CHAT_BROKER = "/queue/GWFeed";
 
