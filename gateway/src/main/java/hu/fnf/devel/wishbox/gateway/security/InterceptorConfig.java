@@ -19,10 +19,8 @@
 
 package hu.fnf.devel.wishbox.gateway.security;
 
-import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
@@ -35,10 +33,10 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
         return new SessionSecurityInterceptor(TOKEN);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(sessionSecurityInterceptor())
-                .addPathPatterns(WishboxGateway.ROOT + "/**")
-                .excludePathPatterns(WishboxGateway.ROOT + "/token");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(sessionSecurityInterceptor())
+//                .addPathPatterns(WishboxGateway.ROOT + "/**")
+//                .excludePathPatterns(WishboxGateway.ROOT + "/token");
+//    }
 }

@@ -19,23 +19,41 @@
 
 package hu.fnf.devel.wishbox.gateway.security;
 
+import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    public void configure( WebSecurity web ) throws Exception {
+        web.ignoring()
+                .antMatchers( HttpMethod.POST, WishboxGateway.ROOT + "/token" )
+                .antMatchers( HttpMethod.GET, "/websocket" )
+
+                .antMatchers( HttpMethod.GET, "/*" )
+                .antMatchers( HttpMethod.GET, "/**/*.js" )
+                .antMatchers( HttpMethod.GET, "/**/*.map" )
+                .antMatchers( HttpMethod.GET, "/**/*.css" )
+                .antMatchers( HttpMethod.GET, "/**/*.woff" )
+                .antMatchers( HttpMethod.GET, "/**/*.woff2" )
+                .antMatchers( HttpMethod.GET, "/**/*.ttf" );
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .anyRequest()
-                .permitAll();
-        http
-                .csrf().disable();
+                .antMatchers( WishboxGateway.ROOT + "/**" )
+                .permitAll()
+                .and()
+                .addFilter( new SessionSecurityFilter() );
     }
 
 }
