@@ -19,6 +19,8 @@
 
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -37,8 +39,9 @@ public class MessageHandler {
 
     @MessageMapping("/queue/GWFeed")
     @SendToUser(value = "/topic/UIFeed", broadcast = false)
-    protected String handleTextMessage(String message) {
+    protected String handleTextMessage( String message, Principal principal ) {
         System.out.println("message: " + message);
+        System.out.println( "principal: " + principal );
         messagingTemplate.convertAndSend("/topic/UIFeed", "koala");
         return "kutya";
     }
