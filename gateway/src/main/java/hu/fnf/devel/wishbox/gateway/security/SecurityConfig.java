@@ -49,9 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeRequests()
+                .authorizeRequests() //expresssionHandler(Handler)
                 .antMatchers( WishboxGateway.ROOT + "/**" )
-                .permitAll()
+                .permitAll() //access("isAuthorized()")
                 .and()
                 .addFilter( new SessionSecurityFilter() );
     }
