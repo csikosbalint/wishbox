@@ -1,6 +1,7 @@
 package hu.fnf.devel.wishbox.gateway.security;
 
 import java.io.IOException;
+import java.util.Arrays;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -22,7 +24,7 @@ public class SessionSecurityFilter extends BasicAuthenticationFilter {
             HttpServletRequest httpServletRequest = (HttpServletRequest) req;
             String id = (String) httpServletRequest.getSession().getAttribute( WishboxGateway.SUBJECT_ID );
             if ( !StringUtils.isBlank( id ) ) {
-                Authentication authentication = new SessionAuthenticationToken( SecurityContextHolder.getContext().getAuthentication().getAuthorities(), id );
+                Authentication authentication = new SessionAuthenticationToken( Arrays.asList( new SimpleGrantedAuthority( "ROLE_ADMIN" ) ), id );
                 authentication.setAuthenticated( true );
                 SecurityContextHolder.getContext().setAuthentication( authentication );
             } else {
