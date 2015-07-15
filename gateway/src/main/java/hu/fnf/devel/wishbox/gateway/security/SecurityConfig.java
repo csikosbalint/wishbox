@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers( HttpMethod.POST, WishboxGateway.ROOT + "/token" )
                 .antMatchers( HttpMethod.GET, "/websocket" )
                 .antMatchers( HttpMethod.GET, "/websocket/**" )
+                .antMatchers( HttpMethod.POST, "/websocket/**" )
                 .antMatchers( HttpMethod.GET, "/*" )
                 .antMatchers( HttpMethod.GET, "/**/*.js" )
                 .antMatchers( HttpMethod.GET, "/**/*.map" )
