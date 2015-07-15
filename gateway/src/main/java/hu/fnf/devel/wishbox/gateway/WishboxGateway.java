@@ -27,6 +27,9 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 @SpringBootApplication
 public class WishboxGateway extends SpringBootServletInitializer {
+    public static final String TOKEN = "token";
+    public static final String SUBJECT_ID = "id";
+
     public static final String ROOT = "/gateway";
     private static final Logger logger = LoggerFactory.getLogger(WishboxGateway.class);
 

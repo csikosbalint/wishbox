@@ -19,6 +19,14 @@
 
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
+
 import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -33,7 +41,6 @@ import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import hu.fnf.devel.wishbox.gateway.entity.User;
 import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
-import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -41,14 +48,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 @Controller
 @RequestMapping(WishboxGateway.ROOT)
@@ -106,11 +105,11 @@ public class TokenService {
             GoogleIdToken idToken = tokenResponse.parseIdToken();
 
             // Store the token in the session for later use.
-            session.setAttribute(InterceptorConfig.TOKEN, tokenResponse.toString());
+            session.setAttribute( WishboxGateway.TOKEN, tokenResponse.toString() );
             GoogleIdToken.Payload token = idToken.getPayload();
 
             if (userRepository.exists(idToken.getPayload().getSubject())) {
-                session.setAttribute(InterceptorConfig.SUBJECT_ID, token.getSubject());
+                session.setAttribute( WishboxGateway.SUBJECT_ID, token.getSubject() );
                 return token.getSubject();
             } else if (userRepository.findAll().size() < 5) {
                 User newUser = new User(token.getSubject(), token.getEmail(), "none");
@@ -120,7 +119,7 @@ public class TokenService {
                 notificationRepository.save(welcome);
                 newUser.addNotification(welcome);
                 userRepository.save(newUser);
-                session.setAttribute(InterceptorConfig.SUBJECT_ID, token.getSubject());
+                session.setAttribute( WishboxGateway.SUBJECT_ID, token.getSubject() );
                 return token.getSubject();
             }
 

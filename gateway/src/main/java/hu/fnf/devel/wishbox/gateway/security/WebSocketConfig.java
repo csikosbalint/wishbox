@@ -19,8 +19,9 @@
 
 package hu.fnf.devel.wishbox.gateway.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -30,20 +31,23 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-    @Autowired
-    private SessionSecurityInterceptor sessionSecurityInterceptor;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
                 .addEndpoint("/websocket")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .addInterceptors(sessionSecurityInterceptor)
+                .addInterceptors( new SessionSecurityInterceptor( WishboxGateway.TOKEN ) )
                 .withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/topic", "/queue");
+    }
+
+    @Override
+    public void configureClientInboundChannel( ChannelRegistration registration ) {
+        registration.setInterceptors( new MessageInterceptor() );
     }
 }

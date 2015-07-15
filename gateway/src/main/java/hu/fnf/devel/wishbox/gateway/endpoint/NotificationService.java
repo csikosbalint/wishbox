@@ -19,6 +19,10 @@
 
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpSession;
+
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
 import hu.fnf.devel.wishbox.gateway.entity.User;
@@ -26,17 +30,12 @@ import hu.fnf.devel.wishbox.gateway.entity.Wish;
 import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
 import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
-import hu.fnf.devel.wishbox.gateway.security.InterceptorConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping(WishboxGateway.ROOT + "/notification")
@@ -51,7 +50,7 @@ public class NotificationService {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<Notification> getNotificationList(HttpSession session) {
-        String id = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        String id = (String) session.getAttribute( WishboxGateway.SUBJECT_ID );
         User user = userRepository.findOne(id);
         List<Notification> notifications = new ArrayList<>();
         notifications.addAll(user.getNotifications());
@@ -64,7 +63,7 @@ public class NotificationService {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public void deleteNotification(@PathVariable("id") String id, HttpSession session) {
-        String uid = (String) session.getAttribute(InterceptorConfig.SUBJECT_ID);
+        String uid = (String) session.getAttribute( WishboxGateway.SUBJECT_ID );
         User user = userRepository.findOne(uid);
         for (Notification notification : user.getNotifications()) {
             if (notification.getId().equals(id)) {
