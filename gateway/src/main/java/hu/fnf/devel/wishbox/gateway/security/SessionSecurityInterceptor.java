@@ -19,11 +19,6 @@
 
 package hu.fnf.devel.wishbox.gateway.security;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,6 +30,11 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Map;
 
 public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implements HandshakeInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(SessionSecurityInterceptor.class);
@@ -55,7 +55,7 @@ public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implem
     }
 
     private boolean isAuthenticatedSession( HttpSession session, HttpServletResponse response, Map<String, Object> map ) throws IOException {
-        if ( session != null && StringUtils.isBlank( session.getAttribute( key ).toString() ) ) {
+        if (session != null && !StringUtils.isBlank(session.getAttribute(key).toString())) {
             map.put( WishboxGateway.SUBJECT_ID, session.getAttribute( WishboxGateway.SUBJECT_ID ) );
             return true;
         }
