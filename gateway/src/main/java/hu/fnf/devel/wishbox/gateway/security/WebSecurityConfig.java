@@ -31,20 +31,39 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+//    @Bean(name="myAuthenticationManager")
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
+//
+//    @Autowired
+//    AuthenticationManager authenticationManager;
+//    @Bean
+//    public SessionSecurityFilter sessionSecurityFilter() {
+//        SessionSecurityFilter sessionSecurityFilter = null;
+//        try {
+//            sessionSecurityFilter = new SessionSecurityFilter(authenticationManager());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return sessionSecurityFilter;
+//    }
+
     @Override
-    public void configure( WebSecurity web ) throws Exception {
+    public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers( HttpMethod.POST, WishboxGateway.ROOT + "/token" )
-                .antMatchers( HttpMethod.GET, "/websocket" )
-                .antMatchers( HttpMethod.GET, "/websocket/**" )
-                .antMatchers( HttpMethod.POST, "/websocket/**" )
-                .antMatchers( HttpMethod.GET, "/*" )
-                .antMatchers( HttpMethod.GET, "/**/*.js" )
-                .antMatchers( HttpMethod.GET, "/**/*.map" )
-                .antMatchers( HttpMethod.GET, "/**/*.css" )
-                .antMatchers( HttpMethod.GET, "/**/*.woff" )
-                .antMatchers( HttpMethod.GET, "/**/*.woff2" )
-                .antMatchers( HttpMethod.GET, "/**/*.ttf" );
+                .antMatchers(HttpMethod.POST, WishboxGateway.ROOT + "/token")
+                .antMatchers(HttpMethod.GET, "/websocket")
+                .antMatchers(HttpMethod.GET, "/websocket/**")
+                .antMatchers(HttpMethod.POST, "/websocket/**")
+                .antMatchers(HttpMethod.GET, "/*")
+                .antMatchers(HttpMethod.GET, "/**/*.js")
+                .antMatchers(HttpMethod.GET, "/**/*.map")
+                .antMatchers(HttpMethod.GET, "/**/*.css")
+                .antMatchers(HttpMethod.GET, "/**/*.woff")
+                .antMatchers(HttpMethod.GET, "/**/*.woff2")
+                .antMatchers(HttpMethod.GET, "/**/*.ttf");
     }
 
     @Override
@@ -52,10 +71,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests() //expresssionHandler(Handler)
+//                        .anyRequest()
                 .antMatchers( WishboxGateway.ROOT + "/**" )
                 .permitAll() //access("isAuthorized()")
                 .and()
-                .addFilter( new SessionSecurityFilter() );
+                .addFilter(new SessionSecurityFilter(authenticationManager()));
     }
 
 }

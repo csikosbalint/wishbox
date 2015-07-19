@@ -1,17 +1,14 @@
 package hu.fnf.devel.wishbox.gateway.security;
 
-import java.util.Collection;
-
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-/**
- * Created by johnnym on 15/07/15.
- */
-public class SessionAuthenticationToken extends AbstractAuthenticationToken {
+import java.util.Collection;
+
+public class WebSessionAuthNToken extends AbstractAuthenticationToken {
     private String id;
 
-    public SessionAuthenticationToken( Collection<? extends GrantedAuthority> authorities, String id ) {
+    public WebSessionAuthNToken(Collection<? extends GrantedAuthority> authorities, String id) {
         super( authorities );
         this.id = id;
     }

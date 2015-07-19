@@ -36,11 +36,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
-public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implements HandshakeInterceptor {
-    private static final Logger logger = LoggerFactory.getLogger(SessionSecurityInterceptor.class);
+public class SessionHandshakeInterceptor extends HandlerInterceptorAdapter implements HandshakeInterceptor {
+    private static final Logger logger = LoggerFactory.getLogger(SessionHandshakeInterceptor.class);
     private final String key;
 
-    public SessionSecurityInterceptor(String key) {
+    public SessionHandshakeInterceptor(String key) {
         this.key = key;
     }
 
@@ -49,6 +49,7 @@ public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implem
         if (serverHttpRequest instanceof ServletServerHttpRequest && serverHttpResponse instanceof ServletServerHttpResponse) {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) serverHttpRequest;
             ServletServerHttpResponse servletResponse = (ServletServerHttpResponse) serverHttpResponse;
+            map.put("principal", "cica");
             return isAuthenticatedSession( servletRequest.getServletRequest().getSession( false ), servletResponse.getServletResponse(), map );
         }
         throw new Exception("Unable to convert request to ServletServerHttpRequest");

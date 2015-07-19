@@ -19,14 +19,6 @@
 
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
-
 import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -49,6 +41,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+
 @Controller
 @RequestMapping(WishboxGateway.ROOT)
 public class TokenService {
@@ -65,9 +61,6 @@ public class TokenService {
     private UserRepository userRepository;
     @Autowired
     private NotificationRepository notificationRepository;
-
-    @Autowired
-
 
     static void getContent(InputStream inputStream, ByteArrayOutputStream outputStream)
             throws IOException {

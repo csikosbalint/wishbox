@@ -20,7 +20,6 @@
 package hu.fnf.devel.wishbox.gateway.security;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -34,19 +33,21 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Bean
-    public SessionSecurityInterceptor sessionSecurityInterceptor() {
-        return new SessionSecurityInterceptor(WishboxGateway.TOKEN);
+    public SessionHandshakeInterceptor sessionSecurityInterceptor() {
+        return new SessionHandshakeInterceptor(WishboxGateway.TOKEN);
     }
 
-    @Autowired
-    private SessionSecurityInterceptor sessionSecurityInterceptor;
+    @Bean
+    public ChannelInterceptor channelInterceptor() {
+        return new ChannelInterceptor();
 
+    }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
                 .addEndpoint("/websocket")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .addInterceptors( sessionSecurityInterceptor )
+                .addInterceptors(sessionSecurityInterceptor())
                 .withSockJS();
     }
 
@@ -57,6 +58,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel( ChannelRegistration registration ) {
-        registration.setInterceptors( new MessageInterceptor() );
+        registration.setInterceptors(channelInterceptor());
     }
 }

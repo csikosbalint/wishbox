@@ -19,8 +19,6 @@
 
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
-import java.security.Principal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,18 +28,13 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class MessageHandler {
-    private final SimpMessagingTemplate messagingTemplate;
-
     @Autowired
-    public MessageHandler(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
-    }
+    private SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/queue/GWFeed")
     @SendToUser(value = "/topic/UIFeed", broadcast = false)
-    protected String handleTextMessage( String message, Principal principal ) {
+    protected String handleTextMessage(String message) {
         System.out.println("message: " + message);
-        System.out.println( "principal: " + principal );
         messagingTemplate.convertAndSend("/topic/UIFeed", "koala");
         return "kutya";
     }
