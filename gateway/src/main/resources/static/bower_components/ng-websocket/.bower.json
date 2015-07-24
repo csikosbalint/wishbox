@@ -38,6 +38,5 @@
   },
   "_source": "git://github.com/wilk/ng-websocket.git",
   "_target": "~0.2.1",
-  "_originalSource": "ng-websocket",
-  "_direct": true
+  "_originalSource": "ng-websocket"
 }

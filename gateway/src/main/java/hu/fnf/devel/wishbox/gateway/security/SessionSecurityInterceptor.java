@@ -27,37 +27,41 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 
-public class SessionHandshakeInterceptor extends HandlerInterceptorAdapter implements HandshakeInterceptor {
-    private static final Logger logger = LoggerFactory.getLogger(SessionHandshakeInterceptor.class);
+public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implements HandshakeInterceptor {
+    private static final Logger logger = LoggerFactory.getLogger(SessionSecurityInterceptor.class);
     private final String key;
 
-    public SessionHandshakeInterceptor(String key) {
+    public SessionSecurityInterceptor(String key) {
         this.key = key;
     }
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
         if (serverHttpRequest instanceof ServletServerHttpRequest && serverHttpResponse instanceof ServletServerHttpResponse) {
-            ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) serverHttpRequest;
             ServletServerHttpResponse servletResponse = (ServletServerHttpResponse) serverHttpResponse;
-            map.put("principal", "cica");
-            return isAuthenticatedSession( servletRequest.getServletRequest().getSession( false ), servletResponse.getServletResponse(), map );
+            return isAuthenticatedSession(servletResponse.getServletResponse(), map);
         }
         throw new Exception("Unable to convert request to ServletServerHttpRequest");
     }
 
-    private boolean isAuthenticatedSession( HttpSession session, HttpServletResponse response, Map<String, Object> map ) throws IOException {
-        if (session != null && !StringUtils.isBlank(session.getAttribute(key).toString())) {
-            map.put( WishboxGateway.SUBJECT_ID, session.getAttribute( WishboxGateway.SUBJECT_ID ) );
+    private boolean isAuthenticatedSession(HttpServletResponse response, Map<String, Object> map) throws IOException {
+        String id = (String) map.get(WishboxGateway.SUBJECT_ID);
+        if (!StringUtils.isBlank(id)) {
+            Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")), id);
+            authentication.setAuthenticated(true);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             return true;
         }
         response.sendError(403, "You must login and post your authorization code first!");

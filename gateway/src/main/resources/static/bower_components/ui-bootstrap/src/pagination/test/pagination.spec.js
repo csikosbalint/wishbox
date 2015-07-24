@@ -7,6 +7,7 @@ describe('pagination directive', function () {
     $rootScope = _$rootScope_;
     $rootScope.total = 47; // 5 pages
     $rootScope.currentPage = 3;
+    $rootScope.disabled = false;
     $document = _$document_;
     element = $compile('<pagination total-items="total" ng-model="currentPage"></pagination>')($rootScope);
     $rootScope.$digest();
@@ -23,13 +24,18 @@ describe('pagination directive', function () {
   function clickPaginationEl(index) {
     getPaginationEl(index).find('a').click();
   }
-  
+
   function getPaginationLinkEl(elem, index) {
     return elem.find('li').eq(index).find('a');
   }
 
   function updateCurrentPage(value) {
     $rootScope.currentPage = value;
+    $rootScope.$digest();
+  }
+
+  function setDisabled(value) {
+    $rootScope.disabled = value;
     $rootScope.$digest();
   }
 
@@ -130,42 +136,42 @@ describe('pagination directive', function () {
   it('should blur a page link after it has been clicked', function () {
     $document.find('body').append(element);
     var linkEl = getPaginationLinkEl(element, 2);
-    
+
     linkEl.focus();
     expect(linkEl).toHaveFocus();
-    
+
     linkEl.click();
     expect(linkEl).not.toHaveFocus();
-    
+
     element.remove();
   });
-  
+
   it('should blur the "next" link after it has been clicked', function () {
     $document.find('body').append(element);
     var linkEl = getPaginationLinkEl(element, -1);
-    
+
     linkEl.focus();
     expect(linkEl).toHaveFocus();
-    
+
     linkEl.click();
     expect(linkEl).not.toHaveFocus();
-    
+
     element.remove();
   });
-  
+
   it('should blur the "prev" link after it has been clicked', function () {
     $document.find('body').append(element);
     var linkEl = getPaginationLinkEl(element, 0);
-    
+
     linkEl.focus();
     expect(linkEl).toHaveFocus();
-    
+
     linkEl.click();
     expect(linkEl).not.toHaveFocus();
-    
+
     element.remove();
   });
-  
+
   describe('`items-per-page`', function () {
     beforeEach(function() {
       $rootScope.perpage = 5;
@@ -303,17 +309,17 @@ describe('pagination directive', function () {
       expect(getPaginationEl(0).text()).toBe('Previous');
       expect(getPaginationEl(-1).text()).toBe('Next');
     });
-    
+
     it('should blur page link when visible range changes', function () {
       $document.find('body').append(element);
       var linkEl = getPaginationLinkEl(element, 4);
-      
+
       linkEl.focus();
       expect(linkEl).toHaveFocus();
-      
+
       linkEl.click();
       expect(linkEl).not.toHaveFocus();
-      
+
       element.remove();
     });
   });
@@ -472,30 +478,30 @@ describe('pagination directive', function () {
       expect(getPaginationEl(1).text()).toBe('<<');
       expect(getPaginationEl(-2).text()).toBe('>>');
     });
-    
+
     it('should blur the "first" link after it has been clicked', function () {
       $document.find('body').append(element);
       var linkEl = getPaginationLinkEl(element, 0);
-      
+
       linkEl.focus();
       expect(linkEl).toHaveFocus();
-      
+
       linkEl.click();
       expect(linkEl).not.toHaveFocus();
-      
+
       element.remove();
     });
-    
+
     it('should blur the "last" link after it has been clicked', function () {
       $document.find('body').append(element);
       var linkEl = getPaginationLinkEl(element, -1);
-      
+
       linkEl.focus();
       expect(linkEl).toHaveFocus();
-      
+
       linkEl.click();
       expect(linkEl).not.toHaveFocus();
-      
+
       element.remove();
     });
   });
@@ -673,4 +679,29 @@ describe('pagination directive', function () {
     });
   });
 
+  describe('disabled with ngDisable', function () {
+    beforeEach(function () {
+      element = $compile('<pagination total-items="total" ng-model="currentPage" ng-disabled="disabled"></pagination>')($rootScope);
+      $rootScope.currentPage = 3;
+      $rootScope.$digest();
+    });
+
+    it('should not respond to clicking', function () {
+      setDisabled(true);
+      clickPaginationEl(2);
+      expect($rootScope.currentPage).toBe(3);
+      setDisabled(false);
+      clickPaginationEl(2);
+      expect($rootScope.currentPage).toBe(2);
+    });
+
+    it('should change the class of all buttons except selected one', function () {
+      setDisabled(false);
+      expect(getPaginationEl(3).hasClass('active')).toBe(true);
+      expect(getPaginationEl(4).hasClass('active')).toBe(false);
+      setDisabled(true);
+      expect(getPaginationEl(3).hasClass('disabled')).toBe(false);
+      expect(getPaginationEl(4).hasClass('disabled')).toBe(true);
+    });
+  });
 });

@@ -33,8 +33,8 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Bean
-    public SessionHandshakeInterceptor sessionSecurityInterceptor() {
-        return new SessionHandshakeInterceptor(WishboxGateway.TOKEN);
+    public SessionSecurityInterceptor sessionSecurityInterceptor() {
+        return new SessionSecurityInterceptor(WishboxGateway.TOKEN);
     }
 
     @Bean
@@ -42,13 +42,17 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         return new ChannelInterceptor();
 
     }
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
                 .addEndpoint("/websocket")
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
                 .addInterceptors(sessionSecurityInterceptor())
-                .withSockJS();
+                .setAllowedOrigins("*")
+                .withSockJS()
+                .setClientLibraryUrl("bower_components/sockjs/sockjs.min.js")
+                .setWebSocketEnabled(true);
     }
 
     @Override
@@ -57,7 +61,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void configureClientInboundChannel( ChannelRegistration registration ) {
+    public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.setInterceptors(channelInterceptor());
     }
 }

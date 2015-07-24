@@ -40,6 +40,5 @@
   },
   "_source": "git://github.com/onokumus/metisMenu.git",
   "_target": "~2.0.2",
-  "_originalSource": "metisMenu",
-  "_direct": true
+  "_originalSource": "metisMenu"
 }
