@@ -1,5 +1,4 @@
 describe('syntax parser', function () {
-
   var typeaheadParser, scope, filterFilter;
 
   beforeEach(module('ui.bootstrap.typeahead'));
@@ -38,7 +37,6 @@ describe('syntax parser', function () {
   });
 
   it('should allow to specify custom model mapping that is used as a label as well', function () {
-
     scope.states = [
       {code:'AL', name:'Alabama'},
       {code:'CA', name:'California'},
@@ -60,7 +58,6 @@ describe('syntax parser', function () {
   });
 
   it('should allow to specify custom view and model mappers', function () {
-
     scope.states = [
       {code:'AL', name:'Alabama'},
       {code:'CA', name:'California'},

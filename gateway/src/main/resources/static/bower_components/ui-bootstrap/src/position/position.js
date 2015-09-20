@@ -7,7 +7,6 @@ angular.module('ui.bootstrap.position', [])
  * typeahead suggestions etc.).
  */
   .factory('$position', ['$document', '$window', function ($document, $window) {
-
     function getStyle(el, cssprop) {
       if (el.currentStyle) { //IE
         return el.currentStyle[cssprop];
@@ -81,7 +80,6 @@ angular.module('ui.bootstrap.position', [])
        * Provides coordinates for the targetEl in relation to hostEl
        */
       positionElements: function (hostEl, targetEl, positionStr, appendToBody) {
-
         var positionStrParts = positionStr.split('-');
         var pos0 = positionStrParts[0], pos1 = positionStrParts[1] || 'center';
 

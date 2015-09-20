@@ -1,21 +1,21 @@
 describe('alert', function () {
-  var scope, $compile;
+  var scope, $compile, $templateCache;
   var element;
 
   beforeEach(module('ui.bootstrap.alert'));
   beforeEach(module('template/alert/alert.html'));
 
-  beforeEach(inject(function ($rootScope, _$compile_) {
-
+  beforeEach(inject(function ($rootScope, _$compile_, _$templateCache_) {
     scope = $rootScope;
     $compile = _$compile_;
+    $templateCache = _$templateCache_;
 
     element = angular.element(
-        '<div>' +
-          '<alert ng-repeat="alert in alerts" type="{{alert.type}}"' +
-            'close="removeAlert($index)">{{alert.msg}}' +
-          '</alert>' +
-        '</div>');
+      '<div>' +
+      '<alert ng-repeat="alert in alerts" type="{{alert.type}}"' +
+      'close="removeAlert($index)">{{alert.msg}}' +
+      '</alert>' +
+      '</div>');
 
     scope.alerts = [
       { msg:'foo', type:'success'},
@@ -37,6 +37,30 @@ describe('alert', function () {
   function findContent(index) {
     return element.find('div[ng-transclude] span').eq(index);
   }
+
+  it('should expose the controller to the view', function () {
+    $templateCache.put('template/alert/alert.html', '<div>{{alert.text}}</div>');
+
+    element = $compile('<alert></alert>')(scope);
+    scope.$digest();
+
+    var ctrl = element.controller('alert');
+    expect(ctrl).toBeDefined();
+
+    ctrl.text = 'foo';
+    scope.$digest();
+
+    expect(element.html()).toBe('foo');
+  });
+
+  it('should support custom templates', function () {
+    $templateCache.put('foo/bar.html', '<div>baz</div>');
+
+    element = $compile('<alert template-url="foo/bar.html"></alert>')(scope);
+    scope.$digest();
+
+    expect(element.html()).toBe('baz');
+  });
 
   it('should generate alerts using ng-repeat', function () {
     var alerts = createAlerts();
@@ -78,7 +102,6 @@ describe('alert', function () {
   });
 
   it('should fire callback when closed', function () {
-
     var alerts = createAlerts();
 
     scope.$apply(function () {

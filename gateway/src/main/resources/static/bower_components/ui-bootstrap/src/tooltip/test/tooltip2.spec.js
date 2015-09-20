@@ -1,5 +1,4 @@
 describe('tooltip directive', function () {
-
   var $rootScope, $compile, $document, $timeout;
 
   beforeEach(module('ui.bootstrap.tooltip'));
@@ -14,7 +13,7 @@ describe('tooltip directive', function () {
     $timeout = _$timeout_;
   }));
 
-  beforeEach(function(){
+  beforeEach(function () {
     jasmine.addMatchers({
       toHaveOpenTooltips: function(util, customEqualityTesters) {
         return {
@@ -40,24 +39,29 @@ describe('tooltip directive', function () {
   });
 
   function compileTooltip(ttipMarkup) {
-    var fragment = $compile('<div>'+ttipMarkup+'</div>')($rootScope);
+    var fragment = $compile('<div>' + ttipMarkup + '</div>')($rootScope);
     $rootScope.$digest();
     return fragment;
   }
 
-  function closeTooltip(hostEl, trigger, shouldNotFlush) {
-    hostEl.trigger(trigger || 'mouseleave' );
+  function closeTooltip(hostEl, triggerEvt, shouldNotFlush) {
+    trigger(hostEl, triggerEvt || 'mouseleave');
     if (!shouldNotFlush) {
       $timeout.flush();
     }
   }
 
-  describe('basic scenarios with default options', function () {
+  function trigger(element, evt) {
+    evt = new Event(evt);
 
+    element[0].dispatchEvent(evt);
+  }
+
+  describe('basic scenarios with default options', function () {
     it('shows default tooltip on mouse enter and closes on mouse leave', function () {
       var fragment = compileTooltip('<span tooltip="tooltip text">Trigger here</span>');
 
-      fragment.find('span').trigger( 'mouseenter' );
+      trigger(fragment.find('span'), 'mouseenter');
       expect(fragment).toHaveOpenTooltips();
 
       closeTooltip(fragment.find('span'));
@@ -66,16 +70,15 @@ describe('tooltip directive', function () {
 
     it('should not show a tooltip when its content is empty', function () {
       var fragment = compileTooltip('<span tooltip=""></span>');
-      fragment.find('span').trigger( 'mouseenter' );
+      trigger(fragment.find('span'), 'mouseenter');
       expect(fragment).not.toHaveOpenTooltips();
     });
 
     it('should not show a tooltip when its content becomes empty', function () {
-
       $rootScope.content = 'some text';
       var fragment = compileTooltip('<span tooltip="{{ content }}"></span>');
 
-      fragment.find('span').trigger( 'mouseenter' );
+      trigger(fragment.find('span'), 'mouseenter');
       expect(fragment).toHaveOpenTooltips();
 
       $rootScope.content = '';
@@ -91,13 +94,12 @@ describe('tooltip directive', function () {
       $rootScope.content = '';
       $rootScope.$digest();
 
-      fragment.find('span').trigger( 'mouseenter' );
+      trigger(fragment.find('span'), 'mouseenter');
       expect(fragment).not.toHaveOpenTooltips();
     });
   });
 
   describe('option by option', function () {
-
     var tooltipTypes = {
       'tooltip': 'tooltip="tooltip text"',
       'tooltip-html': 'tooltip-html="tooltipSafeHtml"',
@@ -112,14 +114,11 @@ describe('tooltip directive', function () {
     }));
 
     angular.forEach(tooltipTypes, function (html, key) {
-
       describe(key, function () {
-
         describe('placement', function () {
-
           it('can specify an alternative, valid placement', function () {
             var fragment = compileTooltip('<span ' + html + ' tooltip-placement="left">Trigger here</span>');
-            fragment.find('span').trigger( 'mouseenter' );
+            trigger(fragment.find('span'), 'mouseenter');
 
             var ttipElement = fragment.find('div.tooltip');
             expect(fragment).toHaveOpenTooltips();
@@ -128,14 +127,12 @@ describe('tooltip directive', function () {
             closeTooltip(fragment.find('span'));
             expect(fragment).not.toHaveOpenTooltips();
           });
-
         });
 
         describe('class', function () {
-
           it('can specify a custom class', function () {
             var fragment = compileTooltip('<span ' + html + ' tooltip-class="custom">Trigger here</span>');
-            fragment.find('span').trigger( 'mouseenter' );
+            trigger(fragment.find('span'), 'mouseenter');
 
             var ttipElement = fragment.find('div.tooltip');
             expect(fragment).toHaveOpenTooltips();
@@ -144,19 +141,15 @@ describe('tooltip directive', function () {
             closeTooltip(fragment.find('span'));
             expect(fragment).not.toHaveOpenTooltips();
           });
-
         });
-
       });
-
     });
-
   });
 
   it('should show even after close trigger is called multiple times - issue #1847', function () {
     var fragment = compileTooltip('<span tooltip="tooltip text">Trigger here</span>');
 
-    fragment.find('span').trigger( 'mouseenter' );
+    trigger(fragment.find('span'), 'mouseenter');
     expect(fragment).toHaveOpenTooltips();
 
     closeTooltip(fragment.find('span'), null, true);
@@ -166,7 +159,7 @@ describe('tooltip directive', function () {
     closeTooltip(fragment.find('span'), null, true);
     expect(fragment).toHaveOpenTooltips();
 
-    fragment.find('span').trigger( 'mouseenter' );
+    trigger(fragment.find('span'), 'mouseenter');
     expect(fragment).toHaveOpenTooltips();
 
     $timeout.flush();
@@ -176,8 +169,8 @@ describe('tooltip directive', function () {
   it('should hide even after show trigger is called multiple times', function () {
     var fragment = compileTooltip('<span tooltip="tooltip text" tooltip-popup-delay="1000">Trigger here</span>');
 
-    fragment.find('span').trigger( 'mouseenter' );
-    fragment.find('span').trigger( 'mouseenter' );
+    trigger(fragment.find('span'), 'mouseenter');
+    trigger(fragment.find('span'), 'mouseenter');
 
     closeTooltip(fragment.find('span'));
     expect(fragment).not.toHaveOpenTooltips();
@@ -186,10 +179,10 @@ describe('tooltip directive', function () {
   it('should not show tooltips element is disabled (button) - issue #3167', function () {
     var fragment = compileTooltip('<button tooltip="cancel!" ng-disabled="disabled" ng-click="disabled = true">Cancel</button>');
 
-    fragment.find('button').trigger( 'mouseenter' );
+    trigger(fragment.find('button'), 'mouseenter');
     expect(fragment).toHaveOpenTooltips();
 
-    fragment.find('button').trigger( 'click' );
+    trigger(fragment.find('button'), 'click');
     $timeout.flush();
     // One needs to flush deferred functions before checking there is no tooltip.
     expect(fragment).not.toHaveOpenTooltips();

@@ -1,5 +1,4 @@
 describe('typeaheadPopup - result rendering', function () {
-
   var scope, $rootScope, $compile;
 
   beforeEach(module('ui.bootstrap.typeahead'));
@@ -12,7 +11,6 @@ describe('typeaheadPopup - result rendering', function () {
   }));
 
   it('should render initial results', function () {
-
     scope.matches = ['foo', 'bar', 'baz'];
     scope.active = 1;
 
@@ -27,7 +25,6 @@ describe('typeaheadPopup - result rendering', function () {
   });
 
   it('should change active item on mouseenter', function () {
-
     scope.matches = ['foo', 'bar', 'baz'];
     scope.active = 1;
 
@@ -45,7 +42,6 @@ describe('typeaheadPopup - result rendering', function () {
   });
 
   it('should select an item on mouse click', function () {
-
     scope.matches = ['foo', 'bar', 'baz'];
     scope.active = 1;
     $rootScope.select = angular.noop;

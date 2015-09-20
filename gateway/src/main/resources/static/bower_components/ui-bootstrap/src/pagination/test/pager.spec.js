@@ -1,13 +1,15 @@
 describe('pager directive', function () {
-  var $compile, $rootScope, $document, element;
+  var $compile, $rootScope, $document, $templateCache, body, element;
   beforeEach(module('ui.bootstrap.pagination'));
   beforeEach(module('template/pagination/pager.html'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _$document_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _$document_, _$templateCache_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     $rootScope.total = 47; // 5 pages
     $rootScope.currentPage = 3;
     $document = _$document_;
+    $templateCache = _$templateCache_;
+    body = $document.find('body');
     element = $compile('<pager total-items="total" ng-model="currentPage"></pager>')($rootScope);
     $rootScope.$digest();
   }));
@@ -23,7 +25,7 @@ describe('pager directive', function () {
   function clickPaginationEl(index) {
     getPaginationEl(index).find('a').click();
   }
-  
+
   function getPaginationLinkEl(elem, index) {
     return elem.find('li').eq(index).find('a');
   }
@@ -49,6 +51,21 @@ describe('pager directive', function () {
 
     expect(getPaginationEl(-1)).not.toHaveClass('previous');
     expect(getPaginationEl(-1)).toHaveClass('next');
+  });
+
+  it('exposes the controller on the template', function () {
+    $templateCache.put('template/pagination/pager.html', '<div>{{pagination.text}}</div>');
+
+    element = $compile('<pager></pager>')($rootScope);
+    $rootScope.$digest();
+
+    var ctrl = element.controller('pager');
+    expect(ctrl).toBeDefined();
+
+    ctrl.text = 'foo';
+    $rootScope.$digest();
+
+    expect(element.html()).toBe('foo');
   });
 
   it('disables the "previous" link if current page is 1', function() {
@@ -102,20 +119,20 @@ describe('pager directive', function () {
   });
 
   it('should blur the "next" link after it has been clicked', function () {
-    $document.find('body').append(element);
+    body.append(element);
     var linkEl = getPaginationLinkEl(element, -1);
-    
+
     linkEl.focus();
     expect(linkEl).toHaveFocus();
-    
+
     linkEl.click();
     expect(linkEl).not.toHaveFocus();
-    
+
     element.remove();
   });
 
   it('should blur the "prev" link after it has been clicked', function () {
-    $document.find('body').append(element);
+    body.append(element);
     var linkEl = getPaginationLinkEl(element, -1);
 
     linkEl.focus();
@@ -126,7 +143,16 @@ describe('pager directive', function () {
 
     element.remove();
   });
-  
+
+  it('allows custom templates', function () {
+    $templateCache.put('foo/bar.html', '<div>baz</div>');
+
+    element = $compile('<pager template-url="foo/bar.html"></pager>')($rootScope);
+    $rootScope.$digest();
+
+    expect(element.html()).toBe('baz');
+  });
+
   describe('`items-per-page`', function () {
     beforeEach(function() {
       $rootScope.perpage = 5;
@@ -230,4 +256,26 @@ describe('pager directive', function () {
     });
   });
 
+  it('disables the component when ng-disabled is true', function () {
+    $rootScope.disable = true;
+
+    element = $compile('<pager total-items="total" ng-disabled="disable" ng-model="currentPage"></pager>')($rootScope);
+    $rootScope.$digest();
+    updateCurrentPage(2);
+
+    expect(getPaginationEl(0)).toHaveClass('disabled');
+    expect(getPaginationEl(-1)).toHaveClass('disabled');
+
+    $rootScope.disable = false;
+    $rootScope.$digest();
+
+    expect(getPaginationEl(0)).not.toHaveClass('disabled');
+    expect(getPaginationEl(-1)).not.toHaveClass('disabled');
+
+    $rootScope.disable = true;
+    $rootScope.$digest();
+
+    expect(getPaginationEl(0)).toHaveClass('disabled');
+    expect(getPaginationEl(-1)).toHaveClass('disabled');
+  });
 });

@@ -1,5 +1,4 @@
 describe('modal window', function () {
-
   var $rootScope, $compile;
 
   beforeEach(module('ui.bootstrap.modal'));

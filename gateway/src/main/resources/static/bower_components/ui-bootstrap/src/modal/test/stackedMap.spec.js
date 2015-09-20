@@ -1,5 +1,4 @@
 describe('stacked map', function () {
-
   var stackedMap;
 
   beforeEach(module('ui.bootstrap.modal'));
@@ -8,7 +7,6 @@ describe('stacked map', function () {
   }));
 
   it('should add and remove objects by key', function () {
-
     stackedMap.add('foo', 'foo_value');
     expect(stackedMap.length()).toEqual(1);
     expect(stackedMap.get('foo').key).toEqual('foo');
@@ -27,7 +25,6 @@ describe('stacked map', function () {
   });
 
   it('should get topmost element', function () {
-
     stackedMap.add('foo', 'foo_value');
     stackedMap.add('bar', 'bar_value');
     expect(stackedMap.length()).toEqual(2);
@@ -37,7 +34,6 @@ describe('stacked map', function () {
   });
 
   it('should remove topmost element', function () {
-
     stackedMap.add('foo', 'foo_value');
     stackedMap.add('bar', 'bar_value');
 
@@ -46,7 +42,6 @@ describe('stacked map', function () {
   });
 
   it('should preserve semantic of an empty stackedMap', function () {
-
     expect(stackedMap.length()).toEqual(0);
     expect(stackedMap.top()).toBeUndefined();
   });

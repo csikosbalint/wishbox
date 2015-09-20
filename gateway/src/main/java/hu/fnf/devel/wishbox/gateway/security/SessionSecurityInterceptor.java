@@ -70,6 +70,6 @@ public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implem
 
     @Override
     public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
-
+        logger.info("afterHs: " + serverHttpRequest.getURI() + " " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
     }
 }

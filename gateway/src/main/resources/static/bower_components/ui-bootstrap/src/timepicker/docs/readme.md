@@ -8,6 +8,9 @@ All settings can be provided as attributes in the `<timepicker>` or globally con
  	:
  	The Date object that provides the time state.
 
+  * `template-url` (Defaults: `template/timepicker/timepicker.html`) :
+    Add the ability to override the template used on the component.
+
  * `hour-step` <i class="glyphicon glyphicon-eye-open"></i>
  	_(Defaults: 1)_ :
  	 Number of hours to increase or decrease when using a button.
@@ -39,3 +42,11 @@ All settings can be provided as attributes in the `<timepicker>` or globally con
  * `show-spinners`
     _(Defaults: true)_ :
      Shows spinner arrows above and below the inputs
+
+ * `min`
+    _(Defaults: undefined)_ :
+     Minimum time a user can select
+
+ * `max`
+    _(Defaults: undefined)_ :
+     Maximum time a user can select

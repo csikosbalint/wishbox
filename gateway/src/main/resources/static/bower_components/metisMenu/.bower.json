@@ -1,6 +1,5 @@
 {
   "name": "metisMenu",
-  "version": "2.0.2",
   "homepage": "https://github.com/onokumus/metisMenu",
   "authors": [
     "onokumus <onokumus@gmail.com>"
@@ -32,11 +31,12 @@
   "dependencies": {
     "jquery": "~2.1.4"
   },
-  "_release": "2.0.2",
+  "version": "2.0.3",
+  "_release": "2.0.3",
   "_resolution": {
     "type": "version",
-    "tag": "v2.0.2",
-    "commit": "8a254edaa2698951301985ae78cc37c8cd546ad3"
+    "tag": "v2.0.3",
+    "commit": "bb5677d08e7bdc40210bcaec706b16f78fd188e5"
   },
   "_source": "git://github.com/onokumus/metisMenu.git",
   "_target": "~2.0.2",

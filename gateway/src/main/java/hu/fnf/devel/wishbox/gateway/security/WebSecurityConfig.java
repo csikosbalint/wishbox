@@ -26,7 +26,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -54,11 +53,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
+//                Token service
                 .antMatchers(HttpMethod.POST, WishboxGateway.ROOT + "/token")
-//                .antMatchers(HttpMethod.GET, "/websocket")
-                .antMatchers(HttpMethod.GET, "/websocket/**")
-//                .antMatchers(HttpMethod.POST, "/websocket/**")
+//                WebSocket
+                .antMatchers(HttpMethod.GET, "/websocket")
+                .antMatchers(HttpMethod.GET, "/websocket/info")
+                .antMatchers(HttpMethod.POST, "/websocket/**")
+//                Root
                 .antMatchers(HttpMethod.GET, "/*")
+//                Static files
                 .antMatchers(HttpMethod.GET, "/**/*.js")
                 .antMatchers(HttpMethod.GET, "/**/*.map")
                 .antMatchers(HttpMethod.GET, "/**/*.css")
@@ -71,15 +74,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-                .and()
+//                .headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+//                .and()
                 .authorizeRequests() //expresssionHandler(Handler)
 //                        .anyRequest()
-//                .antMatchers( WishboxGateway.ROOT + "/**" )
-                .anyRequest()
-                .permitAll() //access("isAuthorized()")
-                .and()
-                .addFilter(new SessionSecurityFilter(authenticationManager()));
+                .antMatchers(WishboxGateway.ROOT + "/**")
+//                .anyRequest()
+                .permitAll(); //access("isAuthorized()")
+//                .and()
+//                .addFilter(new SessionSecurityFilter(authenticationManager()));
     }
 
 }

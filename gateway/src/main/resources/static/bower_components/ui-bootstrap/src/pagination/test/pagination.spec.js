@@ -1,14 +1,16 @@
 describe('pagination directive', function () {
-  var $compile, $rootScope, $document, element;
+  var $compile, $rootScope, $document, $templateCache, body, element;
   beforeEach(module('ui.bootstrap.pagination'));
   beforeEach(module('template/pagination/pagination.html'));
-  beforeEach(inject(function(_$compile_, _$rootScope_, _$document_) {
+  beforeEach(inject(function (_$compile_, _$rootScope_, _$document_, _$templateCache_) {
     $compile = _$compile_;
     $rootScope = _$rootScope_;
     $rootScope.total = 47; // 5 pages
     $rootScope.currentPage = 3;
     $rootScope.disabled = false;
     $document = _$document_;
+    $templateCache = _$templateCache_;
+    body = $document.find('body');
     element = $compile('<pagination total-items="total" ng-model="currentPage"></pagination>')($rootScope);
     $rootScope.$digest();
   }));
@@ -41,6 +43,33 @@ describe('pagination directive', function () {
 
   it('has a "pagination" css class', function() {
     expect(element.hasClass('pagination')).toBe(true);
+  });
+
+  it('exposes the controller to the template', function () {
+    $templateCache.put('template/pagination/pagination.html', '<div>{{pagination.randomText}}</div>');
+    var scope = $rootScope.$new();
+
+    element = $compile('<pagination></pagination>')(scope);
+    $rootScope.$digest();
+
+    var ctrl = element.controller('pagination');
+
+    expect(ctrl).toBeDefined();
+
+    ctrl.randomText = 'foo';
+    $rootScope.$digest();
+
+    expect(element.html()).toBe('foo');
+  });
+
+  it('allows custom templates', function () {
+    $templateCache.put('foo/bar.html', '<div>baz</div>');
+    var scope = $rootScope.$new();
+
+    element = $compile('<pagination template-url="foo/bar.html"></pagination>')(scope);
+    $rootScope.$digest();
+
+    expect(element.html()).toBe('baz');
   });
 
   it('contains num-pages + 2 li elements', function() {
@@ -134,7 +163,7 @@ describe('pagination directive', function () {
   });
 
   it('should blur a page link after it has been clicked', function () {
-    $document.find('body').append(element);
+    body.append(element);
     var linkEl = getPaginationLinkEl(element, 2);
 
     linkEl.focus();
@@ -147,7 +176,7 @@ describe('pagination directive', function () {
   });
 
   it('should blur the "next" link after it has been clicked', function () {
-    $document.find('body').append(element);
+    body.append(element);
     var linkEl = getPaginationLinkEl(element, -1);
 
     linkEl.focus();
@@ -160,7 +189,7 @@ describe('pagination directive', function () {
   });
 
   it('should blur the "prev" link after it has been clicked', function () {
-    $document.find('body').append(element);
+    body.append(element);
     var linkEl = getPaginationLinkEl(element, 0);
 
     linkEl.focus();
@@ -311,7 +340,7 @@ describe('pagination directive', function () {
     });
 
     it('should blur page link when visible range changes', function () {
-      $document.find('body').append(element);
+      body.append(element);
       var linkEl = getPaginationLinkEl(element, 4);
 
       linkEl.focus();
@@ -480,7 +509,7 @@ describe('pagination directive', function () {
     });
 
     it('should blur the "first" link after it has been clicked', function () {
-      $document.find('body').append(element);
+      body.append(element);
       var linkEl = getPaginationLinkEl(element, 0);
 
       linkEl.focus();
@@ -493,7 +522,7 @@ describe('pagination directive', function () {
     });
 
     it('should blur the "last" link after it has been clicked', function () {
-      $document.find('body').append(element);
+      body.append(element);
       var linkEl = getPaginationLinkEl(element, -1);
 
       linkEl.focus();

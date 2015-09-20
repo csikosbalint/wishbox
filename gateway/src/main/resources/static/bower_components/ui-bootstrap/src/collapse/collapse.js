@@ -1,7 +1,6 @@
 angular.module('ui.bootstrap.collapse', [])
 
   .directive('collapse', ['$animate', function ($animate) {
-
     return {
       link: function (scope, element, attrs) {
         function expand() {

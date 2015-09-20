@@ -1,5 +1,4 @@
 describe('dismissOnTimeout', function () {
-
   var scope, $compile, $timeout;
 
   beforeEach(module('ui.bootstrap.alert'));

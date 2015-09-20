@@ -64,18 +64,6 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
         };
 
         $scope.signInCallback = function (authResult) {
-            if (authResult['status']['signed_in']) {
-                // Your user is signed in. You can use the access token to perform
-                // API calls or if you get a `code`, you could send that to your
-                // server to get server-side access to the APIs.
-            } else if (authResult['status']['google_logged_in']) {
-                // User is signed in to Google, but not your website.
-                // Customize the page to encourage the Google user to sign in.
-            } else {
-                // User is not signed in to your app, handle any user interface
-                // changes or other aspects of your design based on this condition.
-            }
-
             if (authResult['code']) {
 
                 // Hide the sign-in button now that the user is authorized, for example:
@@ -85,7 +73,7 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
 
                 // Send the code to the server
                 $http.post(apiEndpoint + '/token', authResult['code'])
-                    .success(function () {
+                    .success(function (result) {
                         MessageService.initialize();
                         MessageService.receive().then(null, null, messageHandler);
                         $scope.redraw()
@@ -236,30 +224,30 @@ myApp.controller("googleConnectController", ["$scope", function ($scope) {
 }]);
 
 myApp.logout = function () {
-
-    $.ajax({
-        type: 'DELETE',
-        url: 'token',
-        success: function (result) {
-            // 200 OK  - so connected
-            // Handle or verify the server response if necessary.
-
-            // Prints the list of people that the user has allowed the app to know
-            // to the console.
-            // console.log(result);
-
-            console.log(result);
-        },
-        processData: false,
-    });
+    console.log('logout');
+    //$.ajax({
+    //    type: 'DELETE',
+    //    url: 'token',
+    //    success: function (result) {
+    //        // 200 OK  - so connected
+    //        // Handle or verify the server response if necessary.
+    //
+    //        // Prints the list of people that the user has allowed the app to know
+    //        // to the console.
+    //        // console.log(result);
+    //
+    //        console.log(result);
+    //    },
+    //    processData: false,
+    //});
 };
 
-function outercallback(authResult) {
+function outercallback(googleUser) {
     var mainScope = angular.element(
         document.getElementById('wrapper')).scope();
 
     mainScope.$apply(function () {
-        mainScope.signInCallback(authResult);
+        mainScope.signInCallback(googleUser);
     });
 }
 

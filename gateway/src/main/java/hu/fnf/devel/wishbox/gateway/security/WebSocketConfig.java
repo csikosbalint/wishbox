@@ -40,7 +40,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Bean
     public ChannelInterceptor channelInterceptor() {
         return new ChannelInterceptor();
-
     }
 
     @Override

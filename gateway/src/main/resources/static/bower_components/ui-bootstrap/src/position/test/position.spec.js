@@ -105,5 +105,4 @@ describe('position elements', function () {
       expect($position.positionElements({}, new TargetElMock(10, 10), 'right-bottom')).toBePositionedAt(120, 120);
     });
   });
-
 });

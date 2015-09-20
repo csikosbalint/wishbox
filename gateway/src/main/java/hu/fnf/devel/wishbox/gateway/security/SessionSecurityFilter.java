@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -26,13 +25,12 @@ public class SessionSecurityFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (HttpServletRequest.class.isAssignableFrom(request.getClass())) {
             String id = (String) request.getSession().getAttribute(WishboxGateway.SUBJECT_ID);
-            if ( !StringUtils.isBlank( id ) ) {
+            if (!StringUtils.isBlank(id)) {
                 Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")), id);
-                authentication.setAuthenticated( true );
-                SecurityContextHolder.getContext().setAuthentication( authentication );
+                authentication.setAuthenticated(true);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                throw new UsernameNotFoundException("No id stored! for " + request.getMethod() +
-                        " " + request.getRequestURI());
+                response.sendError(403, "You must login and post your authorization code first!");
             }
         }
     }

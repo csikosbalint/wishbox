@@ -92,11 +92,36 @@
     <!--<script src="http://m-e-conroy.github.io/angular-dialog-service/javascripts/dialogs.min.js" type="text/javascript"></script>-->
     <script src="bower_components/ngDialog/js/ngDialog.js"></script>
     <!--Application-->
-    <script src="dist/js/google-apis.js"></script>
+    <!--<script src="dist/js/google-apis.js"></script>-->
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script>
+        function start() {
+            gapi.load('auth2', function () {
+                auth2 = gapi.auth2.init({
+                    client_id: '574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com',
+                    // Scopes to request in addition to 'profile' and 'email'
+                    scope: 'https://www.googleapis.com/auth/plus.me'
+                });
+            });
+            gapi.signin2.render('signinButton', {
+                'width': 250,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'ligh',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
+        function onFailure(error) {
+            console.log(error);
+        }
+        function onSuccess() {
+            auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(outercallback)
+        }
+    </script>
+
+    <!--myApp-->
     <script src="js/app.js"></script>
-    <!--<script src="js/googleplusAPI.js"></script>-->
-
-
 </head>
 
 <body>
@@ -114,18 +139,14 @@
             <a class="navbar-brand" href="#main" onclick="onclick()">SiteTitle</a>
         </div>
 
-        <div id="gConnect" style="display: visible" class="nav navbar-top-links navbar-right">
-            <div id="signinButton">
-            <span class="g-signin"
-                  data-scope="openid"
-                  data-clientid="574876928534-8547nbjas9bscjd627lpv6oi0mvtdlnm.apps.googleusercontent.com"
-                  data-redirecturi="postmessage"
-                  data-accesstype="offline"
-                  data-cookiepolicy="single_host_origin"
-                  data-callback="outercallback">
-            </span>
-            </div>
-        </div>
+        <div id="signinButton" align="right"></div>
+        <script>
+            $('#signinButton').click(function () {
+                auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(outercallback);
+            });
+        </script>
+        <div id="result"></div>
+
 
         <!-- /.navbar-header -->
 
@@ -308,7 +329,7 @@
                     <li><a href="/"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="/" onclick="myApp.logout();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <li><a onclick="myApp.logout();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -452,8 +473,6 @@
     var siteTitle = "WishBox Admin v1.0";
     document.getElementsByClassName("navbar-brand")[0].textContent = siteTitle;
     document.title = siteTitle;
-
-
 
 
 </script>
