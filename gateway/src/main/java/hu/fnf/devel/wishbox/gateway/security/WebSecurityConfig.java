@@ -80,9 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                        .anyRequest()
                 .antMatchers(WishboxGateway.ROOT + "/**")
 //                .anyRequest()
-                .permitAll() //access("isAuthorized()")
-                .and()
-                .addFilter(new SessionSecurityFilter(authenticationManager()));
+                .permitAll(); //access("isAuthorized()")
+//                .and()
+//                .addFilter(new SessionSecurityFilter(authenticationManager()));
     }
 
 }
