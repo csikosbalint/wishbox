@@ -45,7 +45,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
-                .addEndpoint("/websocket")
+                .addEndpoint(WishboxGateway.WEBSOCKET)
                 .addInterceptors(new HttpSessionHandshakeInterceptor())
                 .addInterceptors(sessionSecurityInterceptor())
                 .setAllowedOrigins("*")

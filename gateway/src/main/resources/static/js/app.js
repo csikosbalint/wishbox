@@ -39,10 +39,12 @@ var myApp = angular.module("myApp", ['ui.bootstrap', 'ngDialog', 'ngWebsocket'])
         };
 
         service.initialize = function () {
-            socket.client = new SockJS(service.SOCKET_URL);
+            var protocols = {protocols_whitelist: ["websocket", "xhr-streaming", "xdr-streaming", "xhr-polling", "xdr-polling", "iframe-htmlfile", "iframe-eventsource", "iframe-xhr-polling"]};
+            var opt = {debug: true, devel: true};
+            socket.client = new SockJS(service.SOCKET_URL, protocols, opt);
             socket.stomp = Stomp.over(socket.client);
             socket.stomp.connect({}, startListener);
-            socket.stomp.onclose = reconnect;
+            //socket.stomp.onclose = reconnect;
         };
 
         return service;

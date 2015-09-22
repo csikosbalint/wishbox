@@ -26,6 +26,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -56,9 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                Token service
                 .antMatchers(HttpMethod.POST, WishboxGateway.ROOT + "/token")
 //                WebSocket
-                .antMatchers(HttpMethod.GET, "/websocket")
-                .antMatchers(HttpMethod.GET, "/websocket/info")
-                .antMatchers(HttpMethod.POST, "/websocket/**")
+                .antMatchers(HttpMethod.GET, WishboxGateway.WEBSOCKET)
+                .antMatchers(HttpMethod.GET, WishboxGateway.WEBSOCKET + "/info")
+                .antMatchers(HttpMethod.POST, WishboxGateway.WEBSOCKET + "/**")
 //                Root
                 .antMatchers(HttpMethod.GET, "/*")
 //                Static files
@@ -74,13 +75,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//                .headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
-//                .and()
-                .authorizeRequests() //expresssionHandler(Handler)
-//                        .anyRequest()
+                .headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                .and()
+                .authorizeRequests()
+//              .expresssionHandler(Handler)
+//               .anyRequest()
                 .antMatchers(WishboxGateway.ROOT + "/**")
-//                .anyRequest()
-                .permitAll(); //access("isAuthorized()")
+//               .anyRequest()
+//                .hasRole(WishboxGateway.GRANTED_ROLE)
+                .permitAll();
+//              .access("isAuthorized()")
 //                .and()
 //                .addFilter(new SessionSecurityFilter(authenticationManager()));
     }

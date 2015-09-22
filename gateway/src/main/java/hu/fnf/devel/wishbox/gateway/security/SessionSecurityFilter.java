@@ -26,13 +26,15 @@ public class SessionSecurityFilter extends BasicAuthenticationFilter {
         if (HttpServletRequest.class.isAssignableFrom(request.getClass())) {
             String id = (String) request.getSession().getAttribute(WishboxGateway.SUBJECT_ID);
             if (!StringUtils.isBlank(id)) {
-                Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")), id);
+                Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority(WishboxGateway.GRANTED_ROLE)), id);
                 authentication.setAuthenticated(true);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 response.sendError(403, "You must login and post your authorization code first!");
             }
         }
+//        System.out.println("authenticated: " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+
     }
 
 }

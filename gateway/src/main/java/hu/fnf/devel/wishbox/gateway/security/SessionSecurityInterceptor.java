@@ -59,7 +59,7 @@ public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implem
     private boolean isAuthenticatedSession(HttpServletResponse response, Map<String, Object> map) throws IOException {
         String id = (String) map.get(WishboxGateway.SUBJECT_ID);
         if (!StringUtils.isBlank(id)) {
-            Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")), id);
+            Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority(WishboxGateway.GRANTED_ROLE)), id);
             authentication.setAuthenticated(true);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return true;

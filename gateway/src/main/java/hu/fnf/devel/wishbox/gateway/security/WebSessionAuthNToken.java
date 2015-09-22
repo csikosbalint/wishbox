@@ -22,4 +22,5 @@ public class WebSessionAuthNToken extends AbstractAuthenticationToken {
     public Object getPrincipal() {
         return id;
     }
+
 }

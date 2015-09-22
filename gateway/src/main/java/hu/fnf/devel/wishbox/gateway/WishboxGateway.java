@@ -28,9 +28,12 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 @SpringBootApplication
 public class WishboxGateway extends SpringBootServletInitializer {
     public static final String TOKEN = "token";
-    public static final String SUBJECT_ID = "id";
+    public static final String SUBJECT_ID = "google_id";
 
     public static final String ROOT = "/gateway";
+    public static final String WEBSOCKET = "/websocket";
+    public static final String GRANTED_ROLE = "SESSION";
+
     private static final Logger logger = LoggerFactory.getLogger(WishboxGateway.class);
 
     public static void main(String[] args) throws Exception {
