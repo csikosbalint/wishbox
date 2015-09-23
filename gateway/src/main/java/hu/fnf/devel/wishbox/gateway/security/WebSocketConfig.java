@@ -46,10 +46,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry
                 .addEndpoint(WishboxGateway.WEBSOCKET)
-                .addInterceptors(new HttpSessionHandshakeInterceptor())
-                .addInterceptors(sessionSecurityInterceptor())
-                .setAllowedOrigins("*")
                 .withSockJS()
+                .setSessionCookieNeeded(true)
+                .setInterceptors(new HttpSessionHandshakeInterceptor())
+                .setInterceptors(sessionSecurityInterceptor())
                 .setClientLibraryUrl("bower_components/sockjs/sockjs.min.js")
                 .setWebSocketEnabled(true);
     }

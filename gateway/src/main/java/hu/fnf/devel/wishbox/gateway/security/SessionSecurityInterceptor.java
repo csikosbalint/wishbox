@@ -34,6 +34,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
@@ -51,13 +52,13 @@ public class SessionSecurityInterceptor extends HandlerInterceptorAdapter implem
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
         if (serverHttpRequest instanceof ServletServerHttpRequest && serverHttpResponse instanceof ServletServerHttpResponse) {
             ServletServerHttpResponse servletResponse = (ServletServerHttpResponse) serverHttpResponse;
-            return isAuthenticatedSession(servletResponse.getServletResponse(), map);
+            return isAuthenticatedSession(((ServletServerHttpRequest) serverHttpRequest).getServletRequest(), servletResponse.getServletResponse());
         }
         throw new Exception("Unable to convert request to ServletServerHttpRequest");
     }
 
-    private boolean isAuthenticatedSession(HttpServletResponse response, Map<String, Object> map) throws IOException {
-        String id = (String) map.get(WishboxGateway.SUBJECT_ID);
+    private boolean isAuthenticatedSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String id = (String) request.getSession().getAttribute(WishboxGateway.SUBJECT_ID);
         if (!StringUtils.isBlank(id)) {
             Authentication authentication = new WebSessionAuthNToken(Collections.singletonList(new SimpleGrantedAuthority(WishboxGateway.GRANTED_ROLE)), id);
             authentication.setAuthenticated(true);

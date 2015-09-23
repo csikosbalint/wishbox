@@ -26,6 +26,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 @Configuration
@@ -83,10 +84,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(WishboxGateway.ROOT + "/**")
 //               .anyRequest()
 //                .hasRole(WishboxGateway.GRANTED_ROLE)
-                .permitAll();
+                .permitAll()
 //              .access("isAuthorized()")
-//                .and()
-//                .addFilter(new SessionSecurityFilter(authenticationManager()));
+                .and()
+                .addFilterBefore(
+                        new SessionSecurityFilter(authenticationManager()),
+                        ChannelProcessingFilter.class);
     }
 
 }
