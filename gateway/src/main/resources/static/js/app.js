@@ -1,3 +1,22 @@
+/*
+ *   app.js is part of the "wishbox ( gateway )" project
+ *   Copyright (C)  2015  author:  johnnym
+ *
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License
+ *   as published by the Free Software Foundation; either version 2
+ *   of the License, or (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 var myApp = angular.module("myApp", ['ui.bootstrap', 'ngDialog', 'ngWebsocket'])
     .service("MessageService", function ($q, $timeout) {
 
@@ -137,19 +156,31 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
             $http.get(apiEndpoint + '/event')
                 .success(function (data, status, headers, config) {
                     $scope.events = data;
-                });
+                })
+                .error(function (data, status, headers, config) {
+                    $scope.redraw();
+                })
+            ;
             $scope.showEvent = true;
 
             $http.get(apiEndpoint + '/notification')
                 .success(function (data, status, headers, config) {
                     $scope.notifications = data;
-                });
+                })
+                .error(function (data, status, headers, config) {
+                    $scope.redraw();
+                })
+            ;
             $scope.showNotification = true;
 
             $http.get(apiEndpoint + '/wish')
                 .success(function (data, status, headers, config) {
                     $scope.wishes = data;
-                });
+                })
+                .error(function (data, status, headers, config) {
+                    $scope.redraw();
+                })
+            ;
             $scope.showWish = true;
 
             // this code reaches out of controller scope
