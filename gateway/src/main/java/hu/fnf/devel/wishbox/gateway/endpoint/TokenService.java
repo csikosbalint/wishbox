@@ -1,20 +1,20 @@
 /*
- * TokenService.java which is part of the " wishbox ( gateway )" project
- * Copyright (C)  2015  author:  johnnym
+ *   TokenService.java is part of the "wishbox ( gateway )" project
+ *   Copyright (C)  2015  author:  johnnym
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ *   This program is free software; you can redistribute it and/or
+ *   modify it under the terms of the GNU General Public License
+ *   as published by the Free Software Foundation; either version 2
+ *   of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program; if not, write to the Free Software
+ *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 package hu.fnf.devel.wishbox.gateway.endpoint;
@@ -26,7 +26,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.gson.Gson;
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
 import hu.fnf.devel.wishbox.gateway.entity.Enums;
 import hu.fnf.devel.wishbox.gateway.entity.Notification;
@@ -48,7 +47,6 @@ import java.io.*;
 @Controller
 @RequestMapping(WishboxGateway.ROOT)
 public class TokenService {
-    private static final Gson GSON = new Gson();
     private static final JacksonFactory JSON_FACTORY = new JacksonFactory();
     private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
@@ -76,17 +74,6 @@ public class TokenService {
     @RequestMapping(value = "token", method = RequestMethod.POST)
     @ResponseBody
     public String validateToken(@RequestBody String code, HttpSession session) throws ServletException, IOException {
-        // Ensure that this is no request forgery going on, and that the user
-        // sending us this connect request is the user that was supposed to.
-//        if (!request.getParameter("state").equals(request.getSession().getAttribute("state"))) {
-//            return Response.status(HttpServletResponse.SC_UNAUTHORIZED).entity("Invalid state parameter.").build();
-//        }
-        // Normally the state would be a one-time use token, however in our
-        // simple case, we want a user to be able to connect and disconnect
-        // without reloading the page.  Thus, for demonstration, we don't
-        // implement this best practice.
-        //request.getSession().removeAttribute("state");
-
         try {
             // Upgrade the authorization code into an access and refresh token.
             GoogleTokenResponse tokenResponse =
