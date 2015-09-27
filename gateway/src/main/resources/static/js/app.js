@@ -89,14 +89,13 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
 
         $scope.signInCallback = function (authResult) {
             if (authResult['code']) {
-                $scope.TOKEN = authResult['code'];
                 // Hide the sign-in button now that the user is authorized, for example:
                 $('#signinButton').attr('style', 'display: none');
 
 //            var notifications = angular.element($("#notifications")).scope();
 
                 // Send the code to the server
-                $http.post(apiEndpoint + '/token', $scope.TOKEN)
+                $http.post(apiEndpoint + '/token', authResult['code'])
                     .success(function (result) {
                         MessageService.initialize();
                         MessageService.receive().then(null, null, messageHandler);
@@ -190,13 +189,7 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
             ;
             if ( success < 3 ) {
                 $timeout(function () {
-                    console.log($scope.TOKEN)
-                    $http.post(apiEndpoint + '/token', $scope.TOKEN)
-                        .success(function (result) {
-                            MessageService.initialize();
-                            MessageService.receive().then(null, null, messageHandler);
-                            $scope.redraw()
-                        });
+                    $scope.redraw()
                 },5000);
             }
             $scope.showWish = true;
