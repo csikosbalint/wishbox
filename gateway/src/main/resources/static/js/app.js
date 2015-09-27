@@ -76,9 +76,11 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
     function ($scope, $http, ngDialog, $filter, $interval, MessageService) {
 
         var apiEndpoint = "/gateway";
+        $scope.RELOAD = 60000 * 15;
+
         var reload = $interval(function () {
             $scope.redraw()
-        }, 60000 * 15);
+        }, $scope.RELOAD);
 
         var messageHandler = function (message) {
             console.log(message)
@@ -158,8 +160,9 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
                     $scope.events = data;
                 })
                 .error(function (data, status, headers, config) {
-                    console.log(status);
-                    //$scope.redraw();
+                    $interval(function () {
+                        $scope.redraw()
+                    },5000);
                 })
             ;
             $scope.showEvent = true;
@@ -169,8 +172,9 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
                     $scope.notifications = data;
                 })
                 .error(function (data, status, headers, config) {
-                    console.log(status);
-                    //$scope.redraw();
+                    $interval(function () {
+                        $scope.redraw()
+                    },5000);
                 })
             ;
             $scope.showNotification = true;
@@ -180,8 +184,9 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
                     $scope.wishes = data;
                 })
                 .error(function (data, status, headers, config) {
-                    console.log(status);
-                    //$scope.redraw();
+                    $interval(function () {
+                        $scope.redraw()
+                    },5000);
                 })
             ;
             $scope.showWish = true;

@@ -32,24 +32,6 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Bean(name="myAuthenticationManager")
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
-//
-//    @Autowired
-//    AuthenticationManager authenticationManager;
-//    @Bean
-//    public SessionSecurityFilter sessionSecurityFilter() {
-//        SessionSecurityFilter sessionSecurityFilter = null;
-//        try {
-//            sessionSecurityFilter = new SessionSecurityFilter(authenticationManager());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return sessionSecurityFilter;
-//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -87,8 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //               .anyRequest()
                 .antMatchers(WishboxGateway.ROOT + "/**")
 //               .anyRequest()
-//                .hasRole(WishboxGateway.GRANTED_ROLE)
-                .permitAll()
+                .hasRole(WishboxGateway.GRANTED_ROLE)
+//                .permitAll()
 //              .access("isAuthorized()")
                 .and()
                 .addFilter(new SessionSecurityFilter(authenticationManager()));

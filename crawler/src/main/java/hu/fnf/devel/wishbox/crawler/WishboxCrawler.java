@@ -1,5 +1,5 @@
 /*
- *   WishboxGateway.java is part of the "wishbox ( gateway )" project
+ *   WishboxCrawler.java is part of the "wishbox ( crawler )" project
  *   Copyright (C)  2015  author:  johnnym
  *
  *   This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway;
+package hu.fnf.devel.wishbox.crawler;
 
 import com.fasterxml.classmate.TypeResolver;
 import org.slf4j.Logger;
@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,27 +44,22 @@ import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 @SpringBootApplication
 @EnableSwagger2
-public class WishboxGateway extends SpringBootServletInitializer {
-    public static final String TOKEN = "token";
-    public static final String SUBJECT_ID = "google_id";
+public class WishboxCrawler {
+    private static final Logger logger = LoggerFactory.getLogger(WishboxCrawler.class);
 
-    public static final String ROOT = "/gateway";
-    public static final String WEBSOCKET = "/websocket";
-    public static final String GRANTED_ROLE = "SESSION_OWNER";
-
-    private static final Logger logger = LoggerFactory.getLogger(WishboxGateway.class);
+    public static final String ROOT = "/crawler";
 
     @Autowired
     private TypeResolver typeResolver;
 
-    public static void main(String[] args) throws Exception {
-        logger.info("Starting..." + WishboxGateway.class.getCanonicalName());
-        SpringApplication.run(WishboxGateway.class, args);
+    public static void main(String[] args) {
+        logger.info("Starting..." + WishboxCrawler.class.getCanonicalName());
+        SpringApplication.run(WishboxCrawler.class, args);
     }
 
     @Bean
     public Docket getApi() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(input -> !input.contains("error")).build().pathMapping(WishboxGateway.ROOT)
+        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(input -> !input.contains("error")).build().pathMapping(WishboxCrawler.ROOT)
                 .directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
                 .alternateTypeRules(newRule(typeResolver.resolve(DeferredResult.class, typeResolver.resolve(ResponseEntity.class, WildcardType.class)), typeResolver.resolve(WildcardType.class)))
                 .useDefaultResponseMessages(false)
