@@ -72,7 +72,7 @@ var myApp = angular.module("myApp", ['ui.bootstrap', 'ngDialog', 'ngWebsocket'])
 
 //CONTROLLERS
 
-myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$interval", "$timeout","MessageService",
+myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$interval", "$timeout", "MessageService",
     function ($scope, $http, ngDialog, $filter, $interval, $timeout, MessageService) {
 
         var apiEndpoint = "/gateway";
@@ -154,45 +154,30 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
         };
 
         $scope.redraw = function () {
-            var success = 0;
+            var apiCall = function (endpoint, scope, visible) {
+                $http.get(apiEndpoint + '/' + endpoint)
+                    .success(function (data, status, headers, config) {
+                        if (endpoint.contains('wish')) {
+                            scope.wishes = data;
+                            scope.showWish = true;
+                        } else if (endpoint.contains('notification')) {
+                            scope.notifications = data;
+                            scope.showNotification = true;
+                        } else if (endpoint.contains('event')) {
+                            scope.events = data;
+                            scope.showEvent = true;
+                        }
+                    })
+                    .error(function (data, status, headers, config) {
+                        $timeout(apiCall(endpoint), 5000);
+                    })
+                ;
+            };
             $scope.currentdate = new Date();
-            $http.get(apiEndpoint + '/event')
-                .success(function (data, status, headers, config) {
-                    $scope.events = data;
-                    success++;
-                })
-                .error(function (data, status, headers, config) {
 
-                })
-            ;
-            $scope.showEvent = true;
-
-            $http.get(apiEndpoint + '/notification')
-                .success(function (data, status, headers, config) {
-                    $scope.notifications = data;
-                    success++;
-                })
-                .error(function (data, status, headers, config) {
-
-                })
-            ;
-            $scope.showNotification = true;
-
-            $http.get(apiEndpoint + '/wish')
-                .success(function (data, status, headers, config) {
-                    $scope.wishes = data;
-                    success++;
-                })
-                .error(function (data, status, headers, config) {
-
-                })
-            ;
-            if ( success < 3 ) {
-                $timeout(function () {
-                    $scope.redraw()
-                },5000);
-            }
-            $scope.showWish = true;
+            apiCall('event', $scope);
+            apiCall('notification', $scope);
+            apiCall('wish', $scope);
 
             // this code reaches out of controller scope
             $('#nav-sidebar').attr('style', 'display: visible');
