@@ -69,7 +69,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/**/*.css")
                 .antMatchers(HttpMethod.GET, "/**/*.woff")
                 .antMatchers(HttpMethod.GET, "/**/*.woff2")
-                .antMatchers(HttpMethod.GET, "/**/*.ttf");
+                .antMatchers(HttpMethod.GET, "/**/*.ttf")
+//                Swagger
+                .antMatchers(HttpMethod.GET, "/v2/api-docs")
+                .antMatchers(HttpMethod.GET, "/swagger/*")
+                .antMatchers(HttpMethod.GET, "/swagger/**");
     }
 
     @Override
