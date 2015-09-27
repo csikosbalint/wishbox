@@ -154,15 +154,15 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
         };
 
         $scope.redraw = function () {
+            var success = 0;
             $scope.currentdate = new Date();
             $http.get(apiEndpoint + '/event')
                 .success(function (data, status, headers, config) {
                     $scope.events = data;
+                    success++;
                 })
                 .error(function (data, status, headers, config) {
-                    $interval(function () {
-                        $scope.redraw()
-                    },5000);
+
                 })
             ;
             $scope.showEvent = true;
@@ -170,11 +170,10 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
             $http.get(apiEndpoint + '/notification')
                 .success(function (data, status, headers, config) {
                     $scope.notifications = data;
+                    success++;
                 })
                 .error(function (data, status, headers, config) {
-                    $interval(function () {
-                        $scope.redraw()
-                    },5000);
+
                 })
             ;
             $scope.showNotification = true;
@@ -182,13 +181,17 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
             $http.get(apiEndpoint + '/wish')
                 .success(function (data, status, headers, config) {
                     $scope.wishes = data;
+                    success++;
                 })
                 .error(function (data, status, headers, config) {
-                    $interval(function () {
-                        $scope.redraw()
-                    },5000);
+
                 })
             ;
+            if ( success < 3 ) {
+                $interval(function () {
+                    $scope.redraw()
+                },5000);
+            }
             $scope.showWish = true;
 
             // this code reaches out of controller scope
