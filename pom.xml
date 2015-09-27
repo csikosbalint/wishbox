@@ -34,7 +34,6 @@
     <modules>
         <module>gateway</module>
         <module>crawler</module>
-        <module>crawler-core</module>
     </modules>
 
     <properties>
