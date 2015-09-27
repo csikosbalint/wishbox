@@ -158,7 +158,8 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
                     $scope.events = data;
                 })
                 .error(function (data, status, headers, config) {
-                    $scope.redraw();
+                    console.log(status);
+                    //$scope.redraw();
                 })
             ;
             $scope.showEvent = true;
@@ -168,7 +169,8 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
                     $scope.notifications = data;
                 })
                 .error(function (data, status, headers, config) {
-                    $scope.redraw();
+                    console.log(status);
+                    //$scope.redraw();
                 })
             ;
             $scope.showNotification = true;
@@ -178,7 +180,8 @@ myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$
                     $scope.wishes = data;
                 })
                 .error(function (data, status, headers, config) {
-                    $scope.redraw();
+                    console.log(status);
+                    //$scope.redraw();
                 })
             ;
             $scope.showWish = true;
