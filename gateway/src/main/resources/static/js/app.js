@@ -72,8 +72,8 @@ var myApp = angular.module("myApp", ['ui.bootstrap', 'ngDialog', 'ngWebsocket'])
 
 //CONTROLLERS
 
-myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$interval", "MessageService",
-    function ($scope, $http, ngDialog, $filter, $interval, MessageService) {
+myApp.controller("mainController", ["$scope", "$http", "ngDialog", "$filter", "$interval", "$timeout","MessageService",
+    function ($scope, $http, ngDialog, $filter, $interval, $timeout, MessageService) {
 
         var apiEndpoint = "/gateway";
         $scope.RELOAD = 60000 * 15;
