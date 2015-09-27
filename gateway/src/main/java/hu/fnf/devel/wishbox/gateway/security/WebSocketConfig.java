@@ -32,15 +32,15 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-    @Bean
-    public SessionSecurityInterceptor sessionSecurityInterceptor() {
-        return new SessionSecurityInterceptor(WishboxGateway.TOKEN);
-    }
+//    @Bean
+//    public SessionSecurityInterceptor sessionSecurityInterceptor() {
+//        return new SessionSecurityInterceptor(WishboxGateway.TOKEN);
+//    }
 
-    @Bean
-    public ChannelInterceptor channelInterceptor() {
-        return new ChannelInterceptor();
-    }
+//    @Bean
+//    public ChannelInterceptor channelInterceptor() {
+//        return new ChannelInterceptor();
+//    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
@@ -49,7 +49,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
                 .withSockJS()
                 .setSessionCookieNeeded(true)
                 .setInterceptors(new HttpSessionHandshakeInterceptor())
-                .setInterceptors(sessionSecurityInterceptor())
+//                .setInterceptors(sessionSecurityInterceptor())
                 .setClientLibraryUrl("bower_components/sockjs/sockjs.min.js")
                 .setWebSocketEnabled(true);
     }
@@ -59,8 +59,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic", "/queue");
     }
 
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.setInterceptors(channelInterceptor());
-    }
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.setInterceptors(channelInterceptor());
+//    }
 }

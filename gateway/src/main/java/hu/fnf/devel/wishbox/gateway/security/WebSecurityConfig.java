@@ -70,10 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(WishboxGateway.ROOT + "/**")
 //               .anyRequest()
 //                .hasRole(WishboxGateway.GRANTED_ROLE)
-                .permitAll()
+                .permitAll();
 //              .access("isAuthorized()")
-                .and()
-                .addFilter(new SessionSecurityFilter(authenticationManager()));
+//                .and()
+//                .addFilter(new SessionSecurityFilter(authenticationManager()));
     }
 
 }
