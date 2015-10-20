@@ -1,5 +1,5 @@
 /*
- *   Test.java is part of the "wishbox ( crawler )" project
+ *   WishRepository.java is part of the "wishbox ( crawler )" project
  *   Copyright (C)  2015  author:  johnnym
  *
  *   This program is free software; you can redistribute it and/or
@@ -17,20 +17,10 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.crawler.endpoint;
+package hu.fnf.devel.wishbox.crawler.worker;
 
-import hu.fnf.devel.wishbox.crawler.WishboxCrawler;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import hu.fnf.devel.wishbox.gateway.entity.Wish;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-/**
- * Created by johnnym on 27/09/15.
- */
-@Controller
-@RequestMapping(WishboxCrawler.ROOT)
-public class Test {
-    @RequestMapping("/test")
-    public String getTest() {
-        return "Cica";
-    }
+public interface WishRepository extends MongoRepository<Wish, String> {
 }

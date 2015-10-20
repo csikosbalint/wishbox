@@ -19,14 +19,24 @@
 
 package hu.fnf.devel.wishbox.crawler.worker;
 
+import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-/**
- * Created by johnnym on 19/10/15.
- */
+@Component
 public class ImDbWorker {
+    @Autowired
+    private WishRepository wishRepository;
+
     @Async
     public void work() {
+        System.out.println("woring");
+    }
 
+    @Scheduled(fixedDelay = 5000)
+    public void sched() {
+        wishRepository.findAll().forEach(u -> u.getId());
     }
 }

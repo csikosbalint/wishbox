@@ -20,6 +20,7 @@
 package hu.fnf.devel.wishbox.crawler;
 
 import com.fasterxml.classmate.TypeResolver;
+import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.async.DeferredResult;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -42,27 +45,48 @@ import java.time.LocalDate;
 import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
+@EnableAsync
+@EnableScheduling
 @SpringBootApplication
 @EnableSwagger2
 public class WishboxCrawler {
-    private static final Logger logger = LoggerFactory.getLogger(WishboxCrawler.class);
-
     public static final String ROOT = "/crawler";
-
+    private static final Logger logger = LoggerFactory.getLogger(WishboxCrawler.class);
+    @Autowired
+    private static ApplicationContext appContext;
     @Autowired
     private TypeResolver typeResolver;
 
     public static void main(String[] args) {
         logger.info("Starting..." + WishboxCrawler.class.getCanonicalName());
         SpringApplication.run(WishboxCrawler.class, args);
+
     }
 
     @Bean
     public Docket getApi() {
-        return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any()).paths(input -> !input.contains("error")).build().pathMapping(WishboxCrawler.ROOT)
-                .directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
-                .alternateTypeRules(newRule(typeResolver.resolve(DeferredResult.class, typeResolver.resolve(ResponseEntity.class, WildcardType.class)), typeResolver.resolve(WildcardType.class)))
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(input -> !input.contains("error"))
+                .build().pathMapping(WishboxCrawler.ROOT)
+                .directModelSubstitute(LocalDate.class, String.class)
+                .genericModelSubstitutes(ResponseEntity.class)
+                .alternateTypeRules(newRule(typeResolver
+                                .resolve(DeferredResult.class, typeResolver
+                                                .resolve(ResponseEntity.class, WildcardType.class
+                                                )
+                                ), typeResolver.resolve(WildcardType.class)
+                ))
                 .useDefaultResponseMessages(false)
-                .globalResponseMessage(RequestMethod.GET, newArrayList(new ResponseMessageBuilder().code(500).message("500 message").responseModel(new ModelRef("Error")).build()));
+                .globalResponseMessage(
+                        RequestMethod.GET,
+                        newArrayList(new ResponseMessageBuilder()
+                                        .code(500)
+                                        .message("500 message")
+                                        .responseModel(new ModelRef("Error"))
+                                        .build()
+                        )
+                );
     }
 }
