@@ -34,10 +34,15 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <org.springframework.security-version>4.0.1.RELEASE</org.springframework.security-version>
+        <!--<org.springframework.security-version>4.0.1.RELEASE</org.springframework.security-version>-->
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>hu.fnf.devel.wishbox</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!--CLOUD FOUNDRY-->
         <dependency>
             <groupId>org.cloudfoundry</groupId>
@@ -74,23 +79,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
-            <!--<exclusions>-->
-            <!--<exclusion>-->
-            <!--<groupId>org.mongodb</groupId>-->
-            <!--<artifactId>mongo-java-driver</artifactId>-->
-            <!--</exclusion>-->
-            <!--</exclusions>-->
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.data</groupId>-->
-        <!--<artifactId>spring-data-mongodb</artifactId>-->
-        <!--<version>1.8.0.RELEASE</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.mongodb</groupId>-->
-        <!--<artifactId>mongo-java-driver</artifactId>-->
-        <!--<version>${mongodb.version}</version>-->
-        <!--</dependency>-->
         <!--MESSAGING-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

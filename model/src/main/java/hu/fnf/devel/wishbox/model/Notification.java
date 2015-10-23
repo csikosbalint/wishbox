@@ -1,5 +1,5 @@
 /*
- *   ImDbWorker.java is part of the "wishbox ( crawler )" project
+ *   Notification.java is part of the "wishbox ( model )" project
  *   Copyright (C)  2015  author:  johnnym
  *
  *   This program is free software; you can redistribute it and/or
@@ -17,26 +17,39 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.crawler.worker;
+package hu.fnf.devel.wishbox.model;
 
-import hu.fnf.devel.wishbox.model.repository.WishRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Component
-public class ImDbWorker {
-    @Autowired
-    private WishRepository wishRepository;
+import java.util.Date;
 
-    @Async
-    public void work() {
-        System.out.println("woring");
+@Document(collection = "notifications")
+public class Notification extends AbstractEntity {
+    private Date time;
+    private String text;
+    private Enums.Priority priority;
+
+    public Notification() {
+        this.time = new Date();
     }
 
-    @Scheduled(fixedDelay = 5000)
-    public void sched() {
-        wishRepository.findAll().forEach(u -> u.getId());
+    public Date getTime() {
+        return time;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Enums.Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Enums.Priority priority) {
+        this.priority = priority;
     }
 }

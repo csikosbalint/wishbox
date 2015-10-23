@@ -1,5 +1,5 @@
 /*
- *   ImDbWorker.java is part of the "wishbox ( crawler )" project
+ *   AbstractEntity.java is part of the "wishbox ( model )" project
  *   Copyright (C)  2015  author:  johnnym
  *
  *   This program is free software; you can redistribute it and/or
@@ -17,26 +17,21 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.crawler.worker;
+package hu.fnf.devel.wishbox.model;
 
-import hu.fnf.devel.wishbox.model.repository.WishRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-@Component
-public class ImDbWorker {
-    @Autowired
-    private WishRepository wishRepository;
+public class AbstractEntity {
+    @Id
+    @Indexed(unique = true)
+    private String id;
 
-    @Async
-    public void work() {
-        System.out.println("woring");
+    public String getId() {
+        return id;
     }
 
-    @Scheduled(fixedDelay = 5000)
-    public void sched() {
-        wishRepository.findAll().forEach(u -> u.getId());
+    protected void setId(String id) {
+        this.id = id;
     }
 }

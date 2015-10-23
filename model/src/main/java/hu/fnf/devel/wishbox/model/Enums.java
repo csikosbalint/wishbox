@@ -1,5 +1,5 @@
 /*
- *   WishRepository.java is part of the "wishbox ( gateway )" project
+ *   Enums.java is part of the "wishbox ( model )" project
  *   Copyright (C)  2015  author:  johnnym
  *
  *   This program is free software; you can redistribute it and/or
@@ -17,12 +17,8 @@
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package hu.fnf.devel.wishbox.gateway.entity.repository;
+package hu.fnf.devel.wishbox.model;
 
-import hu.fnf.devel.wishbox.gateway.entity.Wish;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface WishRepository extends MongoRepository<Wish, String> {
+public class Enums {
+    public enum Priority {info, warning, danger, none}
 }

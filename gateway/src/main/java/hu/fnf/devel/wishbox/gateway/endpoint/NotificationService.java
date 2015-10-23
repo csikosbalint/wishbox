@@ -20,12 +20,12 @@
 package hu.fnf.devel.wishbox.gateway.endpoint;
 
 import hu.fnf.devel.wishbox.gateway.WishboxGateway;
-import hu.fnf.devel.wishbox.gateway.entity.Notification;
-import hu.fnf.devel.wishbox.gateway.entity.User;
-import hu.fnf.devel.wishbox.gateway.entity.Wish;
-import hu.fnf.devel.wishbox.gateway.entity.repository.NotificationRepository;
-import hu.fnf.devel.wishbox.gateway.entity.repository.UserRepository;
-import hu.fnf.devel.wishbox.gateway.entity.repository.WishRepository;
+import hu.fnf.devel.wishbox.model.Notification;
+import hu.fnf.devel.wishbox.model.User;
+import hu.fnf.devel.wishbox.model.Wish;
+import hu.fnf.devel.wishbox.model.repository.NotificationRepository;
+import hu.fnf.devel.wishbox.model.repository.UserRepository;
+import hu.fnf.devel.wishbox.model.repository.WishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
