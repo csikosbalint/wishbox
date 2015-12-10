@@ -1,4 +1,4 @@
-# wishbox #
+# wishbox ##
 Wishbox is both a downloader and a crawler. It looks for stuff on the internet enrolled on its wishlist.
 
 
