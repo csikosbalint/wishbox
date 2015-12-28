@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~   pom.xml is part of the "wishbox ( wishbox )" project
-  ~   Copyright (C)  201512280842.RC.RC.RC  author:  johnnym
+  ~   Copyright (C)  201512280843.RC.RC.RC.RC  author:  johnnym
   ~
   ~   This program is free software; you can redistribute it and/or
   ~   modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
 <<<<<<< HEAD
-                    <version>0.7.5.201512280842.RC.RC.RC</version>
+                    <version>0.7.5.201512280843.RC.RC.RC.RC</version>
 =======
                     <version>0.7.5.201409121644</version>
 >>>>>>> development
