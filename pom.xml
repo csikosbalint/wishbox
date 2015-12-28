@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~   pom.xml is part of the "wishbox ( wishbox )" project
-  ~   Copyright (C)  201512280853.RC.RC.RC.RC.RC.RC.RC.RC.RC  author:  johnnym
+  ~   Copyright (C)  201512280856.RC.RC.RC.RC.RC.RC.RC.RC.RC.RC  author:  johnnym
   ~
   ~   This program is free software; you can redistribute it and/or
   ~   modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@
 
     <groupId>hu.fnf.devel.wishbox</groupId>
     <artifactId>wishbox</artifactId>
-    <version>1.1.201512280955</version>
+    <version>1.1.201512280856.RC</version>
 
     <description>WishBox server application.</description>
 
